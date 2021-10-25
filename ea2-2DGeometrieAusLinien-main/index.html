@@ -1,0 +1,106 @@
+<!DOCTYPE html5>
+<html>
+    <head>
+        <title>EA 2 – 2D Geometrie aus Linien</title>
+
+
+        <link rel="stylesheet" href="css/materialize.min.css" />
+
+        <script src="js/jquery-3.6.0.min.js"></script>
+        <script src="js/materialize.min.js"></script>
+    
+
+
+    
+        <link rel="stylesheet" href="styles.css" />
+
+
+        <script defer src="ea2.js"></script>
+      </head>
+        <body onload=start()>
+
+
+
+            <nav>
+                <div class="nav-wrapper">
+                    <a href="#" class="brand-logo" style="padding-left:10px">EA 1 – Interaktiv animierte Scheibe</a>
+                    <ul id="nav-mobile" class="right hide-on-med-and-down">
+                        <li><a class="waves-effect waves-light modal-trigger" href="#modal1">Documentation</a></li>
+                    </ul>
+                </div>
+            </nav>
+        
+            <div id="container" class="container">
+                <div class="col s12">
+                    <div class="card">
+
+                        <br>
+                        <canvas id='glcanvas' width=640 height=480 onclick="drehen();"></canvas>
+
+                        <canvas id="canvas"></canvas>
+
+
+
+
+                        <div class="card-content">
+                            <!--Content-->
+                            <h5>Steuerung</h5>
+                            <p><b>R:</b> Hausmodell dreht sich kontinuierlich im Uhrzeigersinn.</p>
+                            <p><b>Linksklick auf Wireframe-Hausgerüst:</b> Modell dreht sich schrittweise im Uhrzeigersinn.</p>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        
+            <footer class="page-footer" id="page-footer">
+                <div class="container">
+                    Author: Maite-Aileen Brandt
+                </div>
+            </footer>
+        
+            <div id="modal1" class="modal modal-fixed-footer">
+                <div class="modal-content">
+                    <h4>Documentation</h4>
+
+                    <h5>Steuerung</h5>
+                        <p><b>R:</b> Hausmodell dreht sich kontinuierlich im Uhrzeigersinn.</p>
+                        <p><b>Linksklick auf Wireframe-Hausgerüst:</b> Modell dreht sich schrittweise im Uhrzeigersinn.</p>
+                        
+                     
+                        <h5>Aufgabenstellung </h5>
+                        <p>Erstellen Sie eine eigene 2D-Geometrie aus Linien (etwa 30 Vertices) und stellen Sie diese mittels WebGL da. Dabei können Sie GL_LINES, GL_LINE_STRIP oder GL_LINE_LOOP verwenden.</p>                        
+
+                
+
+
+                        <h5>Umsetzung</h5>
+                        <p> Grundlagen für das Erstellen der Linien und Shader: Moodle Kurs-Materialien des Kurses Graphical Visualisation Technologies </p>
+                                              
+                        <h5>Anmerkungen</h5>
+                        <p>Bei der Katze wurde gl.LINES, bei dem Haus gl.LINE_STRIP eingesetzt.</p>
+                        <p>Die Katze wurde einzeln, per Angabe der Punkte erstellt. Für das Haus wurden zuvor die Punkte in Variablen gespeichert. Die Spiralen auf dem Haus wurden prozedural, über For-Schleifen erstellt.</p>
+                        <p>Da das Haus von lediglich einer statischen Ansicht sehr schwierig zu erkennen ist, habe ich eine Rotation mit eingebaut. Dabei wird das Bild in festgelegten Abständen neu gezeichnet.</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+    </body>
+</html>
