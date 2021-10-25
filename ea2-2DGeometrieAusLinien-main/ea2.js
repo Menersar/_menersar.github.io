@@ -445,17 +445,17 @@ const vertices2 = new Float32Array([
   0, -0.7,
   -0.1, -0.6, // katze zunge schräg links
   0, -0.7,
-  0.25, -0.45, // katze schnurrharr rechts oben
+  0.25, -0.45, // katze schnurrhaar rechts oben
   0.4, -0.4,
-  0.25, -0.55, // katze schnurrharr rechts mitte
+  0.25, -0.55, // katze schnurrhaar rechts mitte
   0.4, -0.55,
-  0.25, -0.65, // katze schnurrharr rechts unten
+  0.25, -0.65, // katze schnurrhaar rechts unten
   0.4, -0.7,
-  -0.25, -0.45, // katze schnurrharr links oben
+  -0.25, -0.45, // katze schnurrhaar links oben
   -0.4, -0.4,
-  -0.25, -0.55, // katze schnurrharr links mitte
+  -0.25, -0.55, // katze schnurrhaar links mitte
   -0.4, -0.55,
-  -0.25, -0.65, // katze schnurrharr links unten
+  -0.25, -0.65, // katze schnurrhaar links unten
   -0.4, -0.7,
   0.15, -0.55, // katze mund mitte
   -0.15, -0.55,
