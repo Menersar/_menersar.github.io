@@ -7,9 +7,47 @@ body, html{
 
 
 canvas {
-  padding: 10;
+ /* padding: 10;
+*/
+ /*padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+ */
+ display: grid;
+
+ 
+
+}
+canvas > * {
+  grid-column-start: 1;
+  grid-row-start: 1;
+  justify-self:center;
 }
 
+canvas > *:last-child {
+  justify-self: right;
+}
+
+
+#canvas {
+  /*flex: none;
+  display: flex;
+  margin-left: 10;
+*/
+/*display:inline-block;
+height: 0%;
+position: relative;
+bottom: 0;*/
+transform-origin: bottom;
+/*height: 0%;
+width: auto;*/
+align-self: flex-end;
+/*align-self: center;*/
+margin-bottom: 75 ;
+
+}
 
 
 html   {
@@ -22,10 +60,21 @@ html   {
 
 
 
-
+.cardImages {
+  margin-left: 10;
+  margin-right: 10;
+  display: flex;
+  justify-content:center;
+  background-color: #2F4F4F  ;
+}
 
 
 .page-footer {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
   padding-bottom: 15px;
   background-color: #ea484e;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
 }
