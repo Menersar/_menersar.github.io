@@ -1,12 +1,22 @@
-fragmentShaderCode =
+/*fragmentShaderCode =
 'void main(void) {' +
 '  gl_FragColor = vec4(1, 1, 1,1);' +
+'}';*/
+
+// Compile fragment shader.
+fragmentShaderCode = 'precision mediump float;'+ 
+'varying vec4 color;'+
+'void main() {'+
+    'gl_FragColor = color;'+
 '}';
 
 vertexShaderCode =
 'attribute vec3 ppos;' +
+'attribute vec4 col;'+
+'varying vec4 color;'+
 'uniform mat4 mvp;' +
 'void main(void) {' +
+  'color = col;'+                 
 '  gl_Position = mvp * vec4(ppos.x, ppos.y, ppos.z, 1.0);' +
 '}';
 
@@ -26,6 +36,10 @@ var dachSpitzeHinten = [-0.2, 0.4, 0.3];
 var mitteDachVorneLinks = [-0.3, 0.3, -0.5];
 var mitteDachVorneRechts = [-0.1, 0.3, -0.5];
 
+var tuerRahmenLinksUnten = [-0.25, -0.5, -0.5];
+var tuerRahmenRechtsUnten = [-0.15, -0.5, -0.5];
+var tuerRahmenLinksOben = [-0.25, -0.2, -0.5];
+var tuerRahmenRechtsOben = [-0.15, -0.2, -0.5];
 
 var winkelYSetter = -45;
 
@@ -38,6 +52,7 @@ var kontinuierlichDrehen = false;
 
 var pointArray = [];
 pointArray = [
+  /*
 // Haus unten
 vorneLinksUnten[0], vorneLinksUnten[1], vorneLinksUnten[2],
 vorneRechtsUnten[0], vorneRechtsUnten[1], vorneRechtsUnten[2],
@@ -49,64 +64,146 @@ hintenRechtsUnten[0], hintenRechtsUnten[1], hintenRechtsUnten[2],
 hintenLinksUnten[0], hintenLinksUnten[1], hintenLinksUnten[2],
 vorneRechtsUnten[0], vorneRechtsUnten[1], vorneRechtsUnten[2],
 vorneLinksUnten[0], vorneLinksUnten[1], vorneLinksUnten[2],
-//
+//*/
 
-// Haus vorne
+// Dach dreieck vorne
 vorneLinksOben[0], vorneLinksOben[1], vorneLinksOben[2],
 dachSpitzeVorne[0], dachSpitzeVorne[1], dachSpitzeVorne[2],
 vorneRechtsOben[0], vorneRechtsOben[1], vorneRechtsOben[2],
-vorneLinksOben[0], vorneLinksOben[1], vorneLinksOben[2],
-vorneRechtsUnten[0], vorneRechtsUnten[1], vorneRechtsUnten[2],
+//vorneLinksOben[0], vorneLinksOben[1], vorneLinksOben[2],
+
+// haus vorne
 vorneLinksUnten[0], vorneLinksUnten[1], vorneLinksUnten[2],
+tuerRahmenLinksUnten[0], tuerRahmenLinksUnten[1], tuerRahmenLinksUnten[2],
+tuerRahmenLinksOben[0], tuerRahmenLinksOben[1], tuerRahmenLinksOben[2],
+
+vorneLinksUnten[0], vorneLinksUnten[1], vorneLinksUnten[2],
+tuerRahmenLinksOben[0], tuerRahmenLinksOben[1], tuerRahmenLinksOben[2],
+vorneLinksOben[0], vorneLinksOben[1], vorneLinksOben[2],
+
+vorneLinksOben[0], vorneLinksOben[1], vorneLinksOben[2],
 vorneRechtsOben[0], vorneRechtsOben[1], vorneRechtsOben[2],
+tuerRahmenLinksOben[0], tuerRahmenLinksOben[1], tuerRahmenLinksOben[2],
+
+
+vorneRechtsUnten[0], vorneRechtsUnten[1], vorneRechtsUnten[2],
+tuerRahmenRechtsUnten[0], tuerRahmenRechtsUnten[1], tuerRahmenRechtsUnten[2],
+tuerRahmenRechtsOben[0], tuerRahmenRechtsOben[1], tuerRahmenRechtsOben[2],
+
+vorneRechtsUnten[0], vorneRechtsUnten[1], vorneRechtsUnten[2],
+tuerRahmenRechtsOben[0], tuerRahmenRechtsOben[1], tuerRahmenRechtsOben[2],
+vorneRechtsOben[0], vorneRechtsOben[1], vorneRechtsOben[2],
+
+tuerRahmenLinksOben[0], tuerRahmenLinksOben[1], tuerRahmenLinksOben[2],
+vorneRechtsOben[0], vorneRechtsOben[1], vorneRechtsOben[2],
+tuerRahmenRechtsOben[0], tuerRahmenRechtsOben[1], tuerRahmenRechtsOben[2],
+
+
+
+
+//vorneRechtsOben[0], vorneRechtsOben[1], vorneRechtsOben[2],
+//vorneLinksOben[0], vorneLinksOben[1], vorneLinksOben[2],
+//vorneLinksUnten[0], vorneLinksUnten[1], vorneLinksUnten[2],
+
+//vorneRechtsOben[0], vorneRechtsOben[1], vorneRechtsOben[2],
+//vorneLinksUnten[0], vorneLinksUnten[1], vorneLinksUnten[2],
+//vorneRechtsUnten[0], vorneRechtsUnten[1], vorneRechtsUnten[2],
+//vorneRechtsOben[0], vorneRechtsOben[1], vorneRechtsOben[2],
+
 
 // Haus Seite Rechts
 hintenRechtsUnten[0], hintenRechtsUnten[1], hintenRechtsUnten[2],
 hintenRechtsOben[0], hintenRechtsOben[1], hintenRechtsOben[2],
-vorneRechtsUnten[0], vorneRechtsUnten[1], vorneRechtsUnten[2],
 vorneRechtsOben[0], vorneRechtsOben[1], vorneRechtsOben[2],
-hintenRechtsOben[0], hintenRechtsOben[1], hintenRechtsOben[2],
+//hintenRechtsUnten[0], hintenRechtsUnten[1], hintenRechtsUnten[2],
+
+vorneRechtsOben[0], vorneRechtsOben[1], vorneRechtsOben[2],
+vorneRechtsUnten[0], vorneRechtsUnten[1], vorneRechtsUnten[2],
+hintenRechtsUnten[0], hintenRechtsUnten[1], hintenRechtsUnten[2],
+//vorneRechtsOben[0], vorneRechtsOben[1], vorneRechtsOben[2],
 
 
 // Haus Hinten
-hintenRechtsUnten[0], hintenRechtsUnten[1], hintenRechtsUnten[2],
+hintenRechtsOben[0], hintenRechtsOben[1], hintenRechtsOben[2],
 hintenLinksUnten[0], hintenLinksUnten[1], hintenLinksUnten[2],
 hintenLinksOben[0], hintenLinksOben[1], hintenLinksOben[2],
+//hintenRechtsOben[0], hintenRechtsOben[1], hintenRechtsOben[2],
+
+hintenRechtsUnten[0], hintenRechtsUnten[1], hintenRechtsUnten[2],
+hintenLinksUnten[0], hintenLinksUnten[1], hintenLinksUnten[2],
+hintenRechtsOben[0], hintenRechtsOben[1], hintenRechtsOben[2],
+//hintenRechtsUnten[0], hintenRechtsUnten[1], hintenRechtsUnten[2],
+
+// Dach dreieck hinten
 dachSpitzeHinten[0], dachSpitzeHinten[1], dachSpitzeHinten[2],
-hintenRechtsOben[0], hintenRechtsOben[1], hintenRechtsOben[2],
 hintenLinksOben[0], hintenLinksOben[1], hintenLinksOben[2],
-// kreuz
+hintenRechtsOben[0], hintenRechtsOben[1], hintenRechtsOben[2],
+//dachSpitzeHinten[0], dachSpitzeHinten[1], dachSpitzeHinten[2],
+
+/*// kreuz
 hintenRechtsUnten[0], hintenRechtsUnten[1], hintenRechtsUnten[2],
 hintenRechtsOben[0], hintenRechtsOben[1], hintenRechtsOben[2],
 hintenLinksUnten[0], hintenLinksUnten[1], hintenLinksUnten[2],
 hintenLinksOben[0], hintenLinksOben[1], hintenLinksOben[2],
-//
+//*/
 
 
 // Haus Seite Links
+hintenLinksOben[0], hintenLinksOben[1], hintenLinksOben[2],
 vorneLinksOben[0], vorneLinksOben[1], vorneLinksOben[2],
+vorneLinksUnten[0], vorneLinksUnten[1], vorneLinksUnten[2],
+//hintenLinksOben[0], hintenLinksOben[1], hintenLinksOben[2],
+
 hintenLinksUnten[0], hintenLinksUnten[1], hintenLinksUnten[2],
 vorneLinksUnten[0], vorneLinksUnten[1], vorneLinksUnten[2],
 hintenLinksOben[0], hintenLinksOben[1], hintenLinksOben[2],
-vorneLinksOben[0], vorneLinksOben[1], vorneLinksOben[2],
+//hintenLinksUnten[0], hintenLinksUnten[1], hintenLinksUnten[2],
+
+//vorneLinksOben[0], vorneLinksOben[1], vorneLinksOben[2],
 
 
 // Haus Dach Links
+hintenLinksOben[0], hintenLinksOben[1], hintenLinksOben[2],
 dachSpitzeVorne[0], dachSpitzeVorne[1], dachSpitzeVorne[2],
 dachSpitzeHinten[0], dachSpitzeHinten[1], dachSpitzeHinten[2],
+//hintenLinksOben[0], hintenLinksOben[1], hintenLinksOben[2],
+
+vorneLinksOben[0], vorneLinksOben[1], vorneLinksOben[2],
+dachSpitzeVorne[0], dachSpitzeVorne[1], dachSpitzeVorne[2],
+hintenLinksOben[0], hintenLinksOben[1], hintenLinksOben[2],
+//vorneLinksOben[0], vorneLinksOben[1], vorneLinksOben[2],
+
+/*
 //kreuz
 vorneLinksOben[0], vorneLinksOben[1], vorneLinksOben[2],
 dachSpitzeVorne[0], dachSpitzeVorne[1], dachSpitzeVorne[2],
 hintenLinksOben[0], hintenLinksOben[1], hintenLinksOben[2],
 dachSpitzeHinten[0], dachSpitzeHinten[1], dachSpitzeHinten[2],
-//
+//*/
 
 
 
 // Haus Dach Rechts
-vorneRechtsOben[0], vorneRechtsOben[1], vorneRechtsOben[2],
 hintenRechtsOben[0], hintenRechtsOben[1], hintenRechtsOben[2],
 dachSpitzeVorne[0], dachSpitzeVorne[1], dachSpitzeVorne[2],
+dachSpitzeHinten[0], dachSpitzeHinten[1], dachSpitzeHinten[2],
+//hintenRechtsOben[0], hintenRechtsOben[1], hintenRechtsOben[2],
+
+vorneRechtsOben[0], vorneRechtsOben[1], vorneRechtsOben[2],
+dachSpitzeVorne[0], dachSpitzeVorne[1], dachSpitzeVorne[2],
+hintenRechtsOben[0], hintenRechtsOben[1], hintenRechtsOben[2],
+//vorneRechtsOben[0], vorneRechtsOben[1], vorneRechtsOben[2],
+
+// Tür
+tuerRahmenLinksUnten[0], tuerRahmenLinksUnten[1], tuerRahmenLinksUnten[2],
+tuerRahmenLinksOben[0], tuerRahmenLinksOben[1], tuerRahmenLinksOben[2],
+tuerRahmenRechtsOben[0], tuerRahmenRechtsOben[1], tuerRahmenRechtsOben[2],
+
+tuerRahmenRechtsOben[0], tuerRahmenRechtsOben[1], tuerRahmenRechtsOben[2],
+tuerRahmenRechtsUnten[0], tuerRahmenRechtsUnten[1], tuerRahmenRechtsUnten[2],
+tuerRahmenLinksUnten[0], tuerRahmenLinksUnten[1], tuerRahmenLinksUnten[2],
+
+//54
 
 // Haus Dach Vorne kreuz
 //mitteDachVorneLinks[0],     mitteDachVorneLinks[1],     mitteDachVorneLinks[2],
@@ -118,6 +215,8 @@ dachSpitzeVorne[0], dachSpitzeVorne[1], dachSpitzeVorne[2],
 
 ];
 
+//hier 
+
 
 // Wirbel vorne links
 var spiralValues =[];
@@ -126,7 +225,7 @@ var lastPoint = {x: dachSpitzeVorne[0], y: dachSpitzeVorne[1], z: dachSpitzeVorn
 pointArray.push(lastPoint.x);
 pointArray.push(lastPoint.y);
 pointArray.push(lastPoint.z);
-for (i = 1; i < 8; i++) {
+for (i = 1; i < 3; i++) {
   lastPoint.y -= Math.cos(i * 5)  / (i*5);
   lastPoint.x += Math.sin(i * 5)  / (i*5);
 
@@ -141,6 +240,7 @@ for (i = 1; i < 8; i++) {
     spiralValues[[i][2]] =  lastPoint.z;
 }
 
+/*
 for (i = 1; i < spiralValues.length; i++) {
 
 
@@ -152,7 +252,7 @@ for (i = 1; i < spiralValues.length; i++) {
 
  
 }
-
+*/
 
 // Wirbel vorne rechts
 spiralValues =[];
@@ -162,7 +262,7 @@ var lastPoint = {x: dachSpitzeVorne[0], y: dachSpitzeVorne[1], z: dachSpitzeVorn
 pointArray.push(lastPoint.x);
 pointArray.push(lastPoint.y);
 pointArray.push(lastPoint.z);
-for (i = 1; i < 8; i++) {
+for (i = 1; i < 3; i++) {
   lastPoint.y -= Math.cos(i * 5)  / (i*5);
   lastPoint.x += Math.sin(i * 5)  / (-i*5);
 
@@ -175,12 +275,13 @@ for (i = 1; i < 8; i++) {
     spiralValues[[i][1]] =  lastPoint.y;
     spiralValues[[i][2]] =  lastPoint.z;
 }
+/*
 for (i = 1; i < spiralValues.length; i++) {
   pointArray.push( spiralValues[9-i, 0]);
   pointArray.push( spiralValues[9-i, 1]);
   pointArray.push( spiralValues[9-i, 2]);
 }
-
+*/
 // Wirbel hinten rechts
 spiralValues =[];
 lastPoint = [];
@@ -189,7 +290,7 @@ var lastPoint = {x: dachSpitzeHinten[0], y: dachSpitzeHinten[1], z: dachSpitzeHi
 pointArray.push(lastPoint.x);
 pointArray.push(lastPoint.y);
 pointArray.push(lastPoint.z);
-for (i = 1; i < 8; i++) {
+for (i = 1; i < 3; i++) {
   lastPoint.y -= Math.cos(i * 5)  / (i*5);
   lastPoint.x += Math.sin(i * 5)  / (-i*5);
 
@@ -202,11 +303,12 @@ for (i = 1; i < 8; i++) {
     spiralValues[[i][1]] =  lastPoint.y;
     spiralValues[[i][2]] =  lastPoint.z;
 }
+/*
 for (i = 1; i < spiralValues.length; i++) {
   pointArray.push( spiralValues[9-i, 0]);
   pointArray.push( spiralValues[9-i, 1]);
   pointArray.push( spiralValues[9-i, 2]);
-}
+}*/
 
 // Wirbel hinten links
 spiralValues =[];
@@ -216,7 +318,7 @@ var lastPoint = {x: dachSpitzeHinten[0], y: dachSpitzeHinten[1], z: dachSpitzeHi
 pointArray.push(lastPoint.x);
 pointArray.push(lastPoint.y);
 pointArray.push(lastPoint.z);
-for (i = 1; i < 8; i++) {
+for (i = 1; i < 3; i++) {
   lastPoint.y -= Math.cos(i * 5)  / (i*5);
   lastPoint.x += Math.sin(i * 5)  / (i*5);
 
@@ -228,19 +330,74 @@ for (i = 1; i < 8; i++) {
     spiralValues[[i][0]] =  lastPoint.x;
     spiralValues[[i][1]] =  lastPoint.y;
     spiralValues[[i][2]] =  lastPoint.z;
-}
+}/*
 for (i = 1; i < spiralValues.length; i++) {
   pointArray.push( spiralValues[9-i, 0]);
   pointArray.push( spiralValues[9-i, 1]);
   pointArray.push( spiralValues[9-i, 2]);
 }
 
+*/
 
 
 
 var vertices = new Float32Array(pointArray);
 
+         // Colors as rgba.
+         var colors = new Float32Array([ 
+          // dreieck vorne 
+          .55,0,0,1, 0.53,0.26,0.12,1, .55,0,0,1, 
+          //haus vorne
+          0.93,.91,0.91,1, 0.93,.91,0.91,1, .55,0,0,1, 
+          0.93,.91,0.91,1, .55,0,0,1, .55,0,0,1,
 
+          .55,0,0,1, .55,0,0,1, .55,0,0,1, 
+          0.93,.91,0.91,1, 0.93,.91,0.91,1, .55,0,0,1, 
+          0.93,.91,0.91,1, .55,0,0,1, .55,0,0,1, 
+          .55,0,0,1, .55,0,0,1, .55,0,0,1, 
+          // haus seite rechts
+          0.93,.91,0.91,1, .55,0,0,1, .55,0,0,1, 
+          .55,0,0,1, 0.93,.91,0.91,1, 0.93,.91,0.91,1, 
+          // haus hinten
+          .55,0,0,1, 0.93,.91,0.91,1, .55,0,0,1, 
+          0.93,.91,0.91,1, 0.93,.91,0.91,1, .55,0,0,1, 
+          // dach dreieck hinten
+          0.53,0.26,0.12,1, .55,0,0,1, .55,0,0,1,
+          // haus seite links
+          .55,0,0,1, .55,0,0,1, 0.93,.91,0.91,1, 
+          0.93,.91,0.91,1, 0.93,.91,0.91,1, .55,0,0,1, 
+          // haus dach links
+          0.28,0.28,0.28,1, 0.93,.91,0.91,1, 0.93,.91,0.91,1, 
+          0.28,0.28,0.28,1, 0.93,.91,0.91,1, 0.28,0.28,0.28,1,
+          // haus dach rechts
+          0.28,0.28,0.28,1, 0.93,.91,0.91,1, 0.93,.91,0.91,1, 
+          0.28,0.28,0.28,1, 0.93,.91,0.91,1, 0.28,0.28,0.28,1,
+          // haus tür
+          0.93,.91,0.91,1, 0.38,.59,0.2,1, 0.38,.59,0.2,1, 
+          0.38,.59,0.2,1, 0.93,.91,0.91,1, 0.93,.91,0.91,1, 
+
+          // haus wirbel vorne links
+          0.93,.91,0.91,1, .64,.58,.50,1, 0.93,.91,0.91,1, 
+          // haus wirbel vorne rechts
+          0.93,.91,0.91,1, .64,.58,.50,1, 0.93,.91,0.91,1, 
+          // haus wirbel vorne links
+          0.93,.91,0.91,1, .64,.58,.50,1, 0.93,.91,0.91,1,
+          // haus wirbel vorne links
+          0.93,.91,0.91,1, .64,.58,.50,1, 0.93,.91,0.91,1,
+   
+
+     
+
+
+           
+    
+
+                    
+
+
+           ]);          
+      // Index data.
+      //var indices = new Uint16Array([ 0,1,2, 0,2,3 ]);
 
 var gl = null;
 var program;
@@ -259,6 +416,8 @@ gl.shaderSource(fshader, fragmentShaderCode);
 gl.compileShader(fshader);
 
 // Vertex Shader
+gl.enable(gl.DEPTH_TEST);
+gl.depthFunc(gl.LEQUAL)
 var vshader = gl.createShader(gl.VERTEX_SHADER);
 gl.shaderSource(vshader, vertexShaderCode);
 gl.compileShader(vshader);
@@ -284,9 +443,21 @@ gl.bindBuffer(gl.ARRAY_BUFFER, vbuffer);
 
 
 
+
 gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
 
 gl.vertexAttribPointer(vattrib, 3, gl.FLOAT, false, 0, 0);
+
+
+
+ // Setup color vertex buffer object.
+ var vboCol = gl.createBuffer();
+ gl.bindBuffer(gl.ARRAY_BUFFER, vboCol);
+ gl.bufferData(gl.ARRAY_BUFFER, colors, gl.STATIC_DRAW);
+ // Bind vertex buffer to attribute variable.
+ var colAttrib = gl.getAttribLocation(program, 'col');
+ gl.vertexAttribPointer(colAttrib, 4, gl.FLOAT, false, 0, 0);
+ gl.enableVertexAttribArray(colAttrib);
 
 
 // neuZeichnen() wird alle 45 ms aufgerufen
@@ -339,7 +510,7 @@ gl.uniformMatrix4fv(winkelMvp, false, rotationsWinkelMatrix);
 gl.clearColor(0.18, 0.31, 0.31, 1);
 gl.clear(gl.COLOR_BUFFER_BIT);
 
-gl.drawArrays(gl.LINE_STRIP, 0, vertices.length / 3);
+gl.drawArrays(gl.TRIANGLES, 0, vertices.length / 3);
 gl.flush();
 }
 
@@ -375,7 +546,7 @@ cosinusY * sinusZ, (sinusX * sinusY * sinusZ + cosinusX * cosinusZ), (cosinusX *
 
 
 
-
+/*
 
 
 
@@ -483,3 +654,4 @@ gl2.drawArrays(gl2.LINES, 0, vertices2.length / 2);
 $(document).ready(function () {
     $('.modal').modal();
 });
+*/
