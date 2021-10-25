@@ -1,6 +1,6 @@
 fragmentShaderCode =
 'void main(void) {' +
-'  gl_FragColor = vec4(0.0, 0.0, 0.0,0.0);' +
+'  gl_FragColor = vec4(1, 1, 1,1);' +
 '}';
 
 vertexShaderCode =
@@ -247,6 +247,8 @@ var program;
 
 
 function start() {
+  document.getElementById('page-footer').style.overflow = 'visible';
+  document.getElementById('page-footer').style.opacity = '1';
 var canvas = document.getElementById('glcanvas');
 
 gl = canvas.getContext('experimental-webgl');
