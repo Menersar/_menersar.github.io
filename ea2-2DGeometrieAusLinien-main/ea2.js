@@ -382,6 +382,7 @@ cosinusY * sinusZ, (sinusX * sinusY * sinusZ + cosinusX * cosinusZ), (cosinusX *
 
 const canvas = document.getElementById('canvas');
 
+
 canvas.width = canvas.clientWidth;
 canvas.height = canvas.clientHeight;
 
@@ -406,63 +407,238 @@ gl2.attachShader(prog, fs);
 gl2.linkProgram(prog);
 gl2.useProgram(prog);
 
+
+
+
+
+
+var c = 0.75;
+
+var katzeAugeLinksAussen = [-0.35 * c, -0.2 * c];
+var katzeAugeLinksMitte = [-0.25 * c, -0.1 * c];
+var katzeAugeLinksInnen = [-0.15 * c, -0.2 * c];
+
+var katzeAugeRechtsAussen = [0.35 * c, -0.2 * c];
+var katzeAugeRechtsMitte = [0.25 * c, -0.1 * c];
+var katzeAugeRechtsInnen = [0.15 * c, -0.2 * c];
+
+var katzeNaseLinks = [-0.1 * c, -0.35 * c];
+var katzeNaseRechts = [0.1 * c, -0.35 * c];
+var katzeNaseUnten = [ 0 * c, -0.45 * c];
+
+var katzeKopfLinksOben = [-0.2 * c, 0 * c];
+var katzeKopfRechtsOben = [0.2 * c, 0 * c];
+var katzeKopfLinksUnten = [-0.5 * c, -0.9 * c];
+var katzeKopfRechtsUnten = [0.5 * c, -0.9 * c];
+
+var katzeOhrLinksMitte = [-0.5 * c, 0.9 * c];
+var katzeOhrLinksAussen = [-0.5 * c, 0 * c];
+var katzeOhrLinksInnen = [-0.2 * c, 0 * c];
+
+var katzeOhrRechtsMitte = [0.5 * c, 0.9 * c];
+var katzeOhrRechtsAussen = [0.5 * c, 0 * c];
+var katzeOhrRechtsInnen = [0.2 * c, 0 * c];
+
+var katzeMundLinks = [-0.15 * c, -0.55 * c];
+var katzeMundRechts = [0.15 * c, -0.55 * c];
+var katzeMundwinkelLinksUnten = [-0.15 * c, -0.55 * c];
+var katzeMundwinkelLinksOben = [-0.15 * c, -0.5 * c];
+var katzeMundwinkelRechtsUnten = [0.15 * c, -0.55 * c];
+var katzeMundwinkelRechtsOben = [0.15 * c, -0.5 * c];
+
+var katzeZungeLinksOben = [-0.1 * c, -0.55 * c];
+var katzeZungeLinksUnten = [-0.1 * c, -0.6 * c];
+var katzeZungeRechtsOben = [0.1 * c, -0.55 * c];
+var katzeZungeRechtsUnten = [0.1 * c, -0.6 * c];
+var katzeZungeMittellinieUnten = [0 * c, -0.7 * c];
+var katzeZungeMittellinieOben = [0 * c, -0.55 * c];
+
+var katzeSchnurrhaarLinksUntenInnen = [-0.25 * c, -0.65 * c];
+var katzeSchnurrhaarLinksUntenAussen = [-0.4 * c, -0.7 * c];
+
+var katzeSchnurrhaarLinksMitteInnen = [-0.25 * c, -0.55 * c];
+var katzeSchnurrhaarLinksMitteAussen = [-0.4 * c, -0.55 * c];
+
+var katzeSchnurrhaarLinksObenInnen = [-0.25 * c, -0.45 * c];
+var katzeSchnurrhaarLinksObenAussen = [-0.4 * c, -0.4 * c];
+
+
+var katzeSchnurrhaarRechtsUntenInnen = [0.25 * c, -0.65 * c];
+var katzeSchnurrhaarRechtsUntenAussen = [0.4 * c, -0.7 * c];
+
+var katzeSchnurrhaarRechtsMitteInnen = [0.25 * c, -0.55 * c];
+var katzeSchnurrhaarRechtsMitteAussen = [0.4 * c, -0.55 * c];
+
+var katzeSchnurrhaarRechtsObenInnen = [0.25 * c, -0.45 * c];
+var katzeSchnurrhaarRechtsObenAussen = [0.4 * c, -0.4 * c];
+
+var katzeKoerperLinks = [-0.50 * c, -4/3 * c];
+var katzeKoerperRechts = [0.50 * c, -4/3 * c];
+
+var katzePfoteLinksUntenAussen = [-0.45 * c, -4/3 * c];
+var katzePfoteLinksUntenInnen = [-0.15 * c,  -4/3 * c];
+
+var katzePfoteLinksObenAussen = [-0.45 * c, -1.05 * c];
+var katzePfoteLinksObenInnen = [-0.15 * c,  -1.05 * c];
+
+var katzePfoteRechtsUntenAussen = [0.45 * c, -4/3 * c];
+var katzePfoteRechtsUntenInnen = [0.15 * c,  -4/3 * c];
+
+var katzePfoteRechtsObenAussen = [0.45 * c, -1.05 * c];
+var katzePfoteRechtsObenInnen = [0.15 * c,  -1.05 * c];
+
+var katzePfoteStrichtLinksObenAussen = [-0.35 * c, -1.15 * c];
+var katzePfoteStrichtLinksObenInnen = [-0.25 * c,  -1.15 * c];
+var katzePfoteStrichtLinksUntenAussen = [-0.35 * c, -4/3 * c];
+var katzePfoteStrichtLinksUntenInnen = [-0.25 * c,  -4/3 * c];
+
+var katzePfoteStrichtRechtsObenAussen = [0.35 * c, -1.15 * c];
+var katzePfoteStrichtRechtsObenInnen = [0.25 * c,  -1.15 * c];
+var katzePfoteStrichtRechtsUntenAussen = [0.35 * c, -4/3 * c];
+var katzePfoteStrichtRechtsUntenInnen = [0.25 * c,  -4/3 * c];
+
+
+
+
+
 const vertices2 = new Float32Array([
-  0, -0.55, // katze zunge mitte
-  0, -0.7,
-  -0.25, -0.1, // katze auge links innen
-  -0.15, -0.2,
-  -0.25, -0.1, // katze auge links außen
-  -0.35, -0.2,
-  0.25, -0.1, // katze auge rechts innen
-  0.15, -0.2,
-  0.25, -0.1, // katze auge rechts außen
-  0.35, -0.2,
-  0.1, -0.35, // katze nase rechts
-  0, -0.45,
-  -0.1, -0.35, // katze nase links
-  0, -0.45,
-  -0.2, 0, // katze oberseite
-  0.2, 0,
-  -0.5, -0.9, // katze unterseite
-  0.5, -0.9,
-  -0.5, -0.9, // katze linke seite
-  -0.5, 0.9,
-  .5, -0.9, // katze rechte seite
-  .5, .9,
-  -0.5, .9, // katze ohr links
-  -0.2, 0,
-  0.5, .9, // katze ohr rechts
-  0.2, 0,
-  -0.15, -0.5, // katze mundwinkel links
-  -0.15, -0.55,
-  0.15, -0.5, // katze mundwinkel rechts
-  0.15, -0.55,
-  -0.1, -0.55, // katze zunge links
-  -0.1, -0.6,
-  0.1, -0.55, // katze zunge rechts
-  0.1, -0.6,
-  0.1, -0.6, // katze zunge schräg rechts
-  0, -0.7,
-  -0.1, -0.6, // katze zunge schräg links
-  0, -0.7,
-  0.25, -0.45, // katze schnurrhaar rechts oben
-  0.4, -0.4,
-  0.25, -0.55, // katze schnurrhaar rechts mitte
-  0.4, -0.55,
-  0.25, -0.65, // katze schnurrhaar rechts unten
-  0.4, -0.7,
-  -0.25, -0.45, // katze schnurrhaar links oben
-  -0.4, -0.4,
-  -0.25, -0.55, // katze schnurrhaar links mitte
-  -0.4, -0.55,
-  -0.25, -0.65, // katze schnurrhaar links unten
-  -0.4, -0.7,
-  0.15, -0.55, // katze mund mitte
-  -0.15, -0.55,
-  0.1, -0.35, // katze nase oben
-  -0.1, -0.35,
-  0, -0.45, // katze nase strich
-  0, -0.55,
+  katzeZungeMittellinieOben[0],katzeZungeMittellinieOben[1],  // katze zunge mitte
+  katzeZungeMittellinieUnten[0],katzeZungeMittellinieUnten[1],
+ 
+  katzeZungeLinksOben[0],katzeZungeLinksOben[1], // katze zunge links
+  katzeZungeLinksUnten[0],katzeZungeLinksUnten[1],
+
+  katzeZungeRechtsOben[0],katzeZungeRechtsOben[1], // katze zunge links
+  katzeZungeRechtsUnten[0],katzeZungeRechtsUnten[1],
+
+  katzeZungeLinksUnten[0],katzeZungeLinksUnten[1], // katze zunge schräg links
+  katzeZungeMittellinieUnten[0],katzeZungeMittellinieUnten[1],
+
+  katzeZungeRechtsUnten[0],katzeZungeRechtsUnten[1], // katze zunge schräg rechts
+  katzeZungeMittellinieUnten[0],katzeZungeMittellinieUnten[1],
+
+  katzeAugeLinksInnen[0],katzeAugeLinksInnen[1], // katze auge links innen
+  katzeAugeLinksMitte[0],katzeAugeLinksMitte[1],
+
+  katzeAugeLinksAussen[0],katzeAugeLinksAussen[1], // katze auge links außen
+  katzeAugeLinksMitte[0],katzeAugeLinksMitte[1],
+
+  katzeAugeRechtsInnen[0],katzeAugeRechtsInnen[1], // katze auge rechts innen
+  katzeAugeRechtsMitte[0],katzeAugeRechtsMitte[1],
+
+  katzeAugeRechtsAussen[0],katzeAugeRechtsAussen[1], // katze auge rechts außen
+  katzeAugeRechtsMitte[0],katzeAugeRechtsMitte[1],
+
+  katzeNaseLinks[0],katzeNaseLinks[1],  // katze nase links
+  katzeNaseUnten[0],katzeNaseUnten[1],
+
+  katzeNaseRechts[0],katzeNaseRechts[1],  // katze nase rechts
+  katzeNaseUnten[0],katzeNaseUnten[1],
+
+  katzeNaseLinks[0],katzeNaseLinks[1],  // // katze nase oben
+  katzeNaseRechts[0],katzeNaseRechts[1],
+
+  katzeNaseUnten[0],katzeNaseUnten[1],  // katze nase strich
+  katzeZungeMittellinieOben[0],katzeZungeMittellinieOben[1],
+
+  katzeKopfLinksOben[0], katzeKopfLinksOben[1], // katze oberseite
+  katzeKopfRechtsOben[0], katzeKopfRechtsOben[1],
+ 
+  katzeKopfLinksUnten[0], katzeKopfLinksUnten[1], // katze unterseite
+  katzeKopfRechtsUnten[0], katzeKopfRechtsUnten[1],
+
+  katzeKopfLinksUnten[0], katzeKopfLinksUnten[1], // katze linke seite
+  katzeOhrLinksAussen[0], katzeOhrLinksAussen[1],
+
+  katzeKopfRechtsUnten[0], katzeKopfRechtsUnten[1], // katze rechte seite
+  katzeOhrRechtsAussen[0], katzeOhrRechtsAussen[1],
+
+  katzeOhrLinksAussen[0], katzeOhrLinksAussen[1], // katze ohr links außen
+  katzeOhrLinksMitte[0], katzeOhrLinksMitte[1],
+
+  katzeOhrRechtsAussen[0], katzeOhrRechtsAussen[1], // katze ohr rechts außen
+  katzeOhrRechtsMitte[0], katzeOhrRechtsMitte[1],
+
+  katzeOhrLinksInnen[0], katzeOhrLinksInnen[1], // katze ohr links innen
+  katzeOhrLinksMitte[0], katzeOhrLinksMitte[1],
+
+  katzeOhrRechtsInnen[0], katzeOhrRechtsInnen[1], // katze ohr rechts innen
+  katzeOhrRechtsMitte[0], katzeOhrRechtsMitte[1],
+
+  katzeMundLinks[0], katzeMundLinks[1], // katze mund mitte
+  katzeMundRechts[0], katzeMundRechts[1],
+
+  katzeSchnurrhaarLinksObenInnen[0], katzeSchnurrhaarLinksObenInnen[1], // katze schnurrhaar links oben
+  katzeSchnurrhaarLinksObenAussen[0], katzeSchnurrhaarLinksObenAussen[1],
+
+  katzeSchnurrhaarLinksMitteInnen[0], katzeSchnurrhaarLinksMitteInnen[1], // katze schnurrhaar links mitte
+  katzeSchnurrhaarLinksMitteAussen[0], katzeSchnurrhaarLinksMitteAussen[1],
+
+  katzeSchnurrhaarLinksUntenInnen[0], katzeSchnurrhaarLinksUntenInnen[1], // katze schnurrhaar links unten
+  katzeSchnurrhaarLinksUntenAussen[0], katzeSchnurrhaarLinksUntenAussen[1],
+
+  katzeSchnurrhaarRechtsObenInnen[0], katzeSchnurrhaarRechtsObenInnen[1], // katze schnurrhaar rechts oben
+  katzeSchnurrhaarRechtsObenAussen[0], katzeSchnurrhaarRechtsObenAussen[1],
+
+  katzeSchnurrhaarRechtsMitteInnen[0], katzeSchnurrhaarRechtsMitteInnen[1], // katze schnurrhaar rechts mitte
+  katzeSchnurrhaarRechtsMitteAussen[0], katzeSchnurrhaarRechtsMitteAussen[1],
+
+  katzeSchnurrhaarRechtsUntenInnen[0], katzeSchnurrhaarRechtsUntenInnen[1], // katze schnurrhaar rechts unten
+  katzeSchnurrhaarRechtsUntenAussen[0], katzeSchnurrhaarRechtsUntenAussen[1],
+
+
+  katzeKopfLinksUnten[0], katzeKopfLinksUnten[1], 
+  katzeKoerperLinks[0], katzeKoerperLinks[1],
+
+  katzeKopfRechtsUnten[0], katzeKopfRechtsUnten[1], 
+  katzeKoerperRechts[0], katzeKoerperRechts[1],
+
+  katzeKoerperLinks[0], katzeKoerperLinks[1],
+  katzeKoerperRechts[0], katzeKoerperRechts[1],
+
+  
+
+  katzePfoteLinksUntenAussen[0], katzePfoteLinksUntenAussen[1], 
+  katzePfoteLinksUntenInnen[0], katzePfoteLinksUntenInnen[1],
+
+  katzePfoteLinksObenAussen[0], katzePfoteLinksObenAussen[1], 
+  katzePfoteLinksObenInnen[0], katzePfoteLinksObenInnen[1],
+
+  katzePfoteLinksObenAussen[0], katzePfoteLinksObenAussen[1], 
+  katzePfoteLinksUntenAussen[0], katzePfoteLinksUntenAussen[1],
+
+  katzePfoteLinksObenInnen[0], katzePfoteLinksObenInnen[1],
+  katzePfoteLinksUntenInnen[0], katzePfoteLinksUntenInnen[1],
+
+
+  katzePfoteRechtsUntenAussen[0], katzePfoteRechtsUntenAussen[1], 
+  katzePfoteRechtsUntenInnen[0], katzePfoteRechtsUntenInnen[1],
+
+  katzePfoteRechtsObenAussen[0], katzePfoteRechtsObenAussen[1], 
+  katzePfoteRechtsObenInnen[0], katzePfoteRechtsObenInnen[1],
+
+  katzePfoteRechtsObenAussen[0], katzePfoteRechtsObenAussen[1], 
+  katzePfoteRechtsUntenAussen[0], katzePfoteRechtsUntenAussen[1],
+
+  katzePfoteRechtsObenInnen[0], katzePfoteRechtsObenInnen[1],
+  katzePfoteRechtsUntenInnen[0], katzePfoteRechtsUntenInnen[1],
+
+
+  katzePfoteStrichtLinksObenInnen[0], katzePfoteStrichtLinksObenInnen[1],
+  katzePfoteStrichtLinksUntenInnen[0], katzePfoteStrichtLinksUntenInnen[1],
+
+  katzePfoteStrichtLinksObenAussen[0], katzePfoteStrichtLinksObenAussen[1],
+  katzePfoteStrichtLinksUntenAussen[0], katzePfoteStrichtLinksUntenAussen[1],
+
+  katzePfoteStrichtRechtsObenInnen[0], katzePfoteStrichtRechtsObenInnen[1],
+  katzePfoteStrichtRechtsUntenInnen[0], katzePfoteStrichtRechtsUntenInnen[1],
+
+  katzePfoteStrichtRechtsObenAussen[0], katzePfoteStrichtRechtsObenAussen[1],
+  katzePfoteStrichtRechtsUntenAussen[0], katzePfoteStrichtRechtsUntenAussen[1],
+  
+
+
+  
 ]);
 
 const vbo = gl2.createBuffer();

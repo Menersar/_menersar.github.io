@@ -45,7 +45,10 @@ transform-origin: bottom;
 width: auto;*/
 align-self: flex-end;
 /*align-self: center;*/
-margin-bottom: 75 ;
+margin-bottom: 85 ;
+
+width: 450;
+height: 225;
 
 }
 
