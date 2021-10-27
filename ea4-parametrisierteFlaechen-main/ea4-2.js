@@ -327,7 +327,7 @@ function createVertexDataAcorn(){
                 
                 var iVertex = i*(m+1) + j;
 
-                var x = r*Math.cos(u); 
+                var x = r*Math.cos(u);
                 var z = r*Math.sin(u); 
                 var y = v-1.4;
                                                         
