@@ -568,6 +568,12 @@ const vertices2 = new Float32Array([
   katzeMundLinks[0], katzeMundLinks[1], // katze mund mitte
   katzeMundRechts[0], katzeMundRechts[1],
 
+  katzeMundwinkelLinksOben[0], katzeMundwinkelLinksOben[1], // katze mundwinkel links
+  katzeMundwinkelLinksUnten[0], katzeMundwinkelLinksUnten[1],
+
+  katzeMundwinkelRechtsOben[0], katzeMundwinkelRechtsOben[1], // katze mundwinkel rechts
+  katzeMundwinkelRechtsUnten[0], katzeMundwinkelRechtsUnten[1],
+
   katzeSchnurrhaarLinksObenInnen[0], katzeSchnurrhaarLinksObenInnen[1], // katze schnurrhaar links oben
   katzeSchnurrhaarLinksObenAussen[0], katzeSchnurrhaarLinksObenAussen[1],
 
