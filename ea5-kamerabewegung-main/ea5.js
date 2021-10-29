@@ -1,5 +1,8 @@
 var app = ( function() {
 
+
+	var rekursionsSchritt = 0;
+
 	var gl;
 
 	// The shader program object is also used to
@@ -135,7 +138,12 @@ var app = ( function() {
 	function initModels() {
 		// fill-style
 		var fs = "fillwireframe";
-		createModel("torus", fs);
+		createModel("kegel", fs);
+		createModel("zylinderUnten", fs);
+		createModel("zylinderMitte", fs);
+		createModel("zylinderOben", fs);
+		createModel("zylinderOben2", fs);
+		createModel("sphere", fs);
 
 
 		createModel("plane", "wireframe");
@@ -224,7 +232,9 @@ var app = ( function() {
 
 			var key = evt.which ? evt.which : evt.keyCode;
 			var c = String.fromCharCode(key);
-			// console.log(evt);
+			rekursionsSchritt = parseInt(c)-1;
+
+			//console.log(c);
 
 			// Change projection of scene.
 			switch(c) {
@@ -233,6 +243,49 @@ var app = ( function() {
 					camera.lrtb = 2;
 					break;
 
+				case('1'):
+					document.getElementById("textCanvas").innerHTML = rekursionsSchritt + ". Kugel-Rekursionsschritt";
+					models = [];
+					initModels();
+					render();
+				break;
+				case('2'):
+					document.getElementById('textCanvas').innerHTML = rekursionsSchritt + ". Kugel-Rekursionsschritt";
+					models = [];
+					initModels();
+					render();
+				break;
+				case('3'):
+					document.getElementById("textCanvas").innerHTML = rekursionsSchritt + ". Kugel-Rekursionsschritt";
+					models = [];
+					initModels();
+					render();
+				break;
+				case('4'):
+					document.getElementById('textCanvas').innerHTML = rekursionsSchritt + ". Kugel-Rekursionsschritt";
+					models = [];
+					initModels();
+					render();
+				break;
+				case('5'):
+					document.getElementById('textCanvas').innerHTML = rekursionsSchritt + ". Kugel-Rekursionsschritt";
+					models = [];
+					initModels();
+					render();
+				break;
+				case('6'):
+					document.getElementById('textCanvas').innerHTML = rekursionsSchritt + ". Kugel-Rekursionsschritt";
+					models = [];
+					initModels();
+					render();
+				break;
+
+
+				//	document.getElementById('tesselation-level').addEventListener('change', () => {
+				//		models = [];
+				//		initModels();
+				//		render();
+				//	  });
 
 					// Camera move and orbit.
 				case('C'):
@@ -398,3 +451,11 @@ var app = ( function() {
 	}
 
 }());
+
+
+
+
+
+$(document).ready(function () {
+	$('.modal').modal();
+});

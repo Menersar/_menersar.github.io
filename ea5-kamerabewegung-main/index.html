@@ -9,16 +9,65 @@
 
         <script src="js/jquery-3.6.0.min.js"></script>
         <script src="js/materialize.min.js"></script>
-    
+
+        <script src="ext/gl-matrix.js"></script>
+		<script src="GVT_Src_vertexData_torus.js"></script>
+		<script src="GVT_Src_vertexData_kegel.js"></script>
+		<script src="GVT_Src_vertexData_zylinder_unten.js"></script>
+		<script src="GVT_Src_vertexData_zylinder_mitte.js"></script>
+		<script src="GVT_Src_vertexData_zylinder_oben.js"></script>
+		<script src="GVT_Src_vertexData_zylinder_oben2.js"></script>
+		<script src="GVT_Src_vertexData_sphere.js"></script>
+        <script src="GVT_Src_vertexData_plane.js"></script>
+
 
 
     
         <link rel="stylesheet" href="styles.css" />
 
-        <script defer src="ea4-1.js"></script>
-        <script defer src="ea4-2.js"></script>
+        <script defer src="ea5.js"></script>
+
+
+
+
+
+
+        <script type="x-shader/x-vertex" id="vertexshader">
+			attribute vec3 aPosition;
+			attribute vec3 aNormal;
+
+			uniform mat4 uPMatrix;
+			uniform mat4 uMVMatrix;
+
+			varying vec4 vColor;
+
+			void main(){
+				gl_Position = uPMatrix * uMVMatrix * vec4(aPosition, 1.0);
+	
+				vColor = vec4(aNormal.x, aNormal.y, aNormal.z, 1.0);
+				vColor = (vColor + 1.0) / 2.0;
+			}
+		</script>
+		
+        <script type="x-shader/x-fragment" id="fragmentshader">
+			precision mediump float;
+			varying vec4 vColor;
+
+			void main() {
+				gl_FragColor = vColor;
+			}
+		</script>
+
+
+
+
+
+
+
+
+
       </head>
-        <!--<body onload=start()> -->
+        <body onload="app.start()"> 
 
 
 
@@ -37,13 +86,21 @@
                         <br>
 
                         
-                        <h5 id="textLeft" > Apple Surface    |     Acorn Surface </h5>           
+                       <h5 id="textCanvas" >0. Kugel-Rekursionsschritt</h5>    
 
                         <div class="cardImages">
-                            <canvas  onclick="start1()" id="canvas" width="500" height="500"></canvas>
-                            <canvas onclick="start2()" id="canvas2" width="500" height="500"></canvas>
+                            <canvas id="canvas" width="500" height="500"width="500" height="500"></canvas>                       
+                            <!--     <canvas onclick="start2()" id="canvas2" width="500" height="500"></canvas> -->
                     </div>
 
+                   <!-- <div id="tesselation">
+                        <label>
+                            Sphere tesselation level:
+                            <input id="tesselation-level" type="number" value="5" min="0" max="5">
+                        </label>
+                        <br>
+                        <div><strong>"WASD"</strong> Move camera <br/></div>
+                    </div>-->
 
 
 
