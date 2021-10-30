@@ -1,8 +1,8 @@
-var zylinderMitte = ( function() {
+var zylinderNase = ( function() {
 
 	function createVertexData() {
-		var n = 16;
-		var m = 8;
+		var n = 4;
+		var m = 4;
 
 		// Positions.
 		this.vertices = new Float32Array(3 * (n+1) * (m+1));
@@ -37,9 +37,9 @@ var zylinderMitte = ( function() {
         		var y = v * Math.sin(u) * 0.3;
         		var x = v;
 */
-				var x = .6*v*Math.cos(u) ; 
+				var y = .6*v*Math.cos(u) ; 
                 var z = .6*v*Math.sin(-u); 
-                var y = -v;
+                var x = v;
 				
 
 				// Set vertex positions.

@@ -52,9 +52,9 @@ var zylinderOben2 = ( function() {
 			
 
 				// Calc and set normals.
-				const nx = Math.cos(u) * Math.cos(v);
-				const nz = Math.cos(u) * Math.sin(v);
-				const ny = Math.sin(u);
+				var nx = Math.cos(u) * Math.cos(v);
+				var nz = Math.cos(u) * Math.sin(v);
+				var ny = Math.sin(u);
 				normals[iVertex * 3] = nx;
 				normals[iVertex * 3 + 1] = ny;
 				normals[iVertex * 3 + 2] = nz;

@@ -12,6 +12,9 @@ var app = ( function() {
 	// Array of model objects.
 	var models = [];
 
+	var interactiveModel;
+
+
 	var camera = {
 		// Initial position of the camera.
 		eye : [0, 1, 4],
@@ -138,15 +141,24 @@ var app = ( function() {
 	function initModels() {
 		// fill-style
 		var fs = "fillwireframe";
-		createModel("kegel", fs);
-		createModel("zylinderUnten", fs);
-		createModel("zylinderMitte", fs);
-		createModel("zylinderOben", fs);
-		createModel("zylinderOben2", fs);
-		createModel("sphere", fs);
+		createModel("kegel", fs, [0, 0, 0], [0, 0, 0], [1, 1, 1]);
+		createModel("zylinderUnten", fs, [0, 0, 0], [0, 0, 0], [1, 1, 1]);
+		createModel("zylinderMitte", fs, [0, 0, 0], [0, 0, 0], [1, 1, 1]);
+		createModel("zylinderOben", fs, [0, 0, 0], [0, 0, 0], [1, 1, 1]);
+		createModel("zylinderOben2", fs, [0, 0, 0], [0, 0, 0], [1, 1, 1]);
+		createModel("sphere", fs, [.75, .2, 2], [0, 0, 0], [.3, .25, .3]);
+		createModel("sphere", fs, [.75, .5, 2], [0, 0, 0], [.25, .2, .25]);
+		createModel("sphere", fs, [.75, .75, 2], [0, 0, 0], [.15, .15, .15]);
+
+		createModel("kegel", fs, [.75, .75, 2], [0, 0, 0], [1, 1, 1]);
+		createModel("kegel", fs, [.75, .8, 2], [0, 0, 0], [2, .1, 2]);
+		createModel("zylinderNase", fs, [.43,.64, 2], [90, 90, 90], [.3, .075, .075]);
 
 
-		createModel("plane", "wireframe");
+		createModel("plane", "wireframe", [0, 0, 0], [0, 0, 0], [1, 1, 1]);
+
+		interactiveModel = models[5];
+
 
 
 	}
@@ -157,15 +169,33 @@ var app = ( function() {
 	 * @parameter geometryname: string with name of geometry.
 	 * @parameter fillstyle: wireframe, fill, fillwireframe.
 	 */
- function createModel(geometryname, fillstyle) {
+	 function createModel(geometryname, fillstyle, translate, rotate, scale) {
 		var model = {};
 		model.fillstyle = fillstyle;
 		initDataAndBuffers(model, geometryname);
 		// Create and initialize Model-View-Matrix.
-		model.mvMatrix = mat4.create();
+	//	model.mvMatrix = mat4.create();
+
+	initTransformations(model, translate, rotate, scale);
+
 
 		models.push(model);
 	}
+
+
+	function initTransformations(model, translate, rotate, scale) {
+		// Store transformation vectors.
+		model.translate = translate;
+		model.rotate = rotate;
+		model.scale = scale;
+	
+		// Create and initialize Model-Matrix.
+		model.mMatrix = mat4.create();
+	
+		// Create and initialize Model-View-Matrix.
+		model.mvMatrix = mat4.create();
+	}
+
 
 	/**
 	 * Init data and buffers for model object.
@@ -179,6 +209,7 @@ var app = ( function() {
 		// vertices, normals, indicesLines, indicesTris;
 		// Pointer this refers to the window.
 		this[geometryname]['createVertexData'].apply(model);
+
 
 		// Setup position vertex buffer object.
 		model.vboPos = gl.createBuffer();
@@ -211,6 +242,8 @@ var app = ( function() {
 			gl.STATIC_DRAW);
 		model.iboTris.numberOfElements = model.indicesTris.length;
 		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+
+
 	}
 
 	function initEventHandler() {
@@ -288,9 +321,17 @@ var app = ( function() {
 				//	  });
 
 					// Camera move and orbit.
-				case('C'):
+				/*case('C'):
                     // Orbit camera.
                     camera.zAngle += sign * deltaRotate;
+                    break;*/
+				case('A'):
+                    // Orbit camera.
+                    camera.zAngle += -1 * deltaRotate;
+                    break;
+					case('D'):
+                    // Orbit camera.
+                    camera.zAngle += 1 * deltaRotate;
                     break;
 
 
@@ -302,14 +343,30 @@ var app = ( function() {
                     camera.projectionType = "perspective";
                     break;
 
-
+/*
 				case('H'):
                     // Move camera up and down.
                     camera.eye[1] += sign * deltaTranslate;
+                    break;*/
+
+					case('Q'):
+                    // Move camera up and down.
+                    camera.eye[1] += -1 * deltaTranslate;
                     break;
-                case('D'):
+					case('E'):
+                    // Move camera up and down.
+                    camera.eye[1] += 1 * deltaTranslate;
+                    break;
+               case('W'):
                     // Camera distance to center.
-                    camera.distance += sign * deltaTranslate;
+					if (camera.distance >1) {
+                    	camera.distance += -1 * deltaTranslate;
+					} 
+                    break;
+
+					case('S'):
+                    // Camera distance to center.
+                    camera.distance += 1 * deltaTranslate;
                     break;
 
 
@@ -371,7 +428,9 @@ var app = ( function() {
 		// Loop over models.
 		for(var i = 0; i < models.length; i++) {
 			// Update modelview for model.
-			mat4.copy(models[i].mvMatrix, camera.vMatrix);
+			//mat4.copy(models[i].mvMatrix, camera.vMatrix);
+			updateTransformations(models[i]);
+
 
 			// Set uniforms for model.
 			gl.uniformMatrix4fv(prog.mvMatrixUniform, false,
@@ -379,7 +438,36 @@ var app = ( function() {
 			
 			draw(models[i]);
 		}
+	
 	}
+
+
+
+	function updateTransformations(model) {
+    
+		// Use shortcut variables.
+		var mMatrix = model.mMatrix;
+		var mvMatrix = model.mvMatrix;
+		
+		//mat4.copy(mvMatrix, camera.vMatrix);  
+		
+		// Reset matrices to identity.         
+        mat4.identity(mMatrix);
+        mat4.identity(mvMatrix);
+
+		// Translate.
+        mat4.translate(mMatrix, mMatrix, model.translate);
+
+		// Scale
+        mat4.scale(mMatrix, mMatrix, model.scale);
+
+
+		// Combine view and model matrix
+        // by matrix multiplication to mvMatrix.        
+        mat4.multiply(mvMatrix, camera.vMatrix, mMatrix);
+	}
+
+
 
 	function setProjection() {
 		// Set projection Matrix.

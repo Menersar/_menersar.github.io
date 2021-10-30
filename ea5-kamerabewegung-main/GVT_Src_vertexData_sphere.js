@@ -1,139 +1,189 @@
 var sphere = ( function() {
+	var initialized = false;
+	var   translateX = 0;
+	var   translateY = 0;
+	var   translateZ = 0;
 
-	//var tesLevel = 0;
-	// Positions.
-	var vertices = [];
-	// Normals.
-	var normals = [];
-	// Index data.
-	var indicesLines = [];
-	var indicesTriangles = [];
-  
+
+
 	function createVertexData() {
-	  var tesselationLevel = parseInt(document.getElementById('textCanvas').innerHTML[0]);
-	  console.log(tesselationLevel);
+	  var recursionLevel = parseInt(document.getElementById('textCanvas').innerHTML[0]);
+	 // console.log(recursionLevel);
   
-	  vertices = [];
-	  normals = [];
-	  indicesLines = [];
-	  indicesTriangles = [];
+	 
+	 
+	 
+	 
+	 var vertices = [];
+	  var normals = [];
+	  var indicesLines = [];
+	  var indicesTris = [];
+
+	  initialized = false;
   
 	  // create 12 vertices of a icosahedron
-	  var t = (1.0 + Math.sqrt(5.0)) / 2.0;
+	  var t = ((1.0 + Math.sqrt(5.0)) / 2.0);
+	  var minusOne = -1 ;
+	  var plusOne = 1 ;
+	  var zero = 0;
+	  var plusT = t;
+	  var minusT = -t;
   
-	  addVertex({ x: -1, y: t, z: 0 });
-	  addVertex({ x: 1, y: t, z: 0 });
-	  addVertex({ x: -1, y: -t, z: 0 });
-	  addVertex({ x: 1, y: -t, z: 0 });
+	  addVertex({ x: minusOne , y: (plusT + translateY), z: zero + translateZ});
+	  addVertex({ x: plusOne , y: (plusT + translateY), z: zero  + translateZ});
+	  addVertex({ x: minusOne , y: (minusT + translateY), z: zero  + translateZ});
+	  addVertex({ x: plusOne , y: (minusT + translateY), z: zero  + translateZ});
   
-	  addVertex({ x: 0, y: -1, z: t });
-	  addVertex({ x: 0, y: 1, z: t });
-	  addVertex({ x: 0, y: -1, z: -t });
-	  addVertex({ x: 0, y: 1, z: -t });
+	  addVertex({ x: zero , y: minusOne + translateY, z: plusT  + translateZ});
+	  addVertex({ x: zero , y: plusOne + translateY, z: plusT  + translateZ});
+	  addVertex({ x: zero , y: minusOne + translateY, z: minusT  + translateZ});
+	  addVertex({ x: zero , y: plusOne + translateY, z: minusT  + translateZ});
   
-	  addVertex({ x: t, y: 0, z: -1 });
-	  addVertex({ x: t, y: 0, z: 1 });
-	  addVertex({ x: -t, y: 0, z: -1 });
-	  addVertex({ x: -t, y: 0, z: 1 });
+	  addVertex({ x: plusT , y: zero + translateY, z: minusOne  + translateZ});
+	  addVertex({ x: plusT , y: zero + translateY, z: plusOne  + translateZ});
+	  addVertex({ x: minusT , y: zero + translateY, z: minusOne  + translateZ});
+	  addVertex({ x: minusT , y: zero + translateY, z: plusOne  + translateZ});
+	 // initialized = true;
   
-	  addIndices(indicesTriangles, indicesLines, { x: 0, y: 11, z: 5 });
-	  addIndices(indicesTriangles, indicesLines, { x: 0, y: 5, z: 1 });
-	  addIndices(indicesTriangles, indicesLines, { x: 0, y: 1, z: 7 });
-	  addIndices(indicesTriangles, indicesLines, { x: 0, y: 7, z: 10 });
-	  addIndices(indicesTriangles, indicesLines, { x: 0, y: 10, z: 11 });
+	  // 5 faces around point 0
+	  addIndex(indicesTris, indicesLines, { x: 0, y: 11, z: 5 });
+	  addIndex(indicesTris, indicesLines, { x: 0, y: 5, z: 1 });
+	  addIndex(indicesTris, indicesLines, { x: 0, y: 1, z: 7 });
+	  addIndex(indicesTris, indicesLines, { x: 0, y: 7, z: 10 });
+	  addIndex(indicesTris, indicesLines, { x: 0, y: 10, z: 11 });
   
-	  addIndices(indicesTriangles, indicesLines, { x: 1, y: 5, z: 9 });
-	  addIndices(indicesTriangles, indicesLines, { x: 5, y: 11, z: 4 });
-	  addIndices(indicesTriangles, indicesLines, { x: 11, y: 10, z: 2 });
-	  addIndices(indicesTriangles, indicesLines, { x: 10, y: 7, z: 6 });
-	  addIndices(indicesTriangles, indicesLines, { x: 7, y: 1, z: 8 });
+	  // 5 adjacent faces
+	  addIndex(indicesTris, indicesLines, { x: 1, y: 5, z: 9 });
+	  addIndex(indicesTris, indicesLines, { x: 5, y: 11, z: 4 });
+	  addIndex(indicesTris, indicesLines, { x: 11, y: 10, z: 2 });
+	  addIndex(indicesTris, indicesLines, { x: 10, y: 7, z: 6 });
+	  addIndex(indicesTris, indicesLines, { x: 7, y: 1, z: 8 });
   
-	  addIndices(indicesTriangles, indicesLines, { x: 3, y: 9, z: 4 });
-	  addIndices(indicesTriangles, indicesLines, { x: 3, y: 4, z: 2 });
-	  addIndices(indicesTriangles, indicesLines, { x: 3, y: 2, z: 6 });
-	  addIndices(indicesTriangles, indicesLines, { x: 3, y: 6, z: 8 });
-	  addIndices(indicesTriangles, indicesLines, { x: 3, y: 8, z: 9 });
+	  // 5 faces around point 3
+	  addIndex(indicesTris, indicesLines, { x: 3, y: 9, z: 4 });
+	  addIndex(indicesTris, indicesLines, { x: 3, y: 4, z: 2 });
+	  addIndex(indicesTris, indicesLines, { x: 3, y: 2, z: 6 });
+	  addIndex(indicesTris, indicesLines, { x: 3, y: 6, z: 8 });
+	  addIndex(indicesTris, indicesLines, { x: 3, y: 8, z: 9 });
   
-	  addIndices(indicesTriangles, indicesLines, { x: 4, y: 9, z: 5 });
-	  addIndices(indicesTriangles, indicesLines, { x: 2, y: 4, z: 11 });
-	  addIndices(indicesTriangles, indicesLines, { x: 6, y: 2, z: 10 });
-	  addIndices(indicesTriangles, indicesLines, { x: 8, y: 6, z: 7 });
-	  addIndices(indicesTriangles, indicesLines, { x: 9, y: 8, z: 1 });
+	  // 5 adjacent faces
+	  addIndex(indicesTris, indicesLines, { x: 4, y: 9, z: 5 });
+	  addIndex(indicesTris, indicesLines, { x: 2, y: 4, z: 11 });
+	  addIndex(indicesTris, indicesLines, { x: 6, y: 2, z: 10 });
+	  addIndex(indicesTris, indicesLines, { x: 8, y: 6, z: 7 });
+	  addIndex(indicesTris, indicesLines, { x: 9, y: 8, z: 1 });
+	  initialized = true;
   
 	  // refine triangles
-	  for (let i = 0; i < tesselationLevel; i++) {
-		var _triangles = [];
-		var _newLines = [];
+	  for (var i = 0; i < recursionLevel; i++) {
+		var tris = [];
+		var lines = [];
   
-		for (let j = 0; j < indicesTriangles.length; j += 3) {
-		  var middle1 = calculateMiddleVertex(indicesTriangles[j], indicesTriangles[j + 1]);
-		  var middle2 = calculateMiddleVertex(indicesTriangles[j + 1], indicesTriangles[j + 2]);
-		  var middle3 = calculateMiddleVertex(indicesTriangles[j + 2], indicesTriangles[j]);
+		for (var j = 0; j < indicesTris.length; j += 3) {
+		  var m1 = getMiddleVertex(indicesTris[j], indicesTris[j + 1]);
+		  var m2 = getMiddleVertex(indicesTris[j + 1], indicesTris[j + 2]);
+		  var m3 = getMiddleVertex(indicesTris[j + 2], indicesTris[j]);
   
-		  addIndices(_triangles, _newLines, { x: indicesTriangles[j], y: middle1, z: middle3 });
-		  addIndices(_triangles, _newLines, { x: indicesTriangles[j + 1], y: middle2, z: middle1 });
-		  addIndices(_triangles, _newLines, { x: indicesTriangles[j + 2], y: middle3, z: middle2 });
-		  addIndices(_triangles, _newLines, { x: middle1, y: middle2, z: middle3 });
+		  addIndex(tris, lines, { x: indicesTris[j], y: m1, z: m3 });
+		  addIndex(tris, lines, { x: indicesTris[j + 1], y: m2, z: m1 });
+		  addIndex(tris, lines, { x: indicesTris[j + 2], y: m3, z: m2 });
+		  addIndex(tris, lines, { x: m1, y: m2, z: m3 });
 		}
   
-		indicesTriangles = _triangles;
-		indicesLines = _newLines;
+		indicesTris = tris;
+		indicesLines = lines;
 	  }
   
 	  this.vertices = new Float32Array(vertices);
 	  this.normals = new Float32Array(normals);
 	  this.indicesLines = new Uint16Array(indicesLines);
-	  this.indicesTris = new Uint16Array(indicesTriangles);
+	  this.indicesTris = new Uint16Array(indicesTris);
   
-	  function addVertex(vertex) {
-		var vertexLength = Math.sqrt(vertex.x ** 2 + vertex.y ** 2 + vertex.z ** 2);
-		var normX = vertex.x / vertexLength;
-		var normY = vertex.y / vertexLength;
-		var normZ = vertex.z / vertexLength;
-  
-		vertices.push(normX, normY, normZ);
+	  // add vertex to mesh, fix position to be on unit sphere, return index
+	  function addVertex(v) {
+
+		var vLength = Math.sqrt(v.x ** 2 + v.y ** 2 + v.z ** 2) ;
+		var normX = (v.x) / vLength  ;
+		var normY = v.y / vLength;
+		var normZ = v.z / vLength;	
+		//var transX = normX - 1;
+		//normX = normX-1;
+	//	if (!initialized) {
+			 
+		vertices.push(normX , normY, normZ);
+	//	} else {
+	//		vertices.push(normX , normY, normZ);
+	//	}
 		normals.push(normX, normY, normZ);
   
-		// return number of actual vertices
 		return (vertices.length / 3) - 1;
 	  }
   
-	  function calculateMiddleVertex(indexVertex1, indexVertex2) {
-		// Calculate coordinates of mid.
-		var vertex1 = getVertexFromArray(indexVertex1);
-		var vertex2 = getVertexFromArray(indexVertex2);
+
+
+	  function addVertex2(v) {
+
+		var vLength = Math.sqrt(v.x ** 2 + v.y ** 2 + v.z ** 2) ;
+		var normX = v.x / vLength  ;
+		var normY = v.y / vLength;
+		var normZ = v.z / vLength;	
+		//var transX = normX - 1;
+		//normX = normX-1;
+	//	if (!initialized) {
+			 
+		vertices.push(normX , normY, normZ);
+	//	} else {
+	//		vertices.push(normX , normY, normZ);
+	//	}
+		normals.push(normX, normY, normZ);
   
-		var middle = getMiddleOfVertices(vertex1, vertex2);
+		return (vertices.length / 3) - 1;
+	  }
+
+
+	  // return index of point in the middle of p1 and p2
+	  function getMiddleVertex(indexVertex1, indexVertex2) {
+		  
+		var v1 = getVertexFromArray(indexVertex1);
+		var v2 = getVertexFromArray(indexVertex2);
   
+		var m = getMiddle(v1, v2);
+		
+  
+		// first check if we have it already
 		for (var i = 0; i < vertices.length; i += 3) {
-		  // eslint-disable-next-line max-len
-		  if ((vertices[i] === middle.x) && (vertices[i + 1] === middle.y) && (vertices[i + 2] === middle.z)) {
+		  if ((vertices[i] === m.x) && (vertices[i + 1] === m.y) && (vertices[i + 2] === m.z)) {
 			return i / 3;
 		  }
 		}
-  
-		return addVertex(middle);
+
+	
+		// not in cache, calculate it
+		// add vertex makes sure point is on unit sphere
+		// return index
+		return addVertex(m);
 	  }
   
-	  function getMiddleOfVertices(vertex1, vertex2) {
+	  function getMiddle(v1, v2) {
+		  
 		return {
-		  x: (vertex1.x + vertex2.x) / 2.0,
-		  y: (vertex1.y + vertex2.y) / 2.0,
-		  z: (vertex1.z + vertex2.z) / 2.0,
+		  x: (v1.x + v2.x) / 2.0 ,
+		  y: (v1.y + v2.y) / 2.0,
+		  z: (v1.z + v2.z) / 2.0,
 		};
 	  }
   
 	  function getVertexFromArray(index) {
 		return {
-		  x: vertices[3 * index],
+		  x: (vertices[3 * index] ),
 		  y: vertices[3 * index + 1],
 		  z: vertices[3 * index + 2],
 		};
 	  }
   
-	  function addIndices(_triangles, _lines, vertex) {
-		_triangles.push(vertex.x, vertex.y, vertex.z);
-		_lines.push(vertex.x, vertex.y, vertex.y, vertex.z, vertex.z, vertex.x);
+	  function addIndex(tris, lines, vertex) {
+		tris.push(vertex.x, vertex.y, vertex.z);
+		lines.push(vertex.x, vertex.y, vertex.y, vertex.z, vertex.z, vertex.x);
 	  }
 	}
 
