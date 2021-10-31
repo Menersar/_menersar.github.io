@@ -1,7 +1,7 @@
 <!DOCTYPE html5>
 <html>
     <head>
-        <title>EA 4 – Parametrisierte Flächen</title>
+        <title>EA 5 – Kamerabewegung</title>
         <meta charset="UTF-8">
 
 
@@ -20,6 +20,7 @@
 		<script src="GVT_Src_vertexData_sphere.js"></script>
         <script src="GVT_Src_vertexData_plane.js"></script>
         <script src="GVT_Src_vertexData_zylinder_nase.js"></script>
+        <script src="GVT_Src_vertexData_plate.js"></script>
 
 
 
@@ -74,7 +75,7 @@
 
             <nav>
                 <div class="nav-wrapper">
-                    <a href="#" class="brand-logo" style="padding-left:10px">EA 4 – Parametrisierte Flächen</a>
+                    <a href="#" class="brand-logo" style="padding-left:10px">EA 5 – Kamerabewegung</a>
                     <ul id="nav-mobile" class="right hide-on-med-and-down">
                         <li><a class="waves-effect waves-light modal-trigger" href="#modal1">Documentation</a></li>
                     </ul>
@@ -88,9 +89,8 @@
 
                         
                        <h5 id="textCanvas" >0. Kugel-Rekursionsschritt</h5>    
-
                         <div class="cardImages">
-                            <canvas id="canvas" width="500" height="500"width="500" height="500"></canvas>                       
+                            <canvas id="canvas" width="1000" height="500"></canvas>                       
                             <!--     <canvas onclick="start2()" id="canvas2" width="500" height="500"></canvas> -->
                     </div>
 
@@ -108,23 +108,20 @@
                         <div class="card-content">
                             <!--Content-->
                             <h5>Steuerung</h5>
-                            <p><b>Linksklick auf eines der Modelle:</b> Umschalten zwischen Linien und Füllung.</p>
-
+                            <p><b>W</b>, <b>A</b>: Bewegung der Kamera nach vorne und hinten zum Mittelpunkt der Szene.</p>
+                            <p><b>S</b>, <b>D</b>: Bewegung der Kamera nach links und rechts um den Mittelpunkt der Szene.</p>
+                            <p><b>Q</b>, <b>E</b>: Bewegung der Kamera hoch und runter um den Mittelpunkt der Szene.</p>
+                            <p><b>1</b> - <b>5</b>: Einstellen der Rekursionstiefe der Kugeln.</p>
+                            <p><b>T</b>: Wireframe-Modus an / aus.</p>
                             <br>
-                            <h5>Herleitung und Gleichungen der Flächen</h5>
-                        <p><b>Gleichungen für den Apfel:</b> <a href="http://www.3d-meier.de/tut3/Seite54.html">http://www.3d-meier.de/tut3/Seite54.html</a></p>      
-                        <br>
-                        <p><b>Gleichungen für die Eichel:</b> Als Grundlage diente die Formel für den Apfel. Die Fläche wird durch folgenden Gleichungen dargestellt.</a></p>      
-                        <p style="text-indent:10px; color: gray;"><b>x</b> = cos(u) * ( 4 * cos(v))</p>
-                        <p style="text-indent:10px; color: gray;"><b>z</b> = sin(u) * ( 3.8 * cos(v))</p>
-                        <p style="text-indent:10px; color: gray;"><b>y</b> = (cos(v) + sin(v) - 1) * (1 + sin(v)) * log(1 - pi * v/5 )  + 6 * sin(v)</i></p>
-                        <p>Die Parameter <b>u</b> und <b>v</b> nehmen hier die folgende Werte (Definitionsbereich) an.</p>      
-                        <p style="text-indent:10px; color: gray;"><b>u</b> ist Element aus der Zahlenmenge [0, 2 pi]</p>
-                        <p style="text-indent:10px; color: gray;"><b>v</b> ist Element aus der Zahlenmenge [-pi, pi]</p>
-                        <p><b>Gleichungen für den Eichelstiel:</b> Er wird seperat über Gleichungen für ein Zylinder erzeugt. Die Grundlage dazu stammt aus den Moodle Kurs-Materialien (<a href="https://vfhgvt.eduloop.de/loop/Zylinder">https://vfhgvt.eduloop.de/loop/Zylinder</a>). Sie Gleichungen sehen wie folgt aus.</p>      
-                        <p style="text-indent:10px; color: gray;"><b>x</b> = r * cos(u)</p>
-                        <p style="text-indent:10px; color: gray;"><b>z</b> = r * sin(u)</p>
-                        <p style="text-indent:10px; color: gray;"><b>y</b> = v - 1.4</p>
+                            <p style= "color: gray;"><b>P</b>: Perspektivische Projektion der Szene (default).</p>
+                            <p style= "color: gray;"><b>O</b>: Orthogonale Projektion der Szene.</p>
+                            <p style= "color: gray;"><b>Z</b>: Zoom der Kamera in den Mittelpunkt der Szene.</p>
+                            <p style= "color: gray;"><b>Shift</b> + <b>Z</b>: Zoom der Kamera aus den Mittelpunkt der Szene heraus.</p>
+
+
+
+                            
                         </div>
 
 
@@ -147,31 +144,28 @@
                         
                      
                         <h5>Aufgabenstellung </h5>
-                        <p>1) Erzeugen Sie zwei neue parametrisierte Flächen (die nicht im Modul vorkommen) zunächst mit Linien, siehe Material (dort gibt es viele Formeln die Sie verwenden können).</p>
+                        <p>Teil 1: Erstellen Sie eine Szene aus mindestens zwei Grundkörpern. Sie soll interaktiv von allen Seiten einsehbar sein.</p>
 
-                        <p>2) Füllen Sie dann die Flächen und kolorieren Sie sie passend zur jeweiligen Flächenform, z.B. mit Farbverläufen. Die Linien sollen noch sichtbar sein, oder es besteht die Möglichkeit zwischen Linien und Füllung umzuschalten.</p>
+                        <p>Teil 2: Erstellen Sie eine rekursives Kugel Modell wie in Lerneinheit GRU beschrieben. Die Tiefe der Rekursion soll direkt von der Webseite aus interaktiv einstellbar sein. Es hilft zunächst einen Oktaeder zu bauen und auf diesen aufbauend die Dreiecksteilung vorzunehmen. Kolorieren Sie das Modell. Die Linien dabei sollen zusätzlich sichtbar sein, oder es besteht die Möglichkeit zwischen Linien und Füllung umzuschalten.</p>
                             
-                        <p>3) Kreieren Sie auch eine eigene Parametrisierung für eine Fläche und kolorieren Sie diese. Dazu sollen Sie sich eine neue Formel ausdenken, natürlich auf der Basis der vorhandenen Formeln aufbauen (aus Module oder aus dem Material). Versuchen Sie Terme zu mischen und schauen Sie, ob das passiert was Sie erwarten.... Alternativ suchen Sie sich eine Form und versuchen Sie diese zu erzeugen, vielleicht "eine Qualle" oder Ihre Lampe (dieses Vorgehen ist meist schwieriger).</p>                        
-
                         <h5>Material </h5>
-                        <p>Material: Auf der Internetseite:<a href="http://www.3d-meier.de/tut3/Seite0.html">http://www.3d-meier.de/tut3/Seite0.html</a> finden Sie zahlreiche parametrisierte Flächen, die Sie verwenden können.</p>
+                        <p>Externe Links zum rekursiven Kugel Modell:</p>
+                        <p> <a href="http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html">http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html</a></p>
+                        <p> <a href="http://www.stephan-brumme.com/download/grafik/Computergrafik2.pdf">http://www.stephan-brumme.com/download/grafik/Computergrafik2.pdf</a></p>
+                        <p> <a href="http://paulbourke.net/geometry/circlesphere/csource3.c">http://paulbourke.net/geometry/circlesphere/csource3.c</a></p>
+                        <p> <a href="https://arxiv.org/ftp/cs/papers/0701/0701164.pdf">https://arxiv.org/ftp/cs/papers/0701/0701164.pdf</a></p>
+
+                        <h5>Interaktion</h5>
+                        <p>Bewegung der Kamera über die Pfeiltasten (oder über die Tasten WASD).</p>
+
 
 
                         <h5>Umsetzung</h5>
-                        <p><b>Grundlagen für das Erstellen der Modelle:</b> Moodle Kurs-Materialien des Kurses Graphical Visualisation Technologies.</p>
-                        <h5>Herleitung und Gleichungen der Flächen</h5>
-                        <p><b>Gleichungen für den Apfel:</b> <a href="http://www.3d-meier.de/tut3/Seite54.html">http://www.3d-meier.de/tut3/Seite54.html</a></p>      
-                        <p><b>Gleichungen für die Eichel:</b> Als Grundlage diente die Formel für den Apfel. Die Fläche wird durch folgenden Gleichungen dargestellt.</a></p>      
-                        <p style="text-indent:10px; color: gray;"><b>x</b> = cos(u) * ( 4 * cos(v))</p>
-                        <p style="text-indent:10px; color: gray;"><b>z</b> = sin(u) * ( 3.8 * cos(v))</p>
-                        <p style="text-indent:10px; color: gray;"><b>y</b> = (cos(v) + sin(v) - 1) * (1 + sin(v)) * log(1 - pi * v/5 )  + 6 * sin(v)</i></p>
-                        <p>Die Parameter <b>u</b> und <b>v</b> nehmen hier die folgende Werte (Definitionsbereich) an.</p>      
-                        <p style="text-indent:10px; color: gray;"><b>u</b> ist Element aus der Zahlenmenge [0, 2 pi]</p>
-                        <p style="text-indent:10px; color: gray;"><b>v</b> ist Element aus der Zahlenmenge [-pi, pi]</p>
-                        <p><b>Gleichungen für den Eichelstiel:</b> Er wird seperat über Gleichungen für ein Zylinder erzeugt. Die Grundlage dazu stammt aus den Moodle Kurs-Materialien (<a href="https://vfhgvt.eduloop.de/loop/Zylinder">https://vfhgvt.eduloop.de/loop/Zylinder</a>). Sie Gleichungen sehen wie folgt aus.</p>      
-                        <p style="text-indent:10px; color: gray;"><b>x</b> = r * cos(u)</p>
-                        <p style="text-indent:10px; color: gray;"><b>z</b> = r * sin(u)</p>
-                        <p style="text-indent:10px; color: gray;"><b>y</b> = v - 1.4</p>
+                        <p><b>Grundlagen für das Erstellen der Modelle und Interaktionen:</b> Moodle Kurs-Materialien des Kurses Graphical Visualisation Technologies, Lerneinheiten 1-10 bis einschließlich GRU & KAP.</p>
+                        <p><b>Herleitung der Erstellung der Icosphere anhand der folgenden Quellen: </b> <a href="http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html">http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html</a>, <a href="https://en.wikipedia.org/wiki/Icosahedron">https://en.wikipedia.org/wiki/Icosahedron</a></p>
+                        <p>Der Tannenbaum ist aus vier Zylindern und einem Kegel zusammengesetzt.</p>
+                        <p>Der Schneemann ist aus drei Kugeln, mit einstellbarer Rekusionstief, sowie zwei Kegeln für den Hut und einem Zylinder für die Nase zusammengesetzt.</p>
+
 
                 </div>
                 <div class="modal-footer">

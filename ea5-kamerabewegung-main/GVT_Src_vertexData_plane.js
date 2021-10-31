@@ -2,6 +2,7 @@ var plane = ( function() {
 
 	function createVertexData() {
         
+		
         
         var n = 100;
         var m = 100;
@@ -47,9 +48,9 @@ var plane = ( function() {
                 vertices[iVertex * 3 + 2] = z;
 
                 // Calc and set normals.
-                normals[iVertex * 3] = 0;
-                normals[iVertex * 3 + 1] = 1;
-                normals[iVertex * 3 + 2] = 0;
+                normals[iVertex * 3] = .80;
+                normals[iVertex * 3 + 1] = .80;
+                normals[iVertex * 3 + 2] = 1;
 
 				// if(i>14){
 				// continue;

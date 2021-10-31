@@ -14,6 +14,8 @@ var app = ( function() {
 
 	var interactiveModel;
 
+	var toggleWireframeOn = true;
+
 
 	var camera = {
 		// Initial position of the camera.
@@ -75,7 +77,7 @@ var app = ( function() {
 	 * be in render function.
 	 */
 	function initPipline() {
-		gl.clearColor(.95, .95, .95, 1);
+		gl.clearColor(.60, .80, 1, 1);
 
 		// Backface culling.
 		gl.frontFace(gl.CCW);
@@ -150,12 +152,17 @@ var app = ( function() {
 		createModel("sphere", fs, [.75, .5, 2], [0, 0, 0], [.25, .2, .25]);
 		createModel("sphere", fs, [.75, .75, 2], [0, 0, 0], [.15, .15, .15]);
 
-		createModel("kegel", fs, [.75, .75, 2], [0, 0, 0], [1, 1, 1]);
-		createModel("kegel", fs, [.75, .8, 2], [0, 0, 0], [2, .1, 2]);
-		createModel("zylinderNase", fs, [.43,.64, 2], [90, 90, 90], [.3, .075, .075]);
+		createModel("kegel", fs, [.75, .85, 2], [0, 0, 0], [1, .75, 1]);
+		createModel("kegel", fs, [.75, .85, 2], [0, 0, 0], [2, .1, 2]);
+		createModel("zylinderNase", fs, [.46	,.65, 2.17], [0, Math.PI *.175, 0], [.3, .075, .075]);
+		createModel("plate", fs, [0, 0, 0], [Math.PI *.5, 0, 0], [.1, .1, .1]);
+		createModel("plate", fs, [0, .25, 0], [Math.PI *.5, 0, 0], [.55, .55, .55]);
 
+		createModel("plate", fs, [.75, 1.0375	, 2], [Math.PI *-.5, 0, 0], [.1	, .1, .1]);
+		createModel("plate", fs, [.75, .875, 2], [Math.PI *-.5, 0, 0], [.2	, .2, .2]);
+		createModel("plate", fs, [.75, .85, 2], [Math.PI *.5, 0, 0], [.2	, .2, .2]);
 
-		createModel("plane", "wireframe", [0, 0, 0], [0, 0, 0], [1, 1, 1]);
+		createModel("plane", "fillwireframe", [0, 0, 0], [0, 0, 0], [1, 1, 1]);
 
 		interactiveModel = models[5];
 
@@ -374,18 +381,27 @@ var app = ( function() {
 					// Bei der perspektivischen Sicht wird beim Rauszoomen sichergestellt, dass camera.fovy nie größer als pi wird (über: * (Math.PI - camera.fovy))
 					// Bei der perspektivischen Sicht wird beim Reinzoomen sichergestellt, dass camera.fovy nie kleiner als 0 wird (über: *  0.5; denn so wird der Abstand zur Mitte, oder zu 0, immer nur halbiert und kann so nie unter 0 fallen)
 					// Bei der frustum Sicht wird beim Reinzoomen sichergestellt, dass camera.lrtb nie kleiner als 0 wird (über: *  0.5; denn so wird der Abstand zur Mitte, oder zu 0, immer nur halbiert und kann so nie unter 0 fallen)
-				case('V'):
+				case('Z'):
                     // Camera fovy in radian.
-					if (sign < 0) {
-						camera.fovy -= (camera.fovy - 0) * 0.5;
-						console.log(camera.fovy);
+					if (sign >= 0) {
+						if (camera.projectionType == "perspective") {
+							camera.fovy -= (camera.fovy - 0) * 0.5;
+							//console.log(camera.fovy);
+						} else if (camera.projectionType == "ortho") {
+							camera.lrtb -= camera.lrtb * 0.5;
+						}
 					} else {
-						//camera.fovy += sign * 5 * Math.PI / 180;
-						camera.fovy += (sign * 5 * Math.PI / 180) * (Math.PI - camera.fovy);
-						console.log(camera.fovy);
+						if (camera.projectionType == "perspective") {
+							//camera.fovy += sign * 5 * Math.PI / 180;
+							camera.fovy += ( 5 * Math.PI / 180) * (Math.PI - camera.fovy);
+							console.log(camera.fovy);
+						} else if (camera.projectionType == "ortho") {
+							camera.lrtb += 0.1;
+						}
+						
 					}
                     break;
-                case('B'):
+                /*case('B'):
 				if (sign < 0) {
 					camera.lrtb -= camera.lrtb * 0.5;
 					break;
@@ -393,8 +409,11 @@ var app = ( function() {
 					  // Camera near plane dimensions.
 					  camera.lrtb += sign * 0.1;
 					  break;
-				}
+				}*/
                   
+				case('T'):
+                    toggleWireframeOn = !toggleWireframeOn;
+                    break;
 
 
 			}
@@ -458,6 +477,11 @@ var app = ( function() {
 		// Translate.
         mat4.translate(mMatrix, mMatrix, model.translate);
 
+		// Rotate.
+        mat4.rotateX(mMatrix, mMatrix, model.rotate[0]);
+        mat4.rotateY(mMatrix, mMatrix, model.rotate[1]);
+        mat4.rotateZ(mMatrix, mMatrix, model.rotate[2]);
+
 		// Scale
         mat4.scale(mMatrix, mMatrix, model.scale);
 
@@ -513,7 +537,7 @@ var app = ( function() {
 
 		// Setup rendering lines.
 		var wireframe = (model.fillstyle.search(/wireframe/) != -1);
-		if(wireframe) {
+		if(wireframe && toggleWireframeOn) {
 			gl.disableVertexAttribArray(prog.normalAttrib);
 			gl.vertexAttrib3f(prog.normalAttrib, 0, 0, 0);
 			gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, model.iboLines);

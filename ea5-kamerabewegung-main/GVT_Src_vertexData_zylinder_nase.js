@@ -88,6 +88,16 @@ var zylinderNase = ( function() {
                         }
 			}
 		}
+
+
+
+
+		
+
+
+
+
+
 	}
 
 	return {
