@@ -1,40 +1,27 @@
 <!DOCTYPE html5>
 <html>
-    <head>
-        <title>EA 5 – Kamerabewegung</title>
+	<head>
+		<title>EA 6 – Objekte bewegen – fliegende Kugeln</title>
         <meta charset="UTF-8">
 
-
-        <link rel="stylesheet" href="css/materialize.min.css" />
+		<link rel="stylesheet" href="css/materialize.min.css" />
 
         <script src="js/jquery-3.6.0.min.js"></script>
         <script src="js/materialize.min.js"></script>
 
-        <script src="ext/gl-matrix.js"></script>
-		<script src="GVT_Src_vertexData_torus.js"></script>
-		<script src="GVT_Src_vertexData_kegel.js"></script>
-		<script src="GVT_Src_vertexData_zylinder_unten.js"></script>
-		<script src="GVT_Src_vertexData_zylinder_mitte.js"></script>
-		<script src="GVT_Src_vertexData_zylinder_oben.js"></script>
-		<script src="GVT_Src_vertexData_zylinder_oben2.js"></script>
+		<script src="ext/gl-matrix.js"></script>
 		<script src="GVT_Src_vertexData_sphere.js"></script>
-        <script src="GVT_Src_vertexData_plane.js"></script>
-        <script src="GVT_Src_vertexData_zylinder_nase.js"></script>
-        <script src="GVT_Src_vertexData_plate.js"></script>
+		<script src="GVT_Src_vertexData_torus.js"></script>
+		<script src="GVT_Src_vertexData_plane.js"></script>
+		
+
+		<link rel="stylesheet" href="styles.css" />
+
+        <script defer src="ea6.js"></script>
 
 
 
-    
-        <link rel="stylesheet" href="styles.css" />
-
-        <script defer src="ea5.js"></script>
-
-
-
-
-
-
-        <script type="x-shader/x-vertex" id="vertexshader">
+		<script type="x-shader/x-vertex" id="vertexshader">
 			attribute vec3 aPosition;
 			attribute vec3 aNormal;
 
@@ -43,39 +30,45 @@
 
 			varying vec4 vColor;
 
+			uniform vec4 uColor;
+
+			uniform mat3 uNMatrix;
+
 			void main(){
-				gl_Position = uPMatrix * uMVMatrix * vec4(aPosition, 1.0);
-	
-				vColor = vec4(aNormal.x, aNormal.y, aNormal.z, 1.0);
-				vColor = (vColor + 1.0) / 2.0;
+			gl_Position = uPMatrix * uMVMatrix * vec4(aPosition, 1.0);
+
+			//vColor = vec4(aNormal.z, aNormal.z, aNormal.z, 1.0);
+			//vColor = uColor * (vColor + 1.0) / 2.0;
+
+			vec3 tNormal = uNMatrix * aNormal;
+
+			vColor = vec4(tNormal.z, tNormal.z, tNormal.z, 1.0);
+
+			vColor = uColor * (vColor + 1.0) / 2.0;
 			}
 		</script>
-		
-        <script type="x-shader/x-fragment" id="fragmentshader">
+		<script type="x-shader/x-fragment" id="fragmentshader">
 			precision mediump float;
 			varying vec4 vColor;
 
 			void main() {
-				gl_FragColor = vColor;
+			gl_FragColor = vColor;
 			}
 		</script>
+	</head>
 
 
 
 
 
 
-
-
-
-      </head>
-        <body onload="app.start()"> 
+		<body onload="app.start()"> 
 
 
 
             <nav>
                 <div class="nav-wrapper">
-                    <a href="#" class="brand-logo" style="padding-left:10px">EA 5 – Kamerabewegung</a>
+                    <a href="#" class="brand-logo" style="padding-left:10px">EA 6 – Objekte bewegen – fliegende Kugeln</a>
                     <ul id="nav-mobile" class="right hide-on-med-and-down">
                         <li><a class="waves-effect waves-light modal-trigger" href="#modal1">Documentation</a></li>
                     </ul>
@@ -88,9 +81,11 @@
                         <br>
 
                         
-                       <h5 id="textCanvas" >0. Kugel-Rekursionsschritt</h5>    
+                       <!--<h5 id="textCanvas" >0. Kugel-Rekursionsschritt</h5>    -->
                         <div class="cardImages">
-                            <canvas id="canvas" width="1000" height="500"></canvas>                       
+                           <!-- <canvas id="canvas" width="1000" height="500"></canvas>     -->
+							<canvas id="canvas" width="1000" height="500"></canvas>
+                  
                             <!--     <canvas onclick="start2()" id="canvas2" width="500" height="500"></canvas> -->
                     </div>
 
@@ -108,10 +103,11 @@
                         <div class="card-content">
                             <!--Content-->
                             <h5>Steuerung</h5>
+                            <p><b>K drücken</b>: Alle Kugeln bewegen sich ein Stück weiter. oder die Bewegung erfolget automatisch und kann ein- und ausgeschaltet werden. </p>
+                            <p><b>K gedrückt halten</b>: Die Bewegung der Kugeln erfolgt durchgehend. </p>
                             <p><b>W</b>, <b>A</b>: Bewegung der Kamera nach vorne und hinten zum Mittelpunkt der Szene.</p>
                             <p><b>S</b>, <b>D</b>: Bewegung der Kamera nach links und rechts um den Mittelpunkt der Szene.</p>
                             <p><b>Q</b>, <b>E</b>: Bewegung der Kamera hoch und runter um den Mittelpunkt der Szene.</p>
-                            <p><b>1</b> - <b>5</b>: Einstellen der Rekursionstiefe der Kugeln.</p>
                             <p><b>T</b>: Wireframe-Modus an / aus.</p>
                             <br>
                             <p style= "color: gray;"><b>P</b>: Perspektivische Projektion der Szene (default).</p>
@@ -141,23 +137,22 @@
                     <h4>Documentation</h4>
 
                     <h5>Steuerung</h5>
-                    <p><b>W</b>, <b>A</b>: Bewegung der Kamera nach vorne und hinten zum Mittelpunkt der Szene.</p>
-                    <p><b>S</b>, <b>D</b>: Bewegung der Kamera nach links und rechts um den Mittelpunkt der Szene.</p>
-                    <p><b>Q</b>, <b>E</b>: Bewegung der Kamera hoch und runter um den Mittelpunkt der Szene.</p>
-                    <p><b>1</b> - <b>5</b>: Einstellen der Rekursionstiefe der Kugeln.</p>
-                    <p><b>T</b>: Wireframe-Modus an / aus.</p>
-                    <p style= "color: gray;"><b>P</b>: Perspektivische Projektion der Szene (default).</p>
-                    <p style= "color: gray;"><b>O</b>: Orthogonale Projektion der Szene.</p>
-                    <p style= "color: gray;"><b>F</b>: Frustum-Projektion der Szene.</p>
-                    <p style= "color: gray;"><b>Z</b>: Zoom der Kamera in den Mittelpunkt der Szene.</p>
-                    <p style= "color: gray;"><b>Shift</b> + <b>Z</b>: Zoom der Kamera aus den Mittelpunkt der Szene heraus.</p>
-
+                            <p><b>K drücken</b>: Alle Kugeln bewegen sich ein Stück weiter. oder die Bewegung erfolget automatisch und kann ein- und ausgeschaltet werden. </p>
+                            <p><b>K gedrückt halten</b>: Die Bewegung der Kugeln erfolgt durchgehend. </p>
+                            <p><b>W</b>, <b>A</b>: Bewegung der Kamera nach vorne und hinten zum Mittelpunkt der Szene.</p>
+                            <p><b>S</b>, <b>D</b>: Bewegung der Kamera nach links und rechts um den Mittelpunkt der Szene.</p>
+                            <p><b>Q</b>, <b>E</b>: Bewegung der Kamera hoch und runter um den Mittelpunkt der Szene.</p>
+                            <p><b>T</b>: Wireframe-Modus an / aus.</p>
+                            <p style= "color: gray;"><b>P</b>: Perspektivische Projektion der Szene (default).</p>
+                            <p style= "color: gray;"><b>O</b>: Orthogonale Projektion der Szene.</p>
+                            <p style= "color: gray;"><b>F</b>: Frustum-Projektion der Szene.</p>
+                            <p style= "color: gray;"><b>Z</b>: Zoom der Kamera in den Mittelpunkt der Szene.</p>
+                            <p style= "color: gray;"><b>Shift</b> + <b>Z</b>: Zoom der Kamera aus den Mittelpunkt der Szene heraus.</p>
                         
                      
                         <h5>Aufgabenstellung </h5>
-                        <p>Teil 1: Erstellen Sie eine Szene aus mindestens zwei Grundkörpern. Sie soll interaktiv von allen Seiten einsehbar sein.</p>
+                        <p>Lassen Sie die vier Kugeln aus dem Beispielprogramm aus der Lerneinheit TFM interaktiv durch den Torus fliegen. Dabei bewegen sich die Kugeln kontinuierlich auf Kreisbahnen so, dass sie sich nie berühren.</p>
 
-                        <p>Teil 2: Erstellen Sie eine rekursives Kugel Modell wie in Lerneinheit GRU beschrieben. Die Tiefe der Rekursion soll direkt von der Webseite aus interaktiv einstellbar sein. Es hilft zunächst einen Oktaeder zu bauen und auf diesen aufbauend die Dreiecksteilung vorzunehmen. Kolorieren Sie das Modell. Die Linien dabei sollen zusätzlich sichtbar sein, oder es besteht die Möglichkeit zwischen Linien und Füllung umzuschalten.</p>
                             
                         <h5>Material </h5>
                         <p>Externe Links zum rekursiven Kugel Modell:</p>
@@ -167,15 +162,16 @@
                         <p> <a href="https://arxiv.org/ftp/cs/papers/0701/0701164.pdf">https://arxiv.org/ftp/cs/papers/0701/0701164.pdf</a></p>
 
                         <h5>Interaktion</h5>
-                        <p>Bewegung der Kamera über die Pfeiltasten (oder über die Tasten WASD).</p>
+                        <p>Beim jedem Drücken der Taste k sollen sich alle Kugeln ein Stück weiter bewegen oder die Bewegung erfolget automatisch und kann ein- und ausgeschaltet werden.</p>
 
-
-
+                        <h5>Erweiterung</h5>
+                        <p>Der Torus dreht sich um eine seiner Achsen (aber nicht nur wie ein Autoreifen), ohne dass er von den Kugeln berührt wird. Beide Bewegungen werden synchron animiert. </p>
                         <h5>Umsetzung</h5>
-                        <p><b>Grundlagen für das Erstellen der Modelle und Interaktionen:</b> Moodle Kurs-Materialien des Kurses Graphical Visualisation Technologies, Lerneinheiten 1-10 bis einschließlich GRU & KAP.</p>
-                        <p><b>Herleitung der Erstellung der Icosphere anhand der folgenden Quellen: </b> <a href="http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html">http://blog.andreaskahler.com/2009/06/creating-icosphere-mesh-in-code.html</a>, <a href="https://en.wikipedia.org/wiki/Icosahedron">https://en.wikipedia.org/wiki/Icosahedron</a></p>
-                        <p>Der Tannenbaum ist aus vier Zylindern und einem Kegel zusammengesetzt.</p>
-                        <p>Der Schneemann ist aus drei Kugeln, mit einstellbarer Rekusionstief, sowie zwei Kegeln für den Hut und einem Zylinder für die Nase zusammengesetzt.</p>
+
+                        <p><b>Grundlagen für das Erstellen der Modelle und Interaktionen:</b> Moodle Kurs-Materialien des Kurses Graphical Visualisation Technologies, Lerneinheit TFM.</p>
+                        <p>Es sind jeweils die Kugeln und der Torus in verschiedenen Farben erzeugt.</p>
+                        <p>Die Transformationen für die Modelle werden jeweils, bei Drücken der Taste K, berechnet und auf sie angewandt.</p>
+                        <p>Dabei wurde die Transformationsberechnungen so gewählt, dass die Modelle sich nicht überschneiden.</p>
 
 
                 </div>
@@ -198,5 +194,17 @@
     
 
 
-    </body>
+
+
+
+
+
+
+
+
+
+
+
+
+	</body>
 </html>
