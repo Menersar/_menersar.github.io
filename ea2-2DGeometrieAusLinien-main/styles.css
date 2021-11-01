@@ -47,9 +47,16 @@ align-self: flex-end;
 /*align-self: center;*/
 margin-bottom: 85 ;
 
-width: 450;
+width: 400;
 height: 225;
 
+clip-path: inset(0px 100px 0px 100px);
+
+
+}
+
+#glcanvas {
+  clip-path: inset(0px 75px 0px 75px);
 }
 
 
