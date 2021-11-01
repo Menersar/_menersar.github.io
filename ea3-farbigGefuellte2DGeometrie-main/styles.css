@@ -49,6 +49,13 @@ margin-bottom: 85 ;
 height: 225;
 width: 450;
 
+clip-path: inset(0px 100px 0px 100px);
+
+
+}
+
+#glcanvas {
+  clip-path: inset(0px 75px 0px 75px);
 }
 
 
