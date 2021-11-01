@@ -1,7 +1,7 @@
 <!DOCTYPE html5>
 <html>
     <head>
-        <title>Graphical Visualisation Technologies – Einsendeaufgaben</title>
+        <title>Graphical Visualisation Technologies – Projektaufgaben WS 21/22</title>
 
 
         <link rel="stylesheet" href="css/materialize.min.css" />
@@ -17,13 +17,13 @@
 
     </head>
  <!--   <body onload=loadImage("x.png")> -->
-        <body onload=buildSite()>
+        <body onload>
 
 
 
             <nav>
                 <div class="nav-wrapper">
-                    <a href="#" class="brand-logo" style="padding-left:10px">EA 1 – Interaktiv animierte Scheibe</a>
+                    <a href="#" class="brand-logo" style="padding-left:10px">Graphical Visualisation Technologies – Projektaufgaben WS 21/22</a>
                     <ul id="nav-mobile" class="right hide-on-med-and-down">
                         <li><a class="waves-effect waves-light modal-trigger" href="#modal1">Documentation</a></li>
                     </ul>
@@ -34,7 +34,6 @@
                 <div class="col s12">
                     <div class="card">
 
-                        <br>
                       <!--  <img class="parent" src="textures/background.png">
                             <img class="spinningCat" id="x">
                             <div class="loadingAnimation" id="animatedTileset"></div>
@@ -86,7 +85,16 @@
 
 
 
+<script>
 
+$(document).ready(function () {
+    $('.modal').modal();
+});
+
+document.getElementById('page-footer').style.overflow = 'visible';
+  document.getElementById('page-footer').style.opacity = '1';
+var canvas = document.getElementById('glcanvas');
+</script>
 
 
 
