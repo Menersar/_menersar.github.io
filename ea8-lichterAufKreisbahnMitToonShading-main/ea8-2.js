@@ -71,8 +71,7 @@ var app = ( function() {
     var illumination = {
         ambientLight : [ .5, .5, .5 ],
         light : [
-			{isOn:true, position:[radiusLights,1.,0.], color:[1.,0.,.4]},
-			{isOn:true, position:[-radiusLights,1.,0.], color:[0.,1.,.4]},
+			{isOn:true, position:[radiusLights,1.,1.], color:[1.,1.,1.]},
 		]
     };
 
@@ -254,147 +253,139 @@ var app = ( function() {
 
 
 		   // Create some default material.
-		   var mDefault = createPhongMaterial();
-		   var mRed = createPhongMaterial({kd:[1.,0.,0.]});
-		   var mGreen = createPhongMaterial({kd:[0.,1.,0.]});
-		   var mBlue = createPhongMaterial({kd:[0.,0.,1.]});
-		   var mWhite = createPhongMaterial({ka:[1.,1.,1.], kd:[.5,.5,.5], ks:[0.,0.,0.]});
-		   
-		   var mDarkBrown = createPhongMaterial({kd:[.36,.25,0.20]});
-		   var mOcreBrown = createPhongMaterial({kd:[.53,.26,0.12]});
-		   var mPineGreen = createPhongMaterial({kd:[.0,.2,0.0]});
-		   var mDarkGray = createPhongMaterial({kd:[.32,.32,0.32]});
-		   var mDarkRed = createPhongMaterial({kd:[.40,.0,0.]});
-		   var mDarkOrange = createPhongMaterial({kd:[.8,.4,0.]});
-		   var mSnow = createPhongMaterial({kd:[1.,.98,0.98]});
+    	var mDefault = createPhongMaterial();
+    	var mRed = createPhongMaterial({kd:[1.,0.,0.]});
+    	var mGreen = createPhongMaterial({kd:[0.,1.,0.]});
+    	var mDarkBrown = createPhongMaterial({kd:[.36,.25,0.20]});
+    	var mBlue = createPhongMaterial({kd:[0.,0.,1.]});
+    	var mWhite = createPhongMaterial({ka:[1.,1.,1.], kd:[.5,.5,.5], ks:[0.,0.,0.]});
 
-   
-		   var cDarkBrown = [.36,.25,0.20, 1];
-		   var cOcreBrown = [.53,.26,0.12, 1];
-		   var cPineGreen = [.0,.2,0.0, 1];
-		   var cDarkGray = [.32,.32,0.32, 1];
-		   var cDarkRed = [.40,.0,0., 1];
-		   var cDarkOrange = [.8,.4,0., 1];
-		   var cSnow = [1.,.98,0.98, 1];
-   
-   
-			 createModel("plane", fs, cSnow, [0, 0, 0], [0, 0, 0], [1, 1, 1], mSnow);
-   
-			 // tanne hinten links
-			 createModel("kegel", fs, cDarkBrown, [-Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mDarkBrown);
-		   createModel("zylinderUnten", fs, cPineGreen, [-Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mPineGreen);
-		   createModel("zylinderMitte", fs, cPineGreen,  [-Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mPineGreen);
-		   createModel("zylinderOben", fs, cPineGreen,  [-Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mPineGreen);
-		   createModel("zylinderOben2", fs, cPineGreen,  [-Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mPineGreen);
-		   //createModel("plate", fs, cPineGreen,  [-Math.PI, 1, -Math.PI], [Math.PI *.5, 0, 0], [.1, .1, .1], mDarkBrown);
-		   createModel("plate", fs, cPineGreen,  [-Math.PI, 1.23, -Math.PI], [Math.PI *.5, 0, 0], [.55, .55, .55], mPineGreen);
-   
-   
-   
-		   // tanne2 hinten rechts
-		   createModel("kegel", fs, cDarkBrown, [Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mDarkBrown);
-		   createModel("zylinderUnten", fs, cPineGreen, [Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mPineGreen);
-		   createModel("zylinderMitte", fs, cPineGreen,  [Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mPineGreen);
-		   createModel("zylinderOben", fs, cPineGreen,  [Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mPineGreen);
-		   createModel("zylinderOben2", fs, cPineGreen,  [Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mPineGreen);
-		   //createModel("plate", fs, cPineGreen,  [-Math.PI, 1, -Math.PI], [Math.PI *.5, 0, 0], [.1, .1, .1], mDarkBrown);
-		   createModel("plate", fs, cPineGreen,  [Math.PI, 1.23, -Math.PI], [Math.PI *.5, 0, 0], [.55, .55, .55], mPineGreen);
-   
-   
-		   // tanne3 hinten rechts unten
-		   createModel("kegel", fs, cDarkBrown, [Math.PI*1.5, 0, -Math.PI*.5], [0, 0, 0], [1, 1, 1], mDarkBrown);
-		   createModel("zylinderUnten", fs, cPineGreen, [Math.PI*1.5, 0, -Math.PI*.5], [0, 0, 0], [1, 1, 1], mPineGreen);
-		   createModel("zylinderMitte", fs, cPineGreen,  [Math.PI*1.5, 0, -Math.PI*.5], [0, 0, 0], [1, 1, 1], mPineGreen);
-		   createModel("zylinderOben", fs, cPineGreen,  [Math.PI*1.5, 0, -Math.PI*.5], [0, 0, 0], [1, 1, 1], mPineGreen);
-		   createModel("zylinderOben2", fs, cPineGreen,  [Math.PI*1.5, 0, -Math.PI*.5], [0, 0, 0], [1, 1, 1], mPineGreen);
-		   //createModel("plate", fs, cPineGreen,  [-Math.PI, 1, -Math.PI], [Math.PI *.5, 0, 0], [.1, .1, .1], mDarkBrown);
-		   createModel("plate", fs, cPineGreen,  [Math.PI*1.5, 0.25, -Math.PI*.5], [Math.PI *.5, 0, 0], [.55, .55, .55], mPineGreen);
-   
-		   // tanne4 hinten rechts unten tal
-		   createModel("kegel", fs, cDarkBrown, [Math.PI*1, -1, Math.PI*.0], [0, 0, 0], [1, 3, 1], mDarkBrown);
-		   createModel("zylinderUnten", fs, cPineGreen, [Math.PI*1, -.5, Math.PI*.0], [0, 0, 0], [.75, 1, .75], mPineGreen);
-		   createModel("zylinderMitte", fs, cPineGreen,  [Math.PI*1, -.5, Math.PI*.0], [0, 0, 0], [.75, 1, .75], mPineGreen);
-		   createModel("zylinderOben", fs, cPineGreen,  [Math.PI*1, -.5, Math.PI*.0], [0, 0, 0], [.75, 1, .75], mPineGreen);
-		   createModel("zylinderOben2", fs, cPineGreen,  [Math.PI*1, -.5, Math.PI*.0], [0, 0, 0], [.75, 1, .75], mPineGreen);
-		   //createModel("plate", fs, cPineGreen,  [-Math.PI, 1, -Math.PI], [Math.PI *.5, 0, 0], [.1, .1, .1], mDarkBrown);
-		   createModel("plate", fs, cPineGreen,  [Math.PI*1, -.25, Math.PI*.0], [Math.PI *.5, 0, 0], [.41, .41, .41], mPineGreen);
-   
-		   // tanne5 vorne
-		   createModel("kegel", fs, cDarkBrown, [Math.PI*-.47, -.3, Math.PI*.8], [0, 0, 0], [2, 3, 2], mDarkBrown);
-		   createModel("zylinderUnten", fs, cPineGreen, [Math.PI*-.47, .15, Math.PI*.8], [0, 0, 0], [1.25, 1, 1.25], mPineGreen);
-		   createModel("zylinderMitte", fs, cPineGreen,  [Math.PI*-.47, .15, Math.PI*.8], [0, 0, 0], [1.25, 1, 1.25], mPineGreen);
-		   createModel("zylinderOben", fs, cPineGreen,  [Math.PI*-.47, .15, Math.PI*.8], [0, 0, 0], [1.25, 1, 1.25], mPineGreen);
-		   createModel("zylinderOben2", fs, cPineGreen,  [Math.PI*-.47, .15, Math.PI*.8], [0, 0, 0], [1.25, 1, 1.25], mPineGreen);
-		   //createModel("plate", fs, cPineGreen,  [-Math.PI, 1, -Math.PI], [Math.PI *.5, 0, 0], [.1, .1, .1], mDarkBrown);
-		   createModel("plate", fs, cPineGreen,  [Math.PI*-.47, 0.4, Math.PI*.8], [Math.PI *.5, 0, 0], [.69, .69, .69], mPineGreen);
-   
-		   // tanne6 hinten mitte hügel
-		   createModel("kegel", fs, cDarkBrown, [0, .98, -Math.PI * 2] , [0, 0, 0], [1, 1, 1], mDarkBrown);
-		   createModel("zylinderUnten", fs, cPineGreen, [0, .98, -Math.PI * 2], [0, 0, 0], [1, 1, 1], mPineGreen);
-		   createModel("zylinderMitte", fs, cPineGreen,  [0, .98, -Math.PI * 2], [0, 0, 0], [1, 1, 1], mPineGreen);
-		   createModel("zylinderOben", fs, cPineGreen,  [0, .98, -Math.PI * 2], [0, 0, 0], [1, 1, 1], mPineGreen);
-		   createModel("zylinderOben2", fs, cPineGreen,  [0, .98, -Math.PI * 2], [0, 0, 0], [1, 1, 1], mPineGreen);
-		   //createModel("plate", fs, cPineGreen,  [-Math.PI, 1, -Math.PI], [Math.PI *.5, 0, 0], [.1, .1, .1], mPineGreen);
-		   createModel("plate", fs, cPineGreen,  [0, 1.23, -Math.PI * 2], [Math.PI *.5, 0, 0], [.55, .55, .55], mPineGreen);
-   
-		   // tanne7 hinten links unten
-		   createModel("kegel", fs, cDarkBrown, [-Math.PI*1.5, 0, -Math.PI*.5], [0, 0, 0], [1, 3, 1], mDarkBrown);
-		   createModel("zylinderUnten", fs, cPineGreen, [-Math.PI*1.5, .5, -Math.PI*.5], [0, 0, 0], [.75, 1, .75], mPineGreen);
-		   createModel("zylinderMitte", fs, cPineGreen,  [-Math.PI*1.5, .5, -Math.PI*.5], [0, 0, 0], [.75, 1, .75], mPineGreen);
-		   createModel("zylinderOben", fs, cPineGreen,  [-Math.PI*1.5, .5, -Math.PI*.5], [0, 0, 0], [.75, 1, .75], mPineGreen);
-		   createModel("zylinderOben2", fs, cPineGreen,  [-Math.PI*1.5, .5, -Math.PI*.5], [0, 0, 0], [.75, 1, .75], mPineGreen);
-		   //createModel("plate", fs, cPineGreen,  [-Math.PI, 1, -Math.PI], [Math.PI *.5, 0, 0], [.1, .1, .1], mPineGreen);
-		   createModel("plate", fs, cPineGreen,  [-Math.PI*1.5, 0.75, -Math.PI*.5], [Math.PI *.5, 0, 0], [.41, .41, .41], mPineGreen);
-   
-   
-		   // schneemann
-		   createModel("sphere", fs, cSnow, [.75, -.2, 2], [0, 0, 0], [.3, .25, .3], mSnow);
-		   createModel("sphere", fs, cSnow, [.75, .1, 2], [0, 0, 0], [.25, .2, .25], mSnow);
-		   createModel("sphere", fs, cSnow, [.75, .35, 2], [0, 0, 0], [.15, .15, .15], mSnow);
-   
-		   createModel("kegel", fs, cDarkGray, [.75, .45, 2], [0, 0, 0], [1, .75, 1], mDarkGray);
-		   createModel("kegel", fs, cDarkGray, [.75, .45, 2], [0, 0, 0], [2, .1, 2], mDarkGray);
-		   createModel("zylinderNase", fs, cDarkOrange, [.46	,.25, 2.17], [0, Math.PI *.175, 0], [.3, .075, .075], mDarkOrange);	
-   
-		   createModel("plate", fs, cDarkGray, [.75, 0.6375	, 2], [Math.PI *-.5, 0, 0], [.1	, .1, .1], mDarkGray);
-		   createModel("plate", fs, cDarkGray, [.75, .475, 2], [Math.PI *-.5, 0, 0], [.2	, .2, .2], mDarkGray);
-		   createModel("plate", fs, cDarkGray, [.75, .45, 2], [Math.PI *.5, 0, 0], [.2	, .2, .2], mDarkGray);
-   
-		   //arm links
-		   createModel("zylinder", fs, cOcreBrown, [.65, .42, 2.7],[Math.PI*.35	, Math.PI*.00, Math.PI*0.06		], [.05, 1, .05], mOcreBrown);
-		   createModel("zylinder", fs, cOcreBrown, [.58, .42, 2.68],[Math.PI*.35	, Math.PI*.00, Math.PI*0.2		], [.01, .23, .01], mOcreBrown);
-   
-		   // arm rechts
-		   createModel("zylinder", fs, cOcreBrown, [.4, .4, 1.7],[Math.PI*.75	, Math.PI*.00, Math.PI*.8		], [.05, 1, .05], mOcreBrown);
-		   createModel("zylinder", fs, cOcreBrown, [.51, .4, 1.72],[Math.PI*.8	, Math.PI*.00, Math.PI*1		], [.01, .2, .01], mOcreBrown);
-   
-   
-		   
-		   // baum
-		   createModel("kegel", fs, cOcreBrown, [0, 1, 0], [0, 0, 0], [2, 1.5, 2], mOcreBrown);
-		   createModel("kegel", fs, cOcreBrown, [0, .9, 0], [0, 0, 0], [2, 1.5, 2], mOcreBrown);
-		   createModel("kegel", fs, cOcreBrown, [0, 1.2, 0], [Math.PI*.5, -.4, Math.PI *.5], [1.0, 2, 1.0], mOcreBrown);
-		   createModel("kegel", fs, cOcreBrown, [-0.4, 1.39, 0], [Math.PI*.5, .1, Math.PI *.5], [1.0, 2, 1.0], mOcreBrown);
-		   createModel("zylinder", fs, cOcreBrown, [-1.3, 1.82, 0], [Math.PI*.5, -.8, Math.PI *.5], [.15, 1, .15], mOcreBrown);
-		   createModel("zylinder", fs, cOcreBrown, [-1.1, 1.6, .5], [Math.PI*.5, -.8, Math.PI *.2	], [.07, 1, .07], mOcreBrown);
-		   createModel("zylinder", fs, cOcreBrown, [.28, 1.9	, .135], [Math.PI*0, Math.PI*-.15, Math.PI*-.15], [.285, 1.0, .285], mOcreBrown);
-		   createModel("zylinder", fs, cOcreBrown, [.15, 2.1	, .23], [Math.PI*0, Math.PI*.5, Math.PI*0.1	], [.12, .7, .12], mOcreBrown);
-		   createModel("zylinder", fs, cOcreBrown, [.34, 2.	, .16], [Math.PI*0, Math.PI*-.15, Math.PI*-.15], [.08, .7, .08], mOcreBrown);
-		   createModel("zylinder", fs, cOcreBrown, [.325	, 2.5	, .2], [Math.PI*0, Math.PI*1, Math.PI*0.1	], [.04, .8, .01], mOcreBrown);
-		   createModel("zylinder", fs, cOcreBrown, [-.42		, 2.1	, .00], [Math.PI*0, Math.PI*2, Math.PI*.2	], [.13, 1.1	, .13], mOcreBrown);
-		   createModel("zylinder", fs, cOcreBrown, [-.62		, 2.15	, .00], [Math.PI*0, Math.PI*2, Math.PI*.36	], [.02, .4	, .02], mOcreBrown);
-		   createModel("zylinder", fs, cOcreBrown, [.28	, 2.6	, .2], [Math.PI*0, Math.PI*1, Math.PI*-.02	], [.01, .3, .01], mOcreBrown);
-		   createModel("zylinder", fs, cOcreBrown, [.45	, 2.45		, .2], [Math.PI*0, Math.PI*1, Math.PI*.3	], [.02, .3, .02], mOcreBrown);
-   
-		   createModel("zylinder", fs, cOcreBrown, [0		, 1.5	, 1], [Math.PI*.37, Math.PI*1.5, Math.PI*-.05	], [.2, 1.4	, .2], mOcreBrown);
-		   createModel("zylinder", fs, cOcreBrown, [.5		, 1.6	, 1.2], [Math.PI*.41, Math.PI*.01, Math.PI*-0.15	], [.13, 1.4	, .13], mOcreBrown);
-		   createModel("zylinder", fs, cOcreBrown, [.35		, 1.58	, 2], [Math.PI*.47, Math.PI*.00, Math.PI*-0.03	], [.1, 1.8	, .05], mOcreBrown);
-		   createModel("zylinder", fs, cOcreBrown, [.1		, 1.55	, 1.6], [Math.PI*.47, Math.PI*.00, Math.PI*0.11	], [.06	, .7	, .02], mOcreBrown);
-   
-		   // schaukel
-		   createModel("kegel", fs, cDarkRed, [.29		, 1.1	, 1.6], [0, 0, 0], [.05, 1.8, .05], mDarkRed);
-		   createModel("kegel", fs, cDarkRed, [.29		, 1.08	, 1.2	], [0, 0, 0], [.05, 1.8, .05], mDarkRed);
-		   createModel("torus", fs, cDarkGray, [.29		, 1	, 1.41	], [Math.PI*0, Math.PI*.5, Math.PI*0], [.4, .4, .75], mDarkGray);
+		var cDarkBrown = [.36,.25,0.20, 1];
+		var cOcreBrown = [.53,.26,0.12, 1];
+		var cPineGreen = [.0,.2,0.0, 1];
+		var cDarkGray = [.32,.32,0.32, 1];
+		var cDarkRed = [.40,.0,0., 1];
+		var cDarkOrange = [.8,.4,0., 1];
+		var cSnow = [1.,.98,0.98, 1];
+
+
+		  createModel("plane", fs, cSnow, [0, 0, 0], [0, 0, 0], [1, 1, 1], mGreen);
+
+		  // tanne hinten links
+		  createModel("kegel", fs, cDarkBrown, [-Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mDarkBrown);
+		createModel("zylinderUnten", fs, cPineGreen, [-Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mGreen);
+		createModel("zylinderMitte", fs, cPineGreen,  [-Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mGreen);
+		createModel("zylinderOben", fs, cPineGreen,  [-Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mGreen);
+		createModel("zylinderOben2", fs, cPineGreen,  [-Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mGreen);
+		//createModel("plate", fs, cPineGreen,  [-Math.PI, 1, -Math.PI], [Math.PI *.5, 0, 0], [.1, .1, .1], mDefault);
+		createModel("plate", fs, cPineGreen,  [-Math.PI, 1.23, -Math.PI], [Math.PI *.5, 0, 0], [.55, .55, .55], mGreen);
+
+
+
+		// tanne2 hinten rechts
+		createModel("kegel", fs, cDarkBrown, [Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mDarkBrown);
+		createModel("zylinderUnten", fs, cPineGreen, [Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mGreen);
+		createModel("zylinderMitte", fs, cPineGreen,  [Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mGreen);
+		createModel("zylinderOben", fs, cPineGreen,  [Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mGreen);
+		createModel("zylinderOben2", fs, cPineGreen,  [Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mGreen);
+		//createModel("plate", fs, cPineGreen,  [-Math.PI, 1, -Math.PI], [Math.PI *.5, 0, 0], [.1, .1, .1], mDefault);
+		createModel("plate", fs, cPineGreen,  [Math.PI, 1.23, -Math.PI], [Math.PI *.5, 0, 0], [.55, .55, .55], mGreen);
+
+
+		// tanne3 hinten rechts unten
+		createModel("kegel", fs, cDarkBrown, [Math.PI*1.5, 0, -Math.PI*.5], [0, 0, 0], [1, 1, 1], mDarkBrown);
+		createModel("zylinderUnten", fs, cPineGreen, [Math.PI*1.5, 0, -Math.PI*.5], [0, 0, 0], [1, 1, 1], mGreen);
+		createModel("zylinderMitte", fs, cPineGreen,  [Math.PI*1.5, 0, -Math.PI*.5], [0, 0, 0], [1, 1, 1], mGreen);
+		createModel("zylinderOben", fs, cPineGreen,  [Math.PI*1.5, 0, -Math.PI*.5], [0, 0, 0], [1, 1, 1], mGreen);
+		createModel("zylinderOben2", fs, cPineGreen,  [Math.PI*1.5, 0, -Math.PI*.5], [0, 0, 0], [1, 1, 1], mGreen);
+		//createModel("plate", fs, cPineGreen,  [-Math.PI, 1, -Math.PI], [Math.PI *.5, 0, 0], [.1, .1, .1], mDefault);
+		createModel("plate", fs, cPineGreen,  [Math.PI*1.5, 0.25, -Math.PI*.5], [Math.PI *.5, 0, 0], [.55, .55, .55], mGreen);
+
+		// tanne4 hinten rechts unten tal
+		createModel("kegel", fs, cDarkBrown, [Math.PI*1, -1, Math.PI*.0], [0, 0, 0], [1, 3, 1], mDarkBrown);
+		createModel("zylinderUnten", fs, cPineGreen, [Math.PI*1, -.5, Math.PI*.0], [0, 0, 0], [.75, 1, .75], mGreen);
+		createModel("zylinderMitte", fs, cPineGreen,  [Math.PI*1, -.5, Math.PI*.0], [0, 0, 0], [.75, 1, .75], mGreen);
+		createModel("zylinderOben", fs, cPineGreen,  [Math.PI*1, -.5, Math.PI*.0], [0, 0, 0], [.75, 1, .75], mGreen);
+		createModel("zylinderOben2", fs, cPineGreen,  [Math.PI*1, -.5, Math.PI*.0], [0, 0, 0], [.75, 1, .75], mGreen);
+		//createModel("plate", fs, cPineGreen,  [-Math.PI, 1, -Math.PI], [Math.PI *.5, 0, 0], [.1, .1, .1], mDefault);
+		createModel("plate", fs, cPineGreen,  [Math.PI*1, -.25, Math.PI*.0], [Math.PI *.5, 0, 0], [.41, .41, .41], mGreen);
+
+		// tanne5 vorne
+		createModel("kegel", fs, cDarkBrown, [Math.PI*-.47, -.3, Math.PI*.8], [0, 0, 0], [2, 3, 2], mDarkBrown);
+		createModel("zylinderUnten", fs, cPineGreen, [Math.PI*-.47, .15, Math.PI*.8], [0, 0, 0], [1.25, 1, 1.25], mGreen);
+		createModel("zylinderMitte", fs, cPineGreen,  [Math.PI*-.47, .15, Math.PI*.8], [0, 0, 0], [1.25, 1, 1.25], mGreen);
+		createModel("zylinderOben", fs, cPineGreen,  [Math.PI*-.47, .15, Math.PI*.8], [0, 0, 0], [1.25, 1, 1.25], mGreen);
+		createModel("zylinderOben2", fs, cPineGreen,  [Math.PI*-.47, .15, Math.PI*.8], [0, 0, 0], [1.25, 1, 1.25], mGreen);
+		//createModel("plate", fs, cPineGreen,  [-Math.PI, 1, -Math.PI], [Math.PI *.5, 0, 0], [.1, .1, .1], mDefault);
+		createModel("plate", fs, cPineGreen,  [Math.PI*-.47, 0.4, Math.PI*.8], [Math.PI *.5, 0, 0], [.69, .69, .69], mGreen);
+
+		// tanne6 hinten mitte hügel
+		createModel("kegel", fs, cDarkBrown, [0, .98, -Math.PI * 2] , [0, 0, 0], [1, 1, 1], mDarkBrown);
+		createModel("zylinderUnten", fs, cPineGreen, [0, .98, -Math.PI * 2], [0, 0, 0], [1, 1, 1], mDefault);
+		createModel("zylinderMitte", fs, cPineGreen,  [0, .98, -Math.PI * 2], [0, 0, 0], [1, 1, 1], mDefault);
+		createModel("zylinderOben", fs, cPineGreen,  [0, .98, -Math.PI * 2], [0, 0, 0], [1, 1, 1], mDefault);
+		createModel("zylinderOben2", fs, cPineGreen,  [0, .98, -Math.PI * 2], [0, 0, 0], [1, 1, 1], mDefault);
+		//createModel("plate", fs, cPineGreen,  [-Math.PI, 1, -Math.PI], [Math.PI *.5, 0, 0], [.1, .1, .1], mDefault);
+		createModel("plate", fs, cPineGreen,  [0, 1.23, -Math.PI * 2], [Math.PI *.5, 0, 0], [.55, .55, .55], mDefault);
+
+		// tanne7 hinten links unten
+		createModel("kegel", fs, cDarkBrown, [-Math.PI*1.5, 0, -Math.PI*.5], [0, 0, 0], [1, 3, 1], mDarkBrown);
+		createModel("zylinderUnten", fs, cPineGreen, [-Math.PI*1.5, .5, -Math.PI*.5], [0, 0, 0], [.75, 1, .75], mDefault);
+		createModel("zylinderMitte", fs, cPineGreen,  [-Math.PI*1.5, .5, -Math.PI*.5], [0, 0, 0], [.75, 1, .75], mDefault);
+		createModel("zylinderOben", fs, cPineGreen,  [-Math.PI*1.5, .5, -Math.PI*.5], [0, 0, 0], [.75, 1, .75], mDefault);
+		createModel("zylinderOben2", fs, cPineGreen,  [-Math.PI*1.5, .5, -Math.PI*.5], [0, 0, 0], [.75, 1, .75], mDefault);
+		//createModel("plate", fs, cPineGreen,  [-Math.PI, 1, -Math.PI], [Math.PI *.5, 0, 0], [.1, .1, .1], mDefault);
+		createModel("plate", fs, cPineGreen,  [-Math.PI*1.5, 0.75, -Math.PI*.5], [Math.PI *.5, 0, 0], [.41, .41, .41], mDefault);
+
+
+		// schneemann
+		createModel("sphere", fs, cSnow, [.75, -.2, 2], [0, 0, 0], [.3, .25, .3], mDefault);
+		createModel("sphere", fs, cSnow, [.75, .1, 2], [0, 0, 0], [.25, .2, .25], mDefault);
+		createModel("sphere", fs, cSnow, [.75, .35, 2], [0, 0, 0], [.15, .15, .15], mDefault);
+
+		createModel("kegel", fs, cDarkGray, [.75, .45, 2], [0, 0, 0], [1, .75, 1], mDefault);
+		createModel("kegel", fs, cDarkGray, [.75, .45, 2], [0, 0, 0], [2, .1, 2], mDefault);
+		createModel("zylinderNase", fs, cDarkOrange, [.46	,.25, 2.17], [0, Math.PI *.175, 0], [.3, .075, .075], mDefault);	
+
+		createModel("plate", fs, cDarkGray, [.75, 0.6375	, 2], [Math.PI *-.5, 0, 0], [.1	, .1, .1], mDefault);
+		createModel("plate", fs, cDarkGray, [.75, .475, 2], [Math.PI *-.5, 0, 0], [.2	, .2, .2], mDefault);
+		createModel("plate", fs, cDarkGray, [.75, .45, 2], [Math.PI *.5, 0, 0], [.2	, .2, .2], mDefault);
+
+		//arm links
+		createModel("zylinder", fs, cOcreBrown, [.65, .42, 2.7],[Math.PI*.35	, Math.PI*.00, Math.PI*0.06		], [.05, 1, .05], mDarkBrown);
+		createModel("zylinder", fs, cOcreBrown, [.58, .42, 2.68],[Math.PI*.35	, Math.PI*.00, Math.PI*0.2		], [.01, .23, .01], mDarkBrown);
+
+		// arm rechts
+		createModel("zylinder", fs, cOcreBrown, [.4, .4, 1.7],[Math.PI*.75	, Math.PI*.00, Math.PI*.8		], [.05, 1, .05], mDarkBrown);
+		createModel("zylinder", fs, cOcreBrown, [.51, .4, 1.72],[Math.PI*.8	, Math.PI*.00, Math.PI*1		], [.01, .2, .01], mDarkBrown);
+
+
+		
+		// baum
+		createModel("kegel", fs, cOcreBrown, [0, 1, 0], [0, 0, 0], [2, 1.5, 2], mDefault);
+		createModel("kegel", fs, cOcreBrown, [0, .9, 0], [0, 0, 0], [2, 1.5, 2], mDefault);
+		createModel("kegel", fs, cOcreBrown, [0, 1.2, 0], [Math.PI*.5, -.4, Math.PI *.5], [1.0, 2, 1.0], mDefault);
+		createModel("kegel", fs, cOcreBrown, [-0.4, 1.39, 0], [Math.PI*.5, .1, Math.PI *.5], [1.0, 2, 1.0], mDefault);
+		createModel("zylinder", fs, cOcreBrown, [-1.3, 1.82, 0], [Math.PI*.5, -.8, Math.PI *.5], [.15, 1, .15], mDefault);
+		createModel("zylinder", fs, cOcreBrown, [-1.1, 1.6, .5], [Math.PI*.5, -.8, Math.PI *.2	], [.07, 1, .07], mDefault);
+		createModel("zylinder", fs, cOcreBrown, [.28, 1.9	, .135], [Math.PI*0, Math.PI*-.15, Math.PI*-.15], [.285, 1.0, .285], mDefault);
+		createModel("zylinder", fs, cOcreBrown, [.15, 2.1	, .23], [Math.PI*0, Math.PI*.5, Math.PI*0.1	], [.12, .7, .12], mDefault);
+		createModel("zylinder", fs, cOcreBrown, [.34, 2.	, .16], [Math.PI*0, Math.PI*-.15, Math.PI*-.15], [.08, .7, .08], mDefault);
+		createModel("zylinder", fs, cOcreBrown, [.325	, 2.5	, .2], [Math.PI*0, Math.PI*1, Math.PI*0.1	], [.04, .8, .01], mDefault);
+		createModel("zylinder", fs, cOcreBrown, [-.42		, 2.1	, .00], [Math.PI*0, Math.PI*2, Math.PI*.2	], [.13, 1.1	, .13], mDefault);
+		createModel("zylinder", fs, cOcreBrown, [-.62		, 2.15	, .00], [Math.PI*0, Math.PI*2, Math.PI*.36	], [.02, .4	, .02], mDefault);
+		createModel("zylinder", fs, cOcreBrown, [.28	, 2.6	, .2], [Math.PI*0, Math.PI*1, Math.PI*-.02	], [.01, .3, .01], mDefault);
+		createModel("zylinder", fs, cOcreBrown, [.45	, 2.45		, .2], [Math.PI*0, Math.PI*1, Math.PI*.3	], [.02, .3, .02], mDefault);
+
+		createModel("zylinder", fs, cOcreBrown, [0		, 1.5	, 1], [Math.PI*.37, Math.PI*1.5, Math.PI*-.05	], [.2, 1.4	, .2], mDefault);
+		createModel("zylinder", fs, cOcreBrown, [.5		, 1.6	, 1.2], [Math.PI*.41, Math.PI*.01, Math.PI*-0.15	], [.13, 1.4	, .13], mDefault);
+		createModel("zylinder", fs, cOcreBrown, [.35		, 1.58	, 2], [Math.PI*.47, Math.PI*.00, Math.PI*-0.03	], [.1, 1.8	, .05], mDefault);
+		createModel("zylinder", fs, cOcreBrown, [.1		, 1.55	, 1.6], [Math.PI*.47, Math.PI*.00, Math.PI*0.11	], [.06	, .7	, .02], mDefault);
+
+		// schaukel
+		createModel("kegel", fs, cDarkRed, [.29		, 1.1	, 1.6], [0, 0, 0], [.05, 1.8, .05], mDefault);
+		createModel("kegel", fs, cDarkRed, [.29		, 1.08	, 1.2	], [0, 0, 0], [.05, 1.8, .05], mDefault);
+		createModel("torus", fs, cDarkGray, [.29		, 1	, 1.41	], [Math.PI*0, Math.PI*.5, Math.PI*0], [.4, .4, .75], mDefault);
 
 
 
@@ -809,8 +800,8 @@ var app = ( function() {
 		illumination.light[0].position[0] = Math.cos(currentLightRotation) * radiusLights;
 		illumination.light[0].position[2] = Math.sin(currentLightRotation) * radiusLights;
 	
-		illumination.light[1].position[0] = Math.cos(Math.PI + currentLightRotation) * radiusLights;
-		illumination.light[1].position[2] = Math.sin(Math.PI + currentLightRotation) * radiusLights;
+	//	illumination.light[1].position[0] = Math.cos(Math.PI + currentLightRotation) * radiusLights;
+	//	illumination.light[1].position[2] = Math.sin(Math.PI + currentLightRotation) * radiusLights;
 	  }
 
 
