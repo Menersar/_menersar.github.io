@@ -637,6 +637,8 @@ var app = ( function() {
 		if(wireframe && toggleWireframeOn) {
 			gl.disableVertexAttribArray(prog.normalAttrib);
 			gl.vertexAttrib3f(prog.normalAttrib, 0, 0, 0);
+		//	gl.uniform4fv(prog.colorUniform, [0.95,0.95,0.95,.5]);
+
 			gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, model.iboLines);
 			gl.drawElements(gl.LINES, model.iboLines.numberOfElements,
 				gl.UNSIGNED_SHORT, 0);
