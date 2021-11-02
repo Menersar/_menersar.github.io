@@ -1,0 +1,227 @@
+<!DOCTYPE html5>
+<html>
+	<head>
+		<title>EA 7 – Z-Buffer Visualisierung</title>
+        <meta charset="UTF-8">
+
+		<link rel="stylesheet" href="css/materialize.min.css" />
+
+        <script src="js/jquery-3.6.0.min.js"></script>
+        <script src="js/materialize.min.js"></script>
+
+		<script src="ext/gl-matrix.js"></script>
+		<script src="GVT_Src_vertexData_plane.js"></script>
+
+
+        <script src="GVT_Src_vertexData_torus.js"></script>
+		<script src="GVT_Src_vertexData_kegel.js"></script>
+		<script src="GVT_Src_vertexData_zylinder_unten.js"></script>
+		<script src="GVT_Src_vertexData_zylinder_mitte.js"></script>
+		<script src="GVT_Src_vertexData_zylinder_oben.js"></script>
+		<script src="GVT_Src_vertexData_zylinder_oben2.js"></script>
+		<script src="GVT_Src_vertexData_sphere.js"></script>
+        <script src="GVT_Src_vertexData_zylinder_nase.js"></script>
+        <script src="GVT_Src_vertexData_plate.js"></script>
+        <script src="GVT_Src_vertexData_zylinder.js"></script>
+		
+
+		<link rel="stylesheet" href="styles.css" />
+
+        <script defer src="ea7.js"></script>
+
+
+
+		<script type="x-shader/x-vertex" id="vertexshader">
+            precision mediump float;
+
+			attribute vec3 aPosition;
+			attribute vec3 aNormal;
+
+			uniform mat4 uPMatrix;
+			uniform mat4 uMVMatrix;
+            uniform mat3 uNMatrix;
+            uniform vec4 uColor;
+
+			varying vec4 vColor;
+
+
+
+			void main(){
+                float displacement = cos(aPosition.x) * cos(aPosition.z);
+                vec3 newPosition = aPosition + displacement * vec3(0.0, 0.0, 0.0);
+
+                gl_Position = uPMatrix * uMVMatrix * vec4(newPosition, 1.);
+
+                vec3 tNormal = uNMatrix * aNormal;
+
+                vColor = uColor;
+
+
+
+			//gl_Position = uPMatrix * uMVMatrix * vec4(aPosition, 1.0);
+
+			//vColor = vec4(aNormal.z, aNormal.z, aNormal.z, 1.0);
+			//vColor = uColor * (vColor + 1.0) / 2.0;
+
+			
+
+			//vColor = vec4(tNormal.z, tNormal.z, tNormal.z, 1.0);
+
+			//vColor = uColor * (vColor + 1.0) / 2.0;
+			}
+		</script>
+		<script type="x-shader/x-fragment" id="fragmentshader">
+			precision mediump float;
+			varying vec4 vColor;
+
+			void main() {
+			gl_FragColor = vec4(gl_FragCoord.z, gl_FragCoord.z, gl_FragCoord.z, 1.0);
+			}
+		</script>
+	</head>
+
+
+
+
+
+
+		<body onload="app.start()"> 
+
+
+
+            <nav>
+                <div class="nav-wrapper">
+                    <a href="#" class="brand-logo" style="padding-left:10px">EA 7 – Z-Buffer Visualisierung</a>
+                    <ul id="nav-mobile" class="right hide-on-med-and-down">
+                        <li><a class="waves-effect waves-light modal-trigger" href="#modal1">Documentation</a></li>
+                    </ul>
+                </div>
+            </nav>
+        
+            <div id="container" class="container">
+                <div class="col s12">
+                    <div class="card">
+                        <br>
+
+                        
+                       <h5 id="textCanvas" >0. Kugel-Rekursionsschritt</h5>    
+                        <div class="cardImages">
+                           <!-- <canvas id="canvas" width="1000" height="500"></canvas>     -->
+							<canvas id="canvas" width="1000" height="500"></canvas>
+                  
+                            <!--     <canvas onclick="start2()" id="canvas2" width="500" height="500"></canvas> -->
+                    </div>
+
+                   <!-- <div id="tesselation">
+                        <label>
+                            Sphere tesselation level:
+                            <input id="tesselation-level" type="number" value="5" min="0" max="5">
+                        </label>
+                        <br>
+                        <div><strong>"WASD"</strong> Move camera <br/></div>
+                    </div>-->
+
+
+
+                        <div class="card-content">
+                            <!--Content-->
+                            <h5>Steuerung</h5>
+                            <p><b>W</b>, <b>A</b>: Bewegung der Kamera nach vorne und hinten zum Mittelpunkt der Szene.</p>
+                            <p><b>S</b>, <b>D</b>: Bewegung der Kamera nach links und rechts um den Mittelpunkt der Szene.</p>
+                            <p><b>Q</b>, <b>E</b>: Bewegung der Kamera hoch und runter um den Mittelpunkt der Szene.</p>
+                            <p><b>L</b>: Ein- / Ausschalten der Kameraeinschränkung, wodurch eine Bewegung unter die Ebene nicht möglich ist (default: An).</p>
+                            <p><b>T</b>: Wireframe-Modus an / aus.</p>
+                            <p><b>1</b> - <b>5</b>: Einstellen der Rekursionstiefe der Kugeln.</p>
+                            <br>
+                            <p style= "color: gray;"><b>P</b>: Perspektivische Projektion der Szene (default).</p>
+                            <p style= "color: gray;"><b>O</b>: Orthogonale Projektion der Szene.</p>
+                            <p style= "color: gray;"><b>F</b>: Frustum-Projektion der Szene.</p>
+                            <p style= "color: gray;"><b>Z</b>: Zoom der Kamera in den Mittelpunkt der Szene.</p>
+                            <p style= "color: gray;"><b>Shift</b> + <b>Z</b>: Zoom der Kamera aus den Mittelpunkt der Szene heraus.</p>
+
+
+
+                            
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        
+            <footer class="page-footer" id="page-footer">
+                <div class="container">
+                    Author: Maite-Aileen Brandt
+                </div>
+            </footer>
+        
+            <div id="modal1" class="modal modal-fixed-footer">
+                <div class="modal-content">
+                    <h4>Documentation</h4>
+
+                    <h5>Steuerung</h5>
+                    <p><b>W</b>, <b>A</b>: Bewegung der Kamera nach vorne und hinten zum Mittelpunkt der Szene.</p>
+                    <p><b>S</b>, <b>D</b>: Bewegung der Kamera nach links und rechts um den Mittelpunkt der Szene.</p>
+                    <p><b>Q</b>, <b>E</b>: Bewegung der Kamera hoch und runter um den Mittelpunkt der Szene.</p>
+                    <p><b>L</b>: Ein- / Ausschalten der Kameraeinschränkung, wodurch eine Bewegung unter die Ebene nicht möglich ist (default: An).</p>
+                    <p><b>T</b>: Wireframe-Modus an / aus.</p>
+                    <p><b>1</b> - <b>5</b>: Einstellen der Rekursionstiefe der Kugeln.</p>
+                    <p style= "color: gray;"><b>P</b>: Perspektivische Projektion der Szene (default).</p>
+                    <p style= "color: gray;"><b>O</b>: Orthogonale Projektion der Szene.</p>
+                    <p style= "color: gray;"><b>F</b>: Frustum-Projektion der Szene.</p>
+                    <p style= "color: gray;"><b>Z</b>: Zoom der Kamera in den Mittelpunkt der Szene.</p>
+                    <p style= "color: gray;"><b>Shift</b> + <b>Z</b>: Zoom der Kamera aus den Mittelpunkt der Szene heraus.</p>
+                        
+                     
+                        <h5>Aufgabenstellung </h5>
+                        <p>Erstellen Sie eine Szene aus mindestens drei Grundkörpern die sich gegenseitig überschneiden, die Körper sollen also Schnittvolumen bilden. Stellen Sie den Tiefenbuffer (Z-Buffer), das heißt die Z-Werte der Fragments im Framebuffer, als Graustufen da. Die Fragments, die in Z-Richtung näher an der Kamera sind, sollen dunkler dargestellt werden.</p>
+
+                            
+                       
+                        <h5>Interaktion</h5>
+                        <p>Bewegung der Kamera über die Pfeiltasten (oder über die Tasten WASD).</p>
+
+                       
+                        <h5>Umsetzung</h5>
+                        <p><b>Grundlagen für das Erstellen der Modelle, Interaktionen und der Shader:</b> Moodle Kurs-Materialien des Kurses Graphical Visualisation Technologies, Lerneinheiten 1-12 bis einschließlich SHA.</p>
+                        <p>Bei der Erstellung der Plane wird über <b>displacement = Math.cos(x) * Math.cos(z);</b>  und <b>y = y + displacement;</b> der y-Wert, also die Höhe der Plane, variiert.</p>
+                        <p>Die Szene wurde aus unterschiedlichen Grundkörpern zusammengesetzt. Der Baum besteht aus Kegeln und Zylindern. Die Schaukel aus Kegeln und einem Torus. Der Schneemann ist aus drei Kugeln, deren Rekusionstiefe sich verstellen lässt, Kegeln und Zylindern zusammengesetzt. Die Tannen setzen sind aus Kegeln und Zylindern zusammen.</p>
+                        <p>In dem Fragment-Shader werd über <b>gl_FragColor = vec4(gl_FragCoord.z, gl_FragCoord.z, gl_FragCoord.z, 1.0);</b> die Z-Werte der Fragments im Framebuffer als Graustufen dargestellt. So werden die Fragments, die in Z-Richtung näher an der Kamera sind, dunkler dargestellt.</p>
+
+                        <h5>Anmerkungen</h5>
+                        <p>Das Einschränken der Kamera, was auch deaktivierbar ist, dient dazu dass die Kamera nicht so stark durch die Modelle der Szene clippt.</p>
+
+                </div>
+                <div class="modal-footer">
+                    <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	</body>
+</html>
