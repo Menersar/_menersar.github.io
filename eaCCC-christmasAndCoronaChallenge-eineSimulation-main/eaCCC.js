@@ -273,16 +273,7 @@ if (!simulationPaused) {
 
 	for (var j = 0; j < valueAnzahlKrankeK.innerHTML; j ++) {
 		//var kugel = new kugel;
-		var kugel = { 
-			id: kugelID,
-			startPunkt: [getRandomArbitrary(kugelMinPunkt, kugelMaxPunkt),getRandomArbitrary(kugelMinPunkt, kugelMaxPunkt),getRandomArbitrary(kugelMinPunkt, kugelMaxPunkt)], 
-			richtung: [randomIntFromInterval(0,1),randomIntFromInterval(0,1),randomIntFromInterval(0,1)],
-			geschwindigkeit: getRandomArbitrary(1,10) *.001,
-			radius: kugelRadius,
-			gesund: false,
-			vergangeneZeitschritte:0,
-		
-		};
+		var kugel = new Kugel(kugelID, kugelRadius, false, valueAnzahlKrankeK.innerHTML, kugelMinPunkt, kugelMaxPunkt, valueGesundungsZeitschritteZ.innerHTML);
 		kugelModels.push(kugel);
 		kugelID ++;
 	}
@@ -292,16 +283,8 @@ if (!simulationPaused) {
 		//var kugel = new kugel;
 
 
-		var kugel = { 
-			id: kugelID,
-			startPunkt: [getRandomArbitrary(kugelMinPunkt, kugelMaxPunkt),getRandomArbitrary(kugelMinPunkt, kugelMaxPunkt),getRandomArbitrary(kugelMinPunkt, kugelMaxPunkt)], 
-			richtung: [randomIntFromInterval(0,1),randomIntFromInterval(0,1),randomIntFromInterval(0,1)],
-			geschwindigkeit: getRandomArbitrary(1,10) *.001,
-			radius: kugelRadius,
-			gesund: true,
-			vergangeneZeitschritte:0,
-		
-		};
+		var kugel = new Kugel (kugelID, kugelRadius, true, kugelMinPunkt, kugelMaxPunkt);
+
 		kugelModels.push(kugel);
 		kugelID ++;
 		console.log (kugelModels);
@@ -324,44 +307,12 @@ if (!simulationPaused) {
 		initModels();
 		render();
 		kugelModels.forEach((kugel) => {
-			//kugel.move(timeStepsUntilHealing);
-			//kugel.handleCollisionWithOthers(patients, infectionProbability);
-			if (!kugel.gesund) {
-				kugel.vergangeneZeitschritte ++;
-				if (kugel.vergangeneZeitschritte >= valueGesundungsZeitschritteZ.innerHTML) {
-					kugel.gesund = true;
-				}
-			}
-			kugel.startPunkt[0] = kugel.startPunkt[0] + kugel.richtung[0] * kugel.geschwindigkeit;
-			kugel.startPunkt[1] = kugel.startPunkt[1] + kugel.richtung[1] * kugel.geschwindigkeit;
-			kugel.startPunkt[2] = kugel.startPunkt[2] + kugel.richtung[2] * kugel.geschwindigkeit;
 
-			if (kugel.startPunkt[0] + kugelRadius > 1 ) {
-				kugel.startPunkt[0] = -1 + kugelRadius;
-			}
-
-			if (kugel.startPunkt[0] - kugelRadius < -1 ) {
-				kugel.startPunkt[0] = 1 - kugelRadius;
-			}
+			kugel.moveKugel();
 
 
-			if (kugel.startPunkt[1] + kugelRadius > 1 ) {
-				kugel.startPunkt[1] = -1 + kugelRadius ;
-			}
-
-			if (kugel.startPunkt[1] - kugelRadius < -1 ) {
-				kugel.startPunkt[1] = 1 - kugelRadius;
-			}
-
-
-			if (kugel.startPunkt[2] + kugelRadius > 1 ) {
-				kugel.startPunkt[2] = -1 + kugelRadius ;
-			}
-
-			if (kugel.startPunkt[2] - kugelRadius < -1 ) {
-				kugel.startPunkt[2] = 1 - kugelRadius;
-			}
-
+			
+			
 			if (kugel.gesund) {
 			//	console.log("test if infected touch me");
 				kugel.gesund = testInfection(kugel);
@@ -399,13 +350,6 @@ if (!simulationPaused) {
   }
 
 
-  function getRandomArbitrary(min, max) {
-	return Math.random() * (max - min) + min;
-  }
-
-  function randomIntFromInterval(min, max) { // min and max included 
-	return Math.floor(Math.random() * (max - min + 1) + min)
-  }
 
 
 /*  function initKugel(k) {
@@ -472,7 +416,7 @@ if (!simulationPaused) {
 		valueAnzahlKrankeK.innerHTML = sliderAnzahlKrankeK.value;
 		valueAnzahlGesundeG.innerHTML = sliderAnzahlKugelnN.value - sliderAnzahlKrankeK.value;
 		valueGesundungsZeitschritteZ.innerHTML = sliderGesundungsZeitschritteZ.value;
-		valueKugelRadiusR.innerHTML = Math.round((sliderKugelRadiusR.value * .1) * 100) / 100	;
+		valueKugelRadiusR.innerHTML = Math.round((sliderKugelRadiusR.value * .1) * 100) / 100;
 	
 		//document.getElementById('stopSimulation').disabled = true;
 	}
