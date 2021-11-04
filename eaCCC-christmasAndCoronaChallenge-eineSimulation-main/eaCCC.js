@@ -18,12 +18,18 @@ var app = ( function() {
 		var cDarkRed = [.40,.0,0., 1];
 		var cDarkOrange = [.8,.4,0., 1];
 		var cSnow = [1.,.98,0.98, 1];
+		var cBlue = [0,0,1, 1];
+		var cYellow = [0.81,0.71,.23, 1];
+
+
 
 		var mDefault = createPhongMaterial();
 		var mRed = createPhongMaterial({kd:[1.,0.,0.]});
 		   var mGreen = createPhongMaterial({kd:[0.,1.,0.]});
 		   var mBlue = createPhongMaterial({kd:[0.,0.,1.]});
+		   var mYellow = createPhongMaterial({kd:[0.81,0.71,.23]});
 		   var mWhite = createPhongMaterial({ka:[1.,1.,1.], kd:[.5,.5,.5], ks:[0.,0.,0.]});
+		   
 		   
 		   var mDarkBrown = createPhongMaterial({kd:[.36,.25,0.20]});
 		   var mOcreBrown = createPhongMaterial({kd:[.53,.26,0.12]});
@@ -289,7 +295,7 @@ if (!simulationPaused) {
 
 		kugelModels.push(kugel);
 		kugelID ++;
-		console.log (kugelModels);
+		//console.log (kugelModels);
 
 	}
 }
@@ -732,15 +738,21 @@ if (!simulationPaused) {
 
 	
 	function initKugel(k) {
-		
-
-		if (k.gesund == false) {
-			//console.log("draw ungesund");
-		createModel("sphere", "wireframefill", cDarkRed, k.startPunkt, [0,0,0], [k.radius, k.radius, k.radius], mDarkRed);
+		if (!k.immun) {
+			if (k.gesund == false) {
+				//console.log("draw ungesund");
+				createModel("sphere", "wireframefill", cDarkRed, k.startPunkt, [0,0,0], [k.radius, k.radius, k.radius], mDarkRed);
+			} else if (k.gesund) {
+				//console.log("draw gesund");
+				createModel("sphere", "wireframefill", cPineGreen, k.startPunkt, [0,0,0], [k.radius, k.radius, k.radius], mPineGreen);
+			}
 		} else {
-			//console.log("draw gesund");
-
-			createModel("sphere", "wireframefill", cPineGreen, k.startPunkt, [0,0,0], [k.radius, k.radius, k.radius], mPineGreen);
+			if (k.gesund == false) {
+				createModel("sphere", "wireframefill", cYellow, k.startPunkt, [0,0,0], [k.radius, k.radius, k.radius], mYellow);
+			} else if (k.gesund) {		
+				createModel("sphere", "wireframefill", cBlue, k.startPunkt, [0,0,0], [k.radius, k.radius, k.radius], mBlue);
+			}
+		
 		}
 	}
 

@@ -8,6 +8,8 @@ var gesund;
 var vergangeneZeitschritte;
 var zeitZumGesundwerden;
 
+var immun;
+
 
 
 class Kugel {
@@ -21,6 +23,7 @@ class Kugel {
 	this.gesund = _gesund,
 	this.vergangeneZeitschritte = 0;
 	this.zeitZumGesundwerden = _zeitZumGesundwerden;
+	this.immun = false;
 
 	}
 
@@ -33,6 +36,7 @@ class Kugel {
 			if (this.vergangeneZeitschritte >= this.zeitZumGesundwerden) {
 				this.gesund = true;
 				this.vergangeneZeitschritte = 0;
+				this.immun = true;
 			}
 		}
 		this.startPunkt[0] = this.startPunkt[0] + this.richtung[0] * this.geschwindigkeit;
@@ -75,12 +79,12 @@ class Kugel {
 
 	testInfection(otherKugeln) {
 		if (this.gesund) {
-			let ges = true;
+			//let ges = true;
 			otherKugeln.forEach((k) => {
 				if (k.id != this.id && intersect(k.startPunkt, this.startPunkt)) {
 		  			if (!k.gesund ) {
-			  		//console.log("he touched me");
-			  		this.gesund = false;
+			  			console.log("he touched me");
+			  			this.gesund = false;
 		  			}
 				}
 	  		});
@@ -97,13 +101,13 @@ class Kugel {
 
 
 function intersect(otherKugelPosition, thisKugelPosition) {
-	let radius = parseFloat( this.radius);
-	let distanz = Math.sqrt((otherKugelPosition[0] - thisKugelPosition[0]) * (otherKugelPosition[0] - thisKugelPosition[0])
+	let _radius = this.radius;
+	let _distanz = Math.sqrt((otherKugelPosition[0] - thisKugelPosition[0]) * (otherKugelPosition[0] - thisKugelPosition[0])
 		+ (otherKugelPosition[1] - thisKugelPosition[1]) * (otherKugelPosition[1] - thisKugelPosition[1])
 		+ (otherKugelPosition[2] - thisKugelPosition[2]) * (otherKugelPosition[2] - thisKugelPosition[2]));
 	//console.log("radius " + radius+radius);
 
-  return distanz < (radius + radius);
+  return _distanz < (_radius + _radius);
 }
 
 
