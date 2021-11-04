@@ -1,0 +1,371 @@
+<!DOCTYPE html5>
+<html>
+	<head>
+		<title>EA CCC-Christmas & Corona Challenge – Eine Simulation</title>
+        <meta charset="UTF-8">
+
+		<link rel="stylesheet" href="css/materialize.min.css" />
+
+        <script src="js/jquery-3.6.0.min.js"></script>
+        <script src="js/materialize.min.js"></script>
+
+		<script src="ext/gl-matrix.js"></script>
+		<script src="GVT_Src_vertexData_plane.js"></script>
+
+
+        <script src="GVT_Src_vertexData_torus.js"></script>
+		<script src="GVT_Src_vertexData_kegel.js"></script>
+		<script src="GVT_Src_vertexData_zylinder_unten.js"></script>
+		<script src="GVT_Src_vertexData_zylinder_mitte.js"></script>
+		<script src="GVT_Src_vertexData_zylinder_oben.js"></script>
+		<script src="GVT_Src_vertexData_zylinder_oben2.js"></script>
+		<script src="GVT_Src_vertexData_sphere.js"></script>
+        <script src="GVT_Src_vertexData_zylinder_nase.js"></script>
+        <script src="GVT_Src_vertexData_plate.js"></script>
+        <script src="GVT_Src_vertexData_zylinder.js"></script>
+		
+
+		<link rel="stylesheet" href="styles.css" />
+
+        <script defer src="eaCCC.js"></script>
+
+
+
+		<script type="x-shader/x-vertex" id="vertexshader">
+            
+            attribute vec3 aPosition;
+            attribute vec3 aNormal;
+            
+            uniform mat4 uPMatrix;
+            uniform mat4 uMVMatrix;
+            uniform mat3 uNMatrix;
+            
+
+			//uniform vec4 uColor;
+            //varying vec4 vColor;
+                        
+            // Ambient light.
+            //uniform vec3 ambientLight;
+
+            varying vec3 vNormal;
+            varying vec4 vPosition;
+
+            
+            
+            // Pointlights.
+            //const int MAX_LIGHT_SOURCES = 8;
+            //struct LightSource {
+            //    bool isOn;
+            //    vec3 position;
+            //    vec3 color;
+            //};
+            //uniform LightSource light[MAX_LIGHT_SOURCES];
+            
+            // Material.
+           // struct PhongMaterial {
+             //   vec3 ka;
+               // vec3 kd;
+               // vec3 ks;
+               // float ke; 
+            //};
+            //uniform PhongMaterial material;
+            
+            // Phong illumination for single light source,
+            // no ambient light.
+           // vec3 phong(vec3 p, vec3 n, vec3 v, LightSource l) {
+				
+             //   vec3 L = l.color;
+            
+               // vec3 s = normalize(l.position - p);
+                //vec3 r = reflect(-s, n);
+                
+                //float sn = max( dot(s,n), 0.0);
+                //float rv = max( dot(r,v), 0.0);
+                            
+                //vec3 diffuse = material.kd * L * sn;
+                                
+                //vec3 specular = material.ks * L * pow(rv, material.ke);
+            
+                //return diffuse + specular;			
+            //}
+            
+           // vec3 phong(vec3 p, vec3 n, vec3 v) {
+
+                // Calculate ambient light.
+             //   vec3 result = material.ka * ambientLight;
+                
+                // Add light from all light sources.
+               // for(int j=0; j < MAX_LIGHT_SOURCES; j++){
+                 //   if(light[j].isOn){
+                   //     result += phong(p, n, v, light[j]);
+                    //}
+                //}
+                //return result;
+            //}
+            
+            void main(){
+                // Calculate vertex position in eye coordinates. 
+                vec4 tPosition = uMVMatrix * vec4(aPosition, 1.0);
+                // Calculate projektion.
+                gl_Position = uPMatrix * tPosition;
+            
+                vec3 tNormal = normalize(uNMatrix * aNormal);
+                
+                // Calculate view vector.
+               // vec3 v = normalize(-tPosition.xyz);	
+                
+                //vColor = vec4( phong(tPosition.xyz, tNormal, v), 1.0);
+
+                vPosition = tPosition;
+                vNormal = tNormal;
+            }
+		</script>
+		<script type="x-shader/x-fragment" id="fragmentshader">
+
+            precision mediump float;
+
+varying vec3 vNormal;
+varying vec4 vPosition;
+
+// Material.
+struct PhongMaterial {
+    vec3 ka;
+    vec3 kd;
+    vec3 ks;
+    float ke; 
+};
+uniform PhongMaterial material;
+
+// Ambient light.
+uniform vec3 ambientLight;
+
+// Pointlights.
+const int MAX_LIGHT_SOURCES = 8;
+struct LightSource {
+    bool isOn;
+    vec3 position;
+    vec3 color;
+};
+uniform LightSource light[MAX_LIGHT_SOURCES];
+
+// Phong illumination for single light source,
+// no ambient light.
+vec3 phong(vec3 p, vec3 n, vec3 v, LightSource l) {
+
+    vec3 L = l.color;
+
+    vec3 s = normalize(l.position - p);
+    vec3 r = reflect(-s, n);
+	
+    float sn = max( dot(s,n), 0.0);
+    float rv = max( dot(r,v), 0.0);
+				
+    vec3 diffuse = material.kd * L * sn;
+								
+    vec3 specular = material.ks * L * pow(rv, material.ke);
+
+    return diffuse + specular;			
+}
+
+// Phong illumination for multiple light sources
+vec3 phong(vec3 p, vec3 n, vec3 v) {
+
+    // Calculate ambient light.
+    vec3 result = material.ka * ambientLight;
+
+    // Add light from all light sources.
+    for(int j=0; j < MAX_LIGHT_SOURCES; j++){
+        if(light[j].isOn){
+            result += phong(p, n, v, light[j]);
+        }
+    }
+    return result;
+}
+
+void main() {
+    // Calculate view vector.
+    vec3 v = normalize(-vPosition.xyz);
+
+    vec3 vNormal = normalize(vNormal);
+
+    gl_FragColor = vec4( phong(vPosition.xyz, vNormal, v), 1.0);
+}
+		</script>
+	</head>
+
+
+
+
+
+
+		<body onload="app.start()"> 
+
+
+
+            <nav>
+                <div class="nav-wrapper">
+                    <a href="#" class="brand-logo" style="padding-left:10px">EA CCC-Christmas & Corona Challenge – Eine Simulation</a>
+                    <ul id="nav-mobile" class="right hide-on-med-and-down">
+                        <li><a class="waves-effect waves-light modal-trigger" href="#modal1">Documentation</a></li>
+                    </ul>
+                </div>
+            </nav>
+        
+            <div id="container" class="container">
+                <div class="col s12">
+                    <div class="card">
+                        <br>
+
+                        
+                       <h5 id="textCanvas" >0. Kugel-Rekursionsschritt</h5>    
+                        <div class="cardImages">
+                           <!-- <canvas id="canvas" width="1000" height="500"></canvas>     -->
+							<canvas id="canvas" width="1000" height="500"></canvas>
+                  
+                            <!--     <canvas onclick="start2()" id="canvas2" width="500" height="500"></canvas> -->
+                    </div>
+
+                   <!-- <div id="tesselation">
+                        <label>
+                            Sphere tesselation level:
+                            <input id="tesselation-level" type="number" value="5" min="0" max="5">
+                        </label>
+                        <br>
+                        <div><strong>"WASD"</strong> Move camera <br/></div>
+                    </div>-->
+
+
+
+                        <div class="card-content">
+
+                            <button id="startSimulation">Start</button>
+                            <button disabled = true id="stopSimulation">Stop</button>
+
+                            <br>
+                            <br>
+                           
+                                
+                                <div class="slidecontainer" id="sliders">
+
+                                    <p>Anzahl Kugeln: <span id="valueAnzahlKugelnN"></span></p>
+                                    <input type="range" min="1" max="20" value="10" class="slider" id="anzahlKugelnN">
+                                    <br>
+
+
+                                    <p>Anzahl Kranke: <span id="valueAnzahlKrankeK"></span>, Anzahl Gesunde:  <span id="valueAnzahlGesundeG"></span></p>
+                                    <input type="range" min="0" max="20" value="2" class="slider" id="anzahlKrankeK">
+                                    <br>
+
+                                    <p>Radius Kugeln: <span id="valueKugelRadiusR"></span></p>
+                                    <input type="range" min="1" max="10" value="1" class="slider" id="kugelRadiusR">
+                                    <br>
+
+                                    <p>Zeitschritte zur Gesundung: <span id="valueGesundungsZeitschritteZ"></span></p>
+                                    <input type="range" min="1" max="500" value="100" class="slider" id="gesundungsZeitschritteZ">
+                                
+                                </div>
+
+                            
+
+                            <!--Content-->
+                            <h5>Steuerung</h5>
+                            <p><b>L</b>: Bewegung der Lichter.</p>
+                            <p><b>W</b>, <b>A</b>: Bewegung der Kamera nach vorne und hinten zum Mittelpunkt der Szene.</p>
+                            <p><b>S</b>, <b>D</b>: Bewegung der Kamera nach links und rechts um den Mittelpunkt der Szene.</p>
+                            <p><b>Q</b>, <b>E</b>: Bewegung der Kamera hoch und runter um den Mittelpunkt der Szene.</p>
+                            <p><b>C</b>: Ein- / Ausschalten der Kameraeinschränkung, wodurch eine Bewegung unter die Ebene nicht möglich ist (default: An).</p>
+                            <p><b>T</b>: Wireframe-Modus an / aus.</p>
+                            <p><b>1</b> - <b>5</b>: Einstellen der Rekursionstiefe der Kugeln.</p>
+                            <br>
+                            <p style= "color: gray;"><b>P</b>: Perspektivische Projektion der Szene (default).</p>
+                            <p style= "color: gray;"><b>O</b>: Orthogonale Projektion der Szene.</p>
+                            <p style= "color: gray;"><b>F</b>: Frustum-Projektion der Szene.</p>
+                            <p style= "color: gray;"><b>Z</b>: Zoom der Kamera in den Mittelpunkt der Szene.</p>
+                            <p style= "color: gray;"><b>Shift</b> + <b>Z</b>: Zoom der Kamera aus den Mittelpunkt der Szene heraus.</p>
+
+                            <h5>Toon Shading</h5>
+                            <p><a href="index-2.html">Link zur gleichen Szene mit Toon- / Cell-Shading.</a></p>
+
+
+                            
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        
+            <footer class="page-footer" id="page-footer">
+                <div class="container">
+                    Author: Maite-Aileen Brandt
+                </div>
+            </footer>
+        
+            <div id="modal1" class="modal modal-fixed-footer">
+                <div class="modal-content">
+                    <h4>Documentation</h4>
+
+                    <h5>Steuerung</h5>
+                            <p><b>L</b>: Bewegung der Lichter.</p>
+                            <p><b>W</b>, <b>A</b>: Bewegung der Kamera nach vorne und hinten zum Mittelpunkt der Szene.</p>
+                            <p><b>S</b>, <b>D</b>: Bewegung der Kamera nach links und rechts um den Mittelpunkt der Szene.</p>
+                            <p><b>Q</b>, <b>E</b>: Bewegung der Kamera hoch und runter um den Mittelpunkt der Szene.</p>
+                            <p><b>C</b>: Ein- / Ausschalten der Kameraeinschränkung, wodurch eine Bewegung unter die Ebene nicht möglich ist (default: An).</p>
+                            <p><b>T</b>: Wireframe-Modus an / aus.</p>
+                            <p><b>1</b> - <b>5</b>: Einstellen der Rekursionstiefe der Kugeln.</p>
+
+                            <p style= "color: gray;"><b>P</b>: Perspektivische Projektion der Szene (default).</p>
+                            <p style= "color: gray;"><b>O</b>: Orthogonale Projektion der Szene.</p>
+                            <p style= "color: gray;"><b>F</b>: Frustum-Projektion der Szene.</p>
+                            <p style= "color: gray;"><b>Z</b>: Zoom der Kamera in den Mittelpunkt der Szene.</p>
+                            <p style= "color: gray;"><b>Shift</b> + <b>Z</b>: Zoom der Kamera aus den Mittelpunkt der Szene heraus.</p>
+                        
+                     
+                            <h5>Aufgabenstellung </h5>
+                            <p>Erstellen Sie eine Szene aus mindestens drei Grundkörpern die sich gegenseitig überschneiden, die Körper sollen also Schnittvolumen bilden. Stellen Sie den Tiefenbuffer (Z-Buffer), das heißt die Z-Werte der Fragments im Framebuffer, als Graustufen da. Die Fragments, die in Z-Richtung näher an der Kamera sind, sollen dunkler dargestellt werden.</p>
+    
+                                
+                           
+                            <h5>Interaktion</h5>
+                            <p>Bewegung der Kamera über die Pfeiltasten (oder über die Tasten WASD).</p>
+    
+                           
+                            <h5>Umsetzung</h5>
+                            <p><b>Grundlagen für das Erstellen der Modelle, Interaktionen und der Shader:</b> Moodle Kurs-Materialien des Kurses Graphical Visualisation Technologies, Lerneinheiten 1-12 bis einschließlich SHA.</p>
+                            <p>In der Funktion moveLightsAroundModels ist die Bewegung der beiden Lichter auf einer Kreisbahn um die Modelle realisiert. Die Positionen der Lichter werden jeweils, über die Taste L, neu berechnet und gesetzt.</p>
+                            <p>Anhand der Demo (<a href="https://webglsamples.org/toon-shading/toon-shading.html">https://webglsamples.org/toon-shading/toon-shading.html</a>) und Informationen (<a href="http://de.wikipedia.org/wiki/Cel_Shading">http://de.wikipedia.org/wiki/Cel_Shading</a>, <a href="http://en.wikibooks.org/wiki/GLSL_Programming/Unity/Toon_Shading">http://en.wikibooks.org/wiki/GLSL_Programming/Unity/Toon_Shading</a>), ist das Toon-Shading im Fragment-Shader, ausgehend von dem Programm für die Lichter auf Kreisbahn, realisiert.</p>
+
+                </div>
+                <div class="modal-footer">
+                    <a href="#!" class="modal-close waves-effect waves-green btn-flat">Close</a>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	</body>
+</html>
