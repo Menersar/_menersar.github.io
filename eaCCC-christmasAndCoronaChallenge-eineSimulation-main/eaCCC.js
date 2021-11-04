@@ -221,9 +221,7 @@ document.getElementById('startSimulation').onclick = () => {
 		pauseSimulation();
 		document.getElementById('startSimulation').innerHTML = 'Start';
 	}
-
-	
-	
+		
   };
 
 
@@ -273,7 +271,9 @@ if (!simulationPaused) {
 
 	for (var j = 0; j < valueAnzahlKrankeK.innerHTML; j ++) {
 		//var kugel = new kugel;
-		var kugel = new Kugel(kugelID, kugelRadius, false, valueAnzahlKrankeK.innerHTML, kugelMinPunkt, kugelMaxPunkt, valueGesundungsZeitschritteZ.innerHTML);
+//		var kugel = new Kugel(kugelID, kugelRadius, false, valueAnzahlKrankeK.innerHTML, kugelMinPunkt, kugelMaxPunkt, valueGesundungsZeitschritteZ.innerHTML);
+		var kugel = new Kugel (kugelID, kugelRadius, false, kugelMinPunkt, kugelMaxPunkt, valueGesundungsZeitschritteZ.innerHTML);
+
 		kugelModels.push(kugel);
 		kugelID ++;
 	}
@@ -283,7 +283,9 @@ if (!simulationPaused) {
 		//var kugel = new kugel;
 
 
-		var kugel = new Kugel (kugelID, kugelRadius, true, kugelMinPunkt, kugelMaxPunkt);
+		var kugel = new Kugel (kugelID, kugelRadius, true, kugelMinPunkt, kugelMaxPunkt, valueGesundungsZeitschritteZ.innerHTML);
+		//var kugel = new Kugel(kugelID, kugelRadius, true, valueAnzahlKrankeK.innerHTML, kugelMinPunkt, kugelMaxPunkt, valueGesundungsZeitschritteZ.innerHTML);
+
 
 		kugelModels.push(kugel);
 		kugelID ++;
@@ -311,12 +313,12 @@ if (!simulationPaused) {
 			kugel.moveKugel();
 
 
+			kugel.testInfection(kugelModels);
 			
-			
-			if (kugel.gesund) {
+		//	if (kugel.gesund) {
 			//	console.log("test if infected touch me");
-				kugel.gesund = testInfection(kugel);
-			}
+			//	kugel.gesund = testInfection(kugel);
+			//}
 			
 		});
 	  }, 50);
@@ -325,29 +327,9 @@ if (!simulationPaused) {
 
 
 
-  function testInfection(currentKugel) {
-	  let gesund = true;
-    kugelModels.forEach((kugel) => {
-      if (kugel.id != currentKugel.id && intersect(kugel.startPunkt, currentKugel.startPunkt)) {
-        if (!kugel.gesund ) {
-			console.log("he touched me");
-			gesund = false;
-        }
-      }
-    });
+  
 
-	return gesund;
-  }
-
-  function intersect(otherKugelPosition, thisKugelPosition) {
-	  let radius = parseFloat( kugelRadius);
-	let distanz = Math.sqrt((otherKugelPosition[0] - thisKugelPosition[0]) * (otherKugelPosition[0] - thisKugelPosition[0])
-	  + (otherKugelPosition[1] - thisKugelPosition[1]) * (otherKugelPosition[1] - thisKugelPosition[1])
-	  + (otherKugelPosition[2] - thisKugelPosition[2]) * (otherKugelPosition[2] - thisKugelPosition[2]));
-	  console.log("radius " + radius+radius);
-
-	return distanz < (radius + radius);
-  }
+  
 
 
 
