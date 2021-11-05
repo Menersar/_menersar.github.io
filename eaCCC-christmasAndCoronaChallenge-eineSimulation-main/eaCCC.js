@@ -356,7 +356,7 @@ var app = (function () {
 			kugelModels.forEach((kugel) => {
 
 				kugel.moveKugel();
-				kugel.testInfection(kugelModels);
+				kugel.testInfection(kugelModels, sound);
 
 				//	if (kugel.gesund) {
 				//	console.log("test if infected touch me");
@@ -1358,34 +1358,42 @@ var app = (function () {
 	}
 
 
+	document.getElementById("sound").onended = function () {
+		sound = true;
+	}
 
+	
+	document.getElementById("sound").onplay = function () {
+		sound = false;
+	}
 
 	document.getElementById("simulationsGeschwindigkeit").oninput = function () {
 		valueSimulationsGeschwindigkeit.innerHTML = this.value;
-		clearInterval(simulationInterval);
+		//clearInterval(simulationInterval);
 		//simulationPaused = true;
-		clearInterval(simulationInterval);
+		//clearInterval(simulationInterval);
+		pauseSimulation();
 		speed = 400/ this.value;
 		console.log("speed" + speed);
 		//simulationPaused = false;
-		startSimulation();
-
+		
 		
 	}
-/*
+
 	document.getElementById("simulationsGeschwindigkeit").onpointerup = function () {
-		valueSimulationsGeschwindigkeit.innerHTML = this.value;
+	//	valueSimulationsGeschwindigkeit.innerHTML = this.value;
 		//clearInterval(simulationInterval);
 		//simulationPaused = true;
-		clearInterval(simulationInterval);
-		speed = this.value;
-		console.log("speed");
-		simulationPaused = false;
+		//clearInterval(simulationInterval);
+		//speed = this.value;
+	//	console.log("speed");
+		//simulationPaused = false;
+
 		startSimulation();
 
-		
+		simulationPaused = false;
 	}
-*/
+
 
 	// App interface.
 	return {

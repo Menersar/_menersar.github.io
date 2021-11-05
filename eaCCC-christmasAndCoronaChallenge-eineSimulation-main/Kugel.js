@@ -28,7 +28,7 @@ class Kugel {
 
 		this.soundFile = new Audio('pew.wav');
 
-		this.readyToPlay = true;
+	//	this.readyToPlay = true;
 
 
 	}
@@ -110,7 +110,7 @@ class Kugel {
 	}
 
 
-	testInfection(otherKugeln) {
+	testInfection(otherKugeln, _sound ) {
 
 		//console.log("test infection");
 	/*	if (!this.gesund) {
@@ -127,11 +127,11 @@ class Kugel {
 					vec3.scaleAndAdd(this.startPunkt, this.startPunkt, this.richtung, this.radius*.1);
 					vec3.scaleAndAdd(k.startPunkt, k.startPunkt, k.richtung, k.radius*.1);
 
-					if (this.sound && this.readyToPlay) {
-						this.readyToPlay = false;
+					if (this.sound && _sound) {
+					//	this.readyToPlay = false;
 					this.soundFile.volume = .1;
 					this.soundFile.play();
-					this.soundFile.onended(this.myCallback);
+					//this.soundFile.onended = function() {makeReadyToPlay()};
 					}
 
 					//vec3.negate(this.richtung, this.richtung);
@@ -150,9 +150,7 @@ class Kugel {
 				
 	}
 
-	myCallback = function() {
-		this.readyToPlay = true;
-	}
+	
 
 
 
@@ -180,7 +178,9 @@ function intersect(otherKugelPosition) {
   return _distanz < (_radius + _radius);
 }*/
 
-
+function makeReadyToPlay() {
+	this.readyToPlay = true;
+}
 function getRandomArbitrary(min, max) {
 	return Math.random() * (max - min) + min;
 }
