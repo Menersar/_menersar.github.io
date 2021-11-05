@@ -6,10 +6,21 @@ let simulationPaused = false;
 var speed = 50;
 
 var sound = true;
+var chart;
+var ctx;
+
+var chartVariables = {
+	immune: 0,
+	kranke: 0,
+gesunde: 0,
+immuneKranke: 0
+};
 
 
 
 var app = (function () {
+
+	
 
 	// fillstyle
 	var wireFrameFill = "wireframefill";
@@ -254,19 +265,19 @@ var app = (function () {
 		});
 
 		if (document.getElementById('soundButton').innerHTML == 'Sound: An') {
-			
-		
+
+
 
 			document.getElementById('soundButton').innerHTML = 'Sound: Aus';
 		} else {
-			
+
 			document.getElementById('soundButton').innerHTML = 'Sound: An';
 		}
 
 	};
 
 
-	
+
 
 
 
@@ -365,19 +376,53 @@ var app = (function () {
 
 			});
 		}, speed);
+
+
+	//	chart.data[0] = kugelModels.length;
+		chartRedraw();
 	}
 
 
+	function chartRedraw() {
 
+		if (chart) {
+			chart.destroy();
+		}
 
-/*
+		ctx = document.getElementById('chart');
 
-	function setSpeed(speed) {
-		kugelModels.forEach((k) => {
-			
+		chart = new Chart(ctx, {
+
+			type: 'doughnut',
+			data: {
+				labels: ["Kugeln", "Gesund", "Krank", "Immun", "Immung, Krank"],
+				datasets: [
+					{
+						label: "Population (millions)",
+						backgroundColor: ["#808080", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
+						data: [kugelModels.length, valueAnzahlGesundeG.innerHTML, valueAnzahlKrankeK.innerHTML, chartVariables.immune,chartVariables.immuneKranke]
+					}
+				]
+			},
+			options: {
+				title: {
+					display: true,
+					text: 'Predicted world population (millions) in 2050'
+				},
+				
+			}
 		});
 	}
-*/
+
+
+	/*
+	
+		function setSpeed(speed) {
+			kugelModels.forEach((k) => {
+				
+			});
+		}
+	*/
 
 
 
@@ -446,7 +491,7 @@ var app = (function () {
 		valueSimulationsGeschwindigkeit = document.getElementById("valueSimulationsGeschwindigkeit");
 
 
-		
+
 
 		//	var output = document.getElementById("demo");
 		valueAnzahlKugelnN.innerHTML = sliderAnzahlKugelnN.value;
@@ -456,10 +501,46 @@ var app = (function () {
 		valueKugelRadiusR.innerHTML = Math.round((sliderKugelRadiusR.value * .1) * 100) / 100;
 
 		valueSimulationsGeschwindigkeit.innerHTML = sliderSimulationsGeschwindigkeit.value;
-		speed = 400/ valueSimulationsGeschwindigkeit.innerHTML;
+		speed = 400 / valueSimulationsGeschwindigkeit.innerHTML;
 		console.log("speed " + speed);
 
 		//document.getElementById('stopSimulation').disabled = true;
+
+
+		ctx = document.getElementById('chart');
+
+		chart = new Chart(ctx, {
+
+			type: 'doughnut',
+			data: {
+				labels: ["Kugeln", "Gesund", "Krank", "Immun", "Immung, Krank"],
+				datasets: [
+					{
+						label: "Population (millions)",
+						backgroundColor: ["#808080", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
+						data: [2478, 5267, 734, 784, 433]
+					}
+				]
+			},
+			options: {
+				title: {
+					display: true,
+					text: 'Predicted world population (millions) in 2050'
+				},
+				
+			}
+		});
+
+
+
+
+
+
+
+
+
+
+
 	}
 
 
@@ -998,18 +1079,18 @@ var app = (function () {
 					initModels();
 					render();
 					break;
-			/*	case ('5'):
-					document.getElementById('textCanvas').innerHTML = rekursionsSchritt + ". Kugel-Rekursionsschritt";
-					models = [];
-					initModels();
-					render();
-					break;
-				case ('6'):
-					document.getElementById('textCanvas').innerHTML = rekursionsSchritt + ". Kugel-Rekursionsschritt";
-					models = [];
-					initModels();
-					render();
-					break;*/
+				/*	case ('5'):
+						document.getElementById('textCanvas').innerHTML = rekursionsSchritt + ". Kugel-Rekursionsschritt";
+						models = [];
+						initModels();
+						render();
+						break;
+					case ('6'):
+						document.getElementById('textCanvas').innerHTML = rekursionsSchritt + ". Kugel-Rekursionsschritt";
+						models = [];
+						initModels();
+						render();
+						break;*/
 
 
 
@@ -1362,7 +1443,7 @@ var app = (function () {
 		sound = true;
 	}
 
-	
+
 	document.getElementById("sound").onplay = function () {
 		sound = false;
 	}
@@ -1373,20 +1454,20 @@ var app = (function () {
 		//simulationPaused = true;
 		//clearInterval(simulationInterval);
 		pauseSimulation();
-		speed = 400/ this.value;
+		speed = 400 / this.value;
 		console.log("speed" + speed);
 		//simulationPaused = false;
-		
-		
+
+
 	}
 
 	document.getElementById("simulationsGeschwindigkeit").onpointerup = function () {
-	//	valueSimulationsGeschwindigkeit.innerHTML = this.value;
+		//	valueSimulationsGeschwindigkeit.innerHTML = this.value;
 		//clearInterval(simulationInterval);
 		//simulationPaused = true;
 		//clearInterval(simulationInterval);
 		//speed = this.value;
-	//	console.log("speed");
+		//	console.log("speed");
 		//simulationPaused = false;
 
 		startSimulation();

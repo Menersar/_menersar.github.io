@@ -1,7 +1,6 @@
 
 
 
-
 class Kugel {
 
 
@@ -60,6 +59,7 @@ class Kugel {
 				this.gesund = true;
 				this.vergangeneZeitschritte = 0;
 				this.immun = true;
+				chartVariables.immune ++;
 			}
 		}
 

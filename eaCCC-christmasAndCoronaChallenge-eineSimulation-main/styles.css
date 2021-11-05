@@ -81,8 +81,9 @@ html   {
  /* font-weight: lighter;*/
 }
 
-
-
+#canvas{
+clip-path: inset(0px 200px 0px 200px);
+}
 
 
 .cardImages {
@@ -190,4 +191,14 @@ html   {
   background: gray;
   cursor: default;
 
+}
+
+.chart {
+  max-width: 400px;
+  max-height: 400px;
+
+  margin-left: 0;
+  margin-right: 0;
+  display: flex;
+  justify-content:left;
 }
