@@ -24,6 +24,13 @@ class Kugel {
 
 		this.immun = false;
 
+		this.sound = true;
+
+		this.soundFile = new Audio('pew.wav');
+
+		this.readyToPlay = true;
+
+
 	}
 
 
@@ -39,6 +46,10 @@ class Kugel {
 	}
 	}
 
+
+	toggleSound() {
+		this.sound = !this.sound;
+	}
 
 
 	moveKugel() {
@@ -100,6 +111,7 @@ class Kugel {
 
 
 	testInfection(otherKugeln) {
+
 		//console.log("test infection");
 	/*	if (!this.gesund) {
 			return;
@@ -115,6 +127,12 @@ class Kugel {
 					vec3.scaleAndAdd(this.startPunkt, this.startPunkt, this.richtung, this.radius*.1);
 					vec3.scaleAndAdd(k.startPunkt, k.startPunkt, k.richtung, k.radius*.1);
 
+					if (this.sound && this.readyToPlay) {
+						this.readyToPlay = false;
+					this.soundFile.volume = .1;
+					this.soundFile.play();
+					this.soundFile.onended(this.myCallback);
+					}
 
 					//vec3.negate(this.richtung, this.richtung);
 					//vec3.negate(k.richtung, k.richtung);
@@ -130,6 +148,10 @@ class Kugel {
 	//	} 
 					
 				
+	}
+
+	myCallback = function() {
+		this.readyToPlay = true;
 	}
 
 

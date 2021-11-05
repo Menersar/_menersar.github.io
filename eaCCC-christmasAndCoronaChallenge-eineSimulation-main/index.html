@@ -218,7 +218,7 @@ void main() {
                         <br>
 
                         
-                       <h5 id="textCanvas" >0. Kugel-Rekursionsschritt</h5>    
+                       <h5 id="textCanvas" >1. Kugel-Rekursionsschritt</h5>    
                         <div class="cardImages">
                            <!-- <canvas id="canvas" width="1000" height="500"></canvas>     -->
 							<canvas id="canvas" width="1000" height="500"></canvas>
@@ -241,6 +241,7 @@ void main() {
 
                             <button id="startSimulation">Start</button>
                             <button disabled = true id="stopSimulation">Stop</button>
+                            <button id="soundButton">Sound: An</button>
 
                             <br>
                             <br>
@@ -257,13 +258,18 @@ void main() {
                                     <input type="range" min="0" max="20" value="2" class="slider" id="anzahlKrankeK">
                                     <br>
 
-                                    <p>Radius Kugeln: <span id="valueKugelRadiusR"></span></p>
-                                    <input type="range" min="1" max="10" value="1" class="slider" id="kugelRadiusR">
+                                    <p>Radius Kugeln (Kontaktwahrscheinlichkeit): <span id="valueKugelRadiusR"></span></p>
+                                    <input type="range" min="1" max="10" value="5" class="slider" id="kugelRadiusR">
                                     <br>
 
                                     <p>Zeitschritte zur Gesundung: <span id="valueGesundungsZeitschritteZ"></span></p>
                                     <input type="range" min="1" max="500" value="100" class="slider" id="gesundungsZeitschritteZ">
-                                
+                                    
+                                    
+                                    <p>Simulationsgeschwindigkeit: <span id="valueSimulationsGeschwindigkeit"></span></p>
+                                    <input type="range" min="1" max="100" value="25" class="slider" id="simulationsGeschwindigkeit">
+
+
                                 </div>
 
                             

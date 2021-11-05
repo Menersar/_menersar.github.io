@@ -3,6 +3,11 @@ let kugelModels = [];
 
 let simulationPaused = false;
 
+var speed = 50;
+
+var sound = true;
+
+
 
 var app = (function () {
 
@@ -61,7 +66,6 @@ var app = (function () {
 
 	var camLocked = false;
 
-	var speed = 100;
 
 	var kugel = {
 		id: 0,
@@ -96,11 +100,16 @@ var app = (function () {
 	var sliderKugelRadiusR;
 	var sliderGesundungsZeitschritteZ;
 
+	var sliderSimulationsGeschwindigkeit;
+
 	var valueAnzahlKugelnN;
 	var valueAnzahlKrankeK;
 	var valueAnzahlGesundeG;
 	var valueKugelRadiusR;
 	var valueGesundungsZeitschritteZ;
+
+	var valueSimulationsGeschwindigkeit;
+
 
 
 	// Model that is target for user input.
@@ -230,14 +239,40 @@ var app = (function () {
 
 	};
 
+	document.getElementById('soundButton').onclick = () => {
+		//console.log("clickedm start");
+		//sound = !sound;
+		kugelModels.forEach((kugel) => {
+
+			kugel.toggleSound();
+
+			//	if (kugel.gesund) {
+			//	console.log("test if infected touch me");
+			//	kugel.gesund = testInfection(kugel);
+			//}
+
+		});
+
+		if (document.getElementById('soundButton').innerHTML == 'Sound: An') {
+			
+		
+
+			document.getElementById('soundButton').innerHTML = 'Sound: Aus';
+		} else {
+			
+			document.getElementById('soundButton').innerHTML = 'Sound: An';
+		}
+
+	};
 
 
+	
 
 
 
 	function startSimulation() {
 		document.getElementById('stopSimulation').removeAttribute("disabled");
-		console.log("p " + simulationPaused);
+		//console.log("p " + simulationPaused);
 
 
 
@@ -266,6 +301,10 @@ var app = (function () {
 
 		sliderKugelRadiusR.disabled = true;
 		sliderKugelRadiusR.className = "disabledSlider";
+
+		//sliderSimulationsGeschwindigkeit.disabled = true;
+		//sliderSimulationsGeschwindigkeit.className = "disabledSlider";
+
 
 		if (!simulationPaused) {
 			kugelRadius = valueKugelRadiusR.innerHTML * .2;
@@ -325,16 +364,20 @@ var app = (function () {
 				//}
 
 			});
-		}, 50);
+		}, speed);
 	}
 
 
 
 
+/*
 
-
-
-
+	function setSpeed(speed) {
+		kugelModels.forEach((k) => {
+			
+		});
+	}
+*/
 
 
 
@@ -350,6 +393,8 @@ var app = (function () {
 
 
 	function pauseSimulation() {
+		clearInterval(simulationInterval);
+
 		simulationPaused = true;
 
 	}
@@ -390,12 +435,18 @@ var app = (function () {
 		sliderGesundungsZeitschritteZ = document.getElementById("gesundungsZeitschritteZ");
 		sliderKugelRadiusR = document.getElementById("kugelRadiusR");
 
+		sliderSimulationsGeschwindigkeit = document.getElementById("simulationsGeschwindigkeit");
+
+
 		valueAnzahlKugelnN = document.getElementById("valueAnzahlKugelnN");
 		valueAnzahlKrankeK = document.getElementById("valueAnzahlKrankeK");
 		valueAnzahlGesundeG = document.getElementById("valueAnzahlGesundeG");
 		valueGesundungsZeitschritteZ = document.getElementById("valueGesundungsZeitschritteZ");
 		valueKugelRadiusR = document.getElementById("valueKugelRadiusR");
+		valueSimulationsGeschwindigkeit = document.getElementById("valueSimulationsGeschwindigkeit");
 
+
+		
 
 		//	var output = document.getElementById("demo");
 		valueAnzahlKugelnN.innerHTML = sliderAnzahlKugelnN.value;
@@ -403,6 +454,10 @@ var app = (function () {
 		valueAnzahlGesundeG.innerHTML = sliderAnzahlKugelnN.value - sliderAnzahlKrankeK.value;
 		valueGesundungsZeitschritteZ.innerHTML = sliderGesundungsZeitschritteZ.value;
 		valueKugelRadiusR.innerHTML = Math.round((sliderKugelRadiusR.value * .1) * 100) / 100;
+
+		valueSimulationsGeschwindigkeit.innerHTML = sliderSimulationsGeschwindigkeit.value;
+		speed = 400/ valueSimulationsGeschwindigkeit.innerHTML;
+		console.log("speed " + speed);
 
 		//document.getElementById('stopSimulation').disabled = true;
 	}
@@ -1302,6 +1357,36 @@ var app = (function () {
 		}
 	}
 
+
+
+
+	document.getElementById("simulationsGeschwindigkeit").oninput = function () {
+		valueSimulationsGeschwindigkeit.innerHTML = this.value;
+		clearInterval(simulationInterval);
+		//simulationPaused = true;
+		clearInterval(simulationInterval);
+		speed = 400/ this.value;
+		console.log("speed" + speed);
+		//simulationPaused = false;
+		startSimulation();
+
+		
+	}
+/*
+	document.getElementById("simulationsGeschwindigkeit").onpointerup = function () {
+		valueSimulationsGeschwindigkeit.innerHTML = this.value;
+		//clearInterval(simulationInterval);
+		//simulationPaused = true;
+		clearInterval(simulationInterval);
+		speed = this.value;
+		console.log("speed");
+		simulationPaused = false;
+		startSimulation();
+
+		
+	}
+*/
+
 	// App interface.
 	return {
 		start: start
@@ -1343,6 +1428,8 @@ document.getElementById("gesundungsZeitschritteZ").oninput = function () {
 document.getElementById("kugelRadiusR").oninput = function () {
 	valueKugelRadiusR.innerHTML = Math.round((this.value * .1) * 100) / 100;
 }
+
+
 
 
 
