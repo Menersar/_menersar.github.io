@@ -4,7 +4,7 @@
 class Kugel {
 
 
-	constructor(_id, _radius, _gesund, _minPosition, _maxPosition, _zeitZumGesundwerden, _kugelModels) {
+	constructor(_id, _radius, _gesund, _minPosition, _maxPosition, _zeitZumGesundwerden, _kugelModels, _canBecomeImmune) {
 
 
 
@@ -26,6 +26,8 @@ class Kugel {
 		this.sound = true;
 
 		this.soundFile = new Audio('pew.wav');
+
+		this.canBecomeImmune = _canBecomeImmune;
 
 	//	this.readyToPlay = true;
 
@@ -58,8 +60,10 @@ class Kugel {
 			if (this.vergangeneZeitschritte >= this.zeitZumGesundwerden) {
 				this.gesund = true;
 				this.vergangeneZeitschritte = 0;
+				if (this.canBecomeImmune) {
 				this.immun = true;
-				chartVariables.immune ++;
+				//chartVariables.immune ++;
+				}
 			}
 		}
 

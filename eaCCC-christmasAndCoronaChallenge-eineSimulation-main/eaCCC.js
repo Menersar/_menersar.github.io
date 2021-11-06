@@ -12,9 +12,11 @@ var ctx;
 var chartVariables = {
 	immune: 0,
 	kranke: 0,
-gesunde: 0,
-immuneKranke: 0
+	gesunde: 0,
+	immuneKranke: 0
 };
+
+var kugelnCanBecomeImmune;
 
 
 
@@ -36,6 +38,16 @@ var app = (function () {
 	var cSnow = [1., .98, 0.98, 1];
 	var cBlue = [0, 0, 1, 1];
 	var cYellow = [0.81, 0.71, .23, 1];
+
+	var cKugelGreen = [0, .784, .318, 1];
+	var cKugelRed = [1., .267, .267, 1];
+	var cKugelBlue = [.2, .71, .898, 1];
+	var cKugelYellow = [1, .733, .2, 1];
+ 
+
+
+
+
 
 
 
@@ -209,9 +221,15 @@ var app = (function () {
 		document.getElementById("kugelRadiusR").removeAttribute("disabled");
 		document.getElementById("kugelRadiusR").className = "slider";
 
+		document.getElementById('checkbox').removeAttribute("disabled");
+		document.getElementById('checkboxParent').className = "checkboxParent";
+
+
+
 
 
 		simulationRunning = false;
+		simulationPaused = false;
 		kugelModels = [];
 		models = [];
 
@@ -221,13 +239,91 @@ var app = (function () {
 		initModels();
 		render();
 
-	}
+
+
+
+		chart.data= {
+			labels: ["Gesund", "Krank", "Immun", "Immun und Krank"],
+			//labels: [""],
+			datasets: [
+				{
+					backgroundColor: ["#9e9e9e"],
+					
+					//backgroundColor: ["#808080"],
+					//data: [2478, 5267, 734, 784, 433]
+					data: [100]
+				}
+			]
+		};
+
+		chart.options = {
+				
+				animation: {
+					duration: 1,
+				},
+
+				plugins: {  // 'legend' now within object 'plugins {}'
+					legend: {
+					  labels: {
+						color: "white",  // not 'fontColor:' anymore
+						// fontSize: 18  // not 'fontSize:' anymore
+						font: {
+						  //size: 18 // 'size' now within object 'font {}'
+						}
+					  }
+					}
+				},
+				
+				
+			
+		};
+
+
+		chart.update();
+
+
+		//chart.toggleDataVisibility(0);
+		}
 
 
 	document.getElementById('stopSimulation').onclick = () => {
 		stop();
 		simulationRunning = false;
 	};
+
+
+
+	
+	document.getElementById('checkbox').onclick = () => {
+		if (document.getElementById('checkbox').checked) {
+			console.log("cant become immune");
+			kugelnCanBecomeImmune = false;
+		} else {
+			console.log("can become immune");
+			kugelnCanBecomeImmune = true;
+		}
+	};
+/*
+	document.getElementById('stopSimulation').onclick = () => {
+		stop();
+		simulationRunning = false;
+	};
+
+
+
+	Anzahl Kugeln: 20
+
+
+	Anzahl Kranke: 10, Anzahl Gesunde: 10
+	
+	
+	Radius Kugeln (Kontaktwahrscheinlichkeit): 0.7
+	
+	
+	Zeitschritte zur Gesundung: 425
+	
+	Simulationsgeschwindigkeit: 62
+*/
 
 
 	document.getElementById('startSimulation').onclick = () => {
@@ -313,6 +409,9 @@ var app = (function () {
 		sliderKugelRadiusR.disabled = true;
 		sliderKugelRadiusR.className = "disabledSlider";
 
+		document.getElementById('checkbox').setAttribute("disabled", "disabled");
+		document.getElementById('checkboxParent').className = "disabledCheckbox";
+
 		//sliderSimulationsGeschwindigkeit.disabled = true;
 		//sliderSimulationsGeschwindigkeit.className = "disabledSlider";
 
@@ -328,7 +427,7 @@ var app = (function () {
 			for (var j = 0; j < valueAnzahlKrankeK.innerHTML; j++) {
 				//var kugel = new kugel;
 				//		var kugel = new Kugel(kugelID, kugelRadius, false, valueAnzahlKrankeK.innerHTML, kugelMinPunkt, kugelMaxPunkt, valueGesundungsZeitschritteZ.innerHTML);
-				var kugel = new Kugel(kugelID, kugelRadius, false, kugelMinPunkt, kugelMaxPunkt, valueGesundungsZeitschritteZ.innerHTML, kugelModels);
+				var kugel = new Kugel(kugelID, kugelRadius, false, kugelMinPunkt, kugelMaxPunkt, valueGesundungsZeitschritteZ.innerHTML, kugelModels, kugelnCanBecomeImmune);
 
 				kugelModels.push(kugel);
 				kugelID++;
@@ -339,7 +438,7 @@ var app = (function () {
 				//var kugel = new kugel;
 
 
-				var kugel = new Kugel(kugelID, kugelRadius, true, kugelMinPunkt, kugelMaxPunkt, valueGesundungsZeitschritteZ.innerHTML, kugelModels);
+				var kugel = new Kugel(kugelID, kugelRadius, true, kugelMinPunkt, kugelMaxPunkt, valueGesundungsZeitschritteZ.innerHTML, kugelModels, kugelnCanBecomeImmune);
 				//var kugel = new Kugel(kugelID, kugelRadius, true, valueAnzahlKrankeK.innerHTML, kugelMinPunkt, kugelMaxPunkt, valueGesundungsZeitschritteZ.innerHTML);
 
 
@@ -361,9 +460,11 @@ var app = (function () {
 			}
 
 			//updateChart();
+			
 			models = [];
 			initModels();
 			render();
+			chartRedraw();
 			kugelModels.forEach((kugel) => {
 
 				kugel.moveKugel();
@@ -379,42 +480,56 @@ var app = (function () {
 
 
 	//	chart.data[0] = kugelModels.length;
-		chartRedraw();
+		
 	}
 
 
 	function chartRedraw() {
 
-		if (chart) {
-			chart.destroy();
-		}
+		chartVariables.immune = kugelModels.filter((kugel)=> kugel.immun == true && kugel.gesund == true).length;
+		chartVariables.kranke = kugelModels.filter((kugel)=> kugel.immun == false && kugel.gesund == false).length;
+		chartVariables.gesunde = kugelModels.filter((kugel)=> kugel.immun == false && kugel.gesund == true).length;
+		chartVariables.immuneKranke = kugelModels.filter((kugel)=> kugel.immun == true && kugel.gesund == false).length;
 
-		ctx = document.getElementById('chart');
+	//	console.log(chartVariables.immune);
 
-		chart = new Chart(ctx, {
 
-			type: 'doughnut',
-			data: {
-				labels: ["Kugeln", "Gesund", "Krank", "Immun", "Immung, Krank"],
+		chart.data = {
+				labels: ["Gesund", "Krank", "Immun", "Immun und Krank"],
 				datasets: [
 					{
-						label: "Population (millions)",
-						backgroundColor: ["#808080", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
-						data: [kugelModels.length, valueAnzahlGesundeG.innerHTML, valueAnzahlKrankeK.innerHTML, chartVariables.immune,chartVariables.immuneKranke]
+						//label: "Population (millions)",
+						backgroundColor: ["#00c851", "#ff4444", "#33b5e5", "#ffbb33"],
+						data: [chartVariables.gesunde, chartVariables.kranke, chartVariables.immune,chartVariables.immuneKranke]
 					}
 				]
-			},
-			options: {
-				title: {
-					display: true,
-					text: 'Predicted world population (millions) in 2050'
+			};
+
+			chart.options = {
+				
+				animation: {
+					duration: 0,
 				},
 				
-			}
-		});
+				plugins: {  // 'legend' now within object 'plugins {}'
+					legend: {
+					  labels: {
+						color: "white",  // not 'fontColor:' anymore
+						// fontSize: 18  // not 'fontSize:' anymore
+						font: {
+						  //size: 18 // 'size' now within object 'font {}'
+						}
+					  }
+					}
+				},
+			
+		};
+
+			chart.update();
+			
 	}
 
-
+	
 	/*
 	
 		function setSpeed(speed) {
@@ -507,31 +622,62 @@ var app = (function () {
 		//document.getElementById('stopSimulation').disabled = true;
 
 
-		ctx = document.getElementById('chart');
+		ctx = document.getElementById('chart').getContext('2d');
 
 		chart = new Chart(ctx, {
 
-			type: 'doughnut',
+			type: 'pie',
 			data: {
-				labels: ["Kugeln", "Gesund", "Krank", "Immun", "Immung, Krank"],
+				//labels: ["Kugeln", "Gesund", "Krank", "Immun", "Immun, Krank"],
+				labels: ["Gesund", "Krank", "Immun", "Immun und Krank"],
 				datasets: [
 					{
-						label: "Population (millions)",
-						backgroundColor: ["#808080", "#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
-						data: [2478, 5267, 734, 784, 433]
+						label: "Anzahl Kugeln (Prozent)",
+						//backgroundColor: ["#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
+						backgroundColor: ["#9e9e9e"],
+						data: [100, 0, 0, 0, 0]
+						//data: [100]
 					}
 				]
 			},
 			options: {
+				plugins: {  // 'legend' now within object 'plugins {}'
+					legend: {
+					  labels: {
+						color: "white",  // not 'fontColor:' anymore
+						// fontSize: 18  // not 'fontSize:' anymore
+						font: {
+						  //size: 18 // 'size' now within object 'font {}'
+						}
+					  }
+					}
+				},
+				tooltips: {
+					enabled: false,
+				},
+				animation: {
+					duration: 1,
+				},
 				title: {
 					display: true,
-					text: 'Predicted world population (millions) in 2050'
+					text: 'Grafische Darstellung der Corona-Simulation mit Anzahl der Kugeln'
 				},
 				
 			}
 		});
 
 
+
+
+		if (document.getElementById('checkbox').checked) {
+			console.log("cant become immune");
+			kugelnCanBecomeImmune = false;
+		} else {
+			console.log("can become immune");
+
+			kugelnCanBecomeImmune = true;
+		}
+		
 
 
 
@@ -869,22 +1015,20 @@ var app = (function () {
 
 
 
-
-
 	function initKugel(k) {
 		if (!k.immun) {
 			if (k.gesund == false) {
 				//console.log("draw ungesund");
-				createModel("sphere", "wireframefill", cDarkRed, k.startPunkt, [0, 0, 0], [k.radius, k.radius, k.radius], mDarkRed);
+				createModel("sphere", "fill", cKugelRed, k.startPunkt, [0, 0, 0], [k.radius, k.radius, k.radius], mDarkRed);
 			} else if (k.gesund) {
 				//console.log("draw gesund");
-				createModel("sphere", "wireframefill", cPineGreen, k.startPunkt, [0, 0, 0], [k.radius, k.radius, k.radius], mPineGreen);
+				createModel("sphere", "fill", cKugelGreen, k.startPunkt, [0, 0, 0], [k.radius, k.radius, k.radius], mPineGreen);
 			}
 		} else {
 			if (k.gesund == false) {
-				createModel("sphere", "wireframefill", cYellow, k.startPunkt, [0, 0, 0], [k.radius, k.radius, k.radius], mYellow);
+				createModel("sphere", "fill", cKugelYellow, k.startPunkt, [0, 0, 0], [k.radius, k.radius, k.radius], mYellow);
 			} else if (k.gesund) {
-				createModel("sphere", "wireframefill", cBlue, k.startPunkt, [0, 0, 0], [k.radius, k.radius, k.radius], mBlue);
+				createModel("sphere", "fill", cKugelBlue, k.startPunkt, [0, 0, 0], [k.radius, k.radius, k.radius], mBlue);
 			}
 
 		}
@@ -1278,8 +1422,8 @@ var app = (function () {
 		illumination.light[0].position[0] = Math.cos(currentLightRotation) * radiusLights;
 		illumination.light[0].position[2] = Math.sin(currentLightRotation) * radiusLights;
 
-		illumination.light[1].position[0] = Math.cos(Math.PI + currentLightRotation) * radiusLights;
-		illumination.light[1].position[2] = Math.sin(Math.PI + currentLightRotation) * radiusLights;
+	//	illumination.light[1].position[0] = Math.cos(Math.PI + currentLightRotation) * radiusLights;
+	//	illumination.light[1].position[2] = Math.sin(Math.PI + currentLightRotation) * radiusLights;
 	}
 
 
@@ -1429,9 +1573,10 @@ var app = (function () {
 		// Setup rendering lines.
 		var wireframe = (model.fillstyle.search(/wireframe/) != -1);
 		if (wireframe && toggleWireframeOn) {
-			gl.uniform4fv(prog.colorUniform, [0., 0., 0., 1.]);
+		//	gl.uniform4fv(prog.colorUniform, [0., 0., 0., 1.]);
 			gl.disableVertexAttribArray(prog.normalAttrib);
 			gl.vertexAttrib3f(prog.normalAttrib, 0, 0, 0);
+			gl.uniform4fv(prog.colorUniform, [0.95,0.95,0.95,.5]);
 			gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, model.iboLines);
 			gl.drawElements(gl.LINES, model.iboLines.numberOfElements,
 				gl.UNSIGNED_SHORT, 0);
@@ -1500,10 +1645,13 @@ var app = (function () {
 
 document.getElementById("anzahlKugelnN").oninput = function () {
 	valueAnzahlKugelnN.innerHTML = this.value;
-	if (document.getElementById("anzahlKrankeK").value > this.value) {
+/*	if (document.getElementById("anzahlKrankeK").value > this.value) {
 		document.getElementById("anzahlKrankeK").value = this.value;
 		valueAnzahlKrankeK.innerHTML = this.value;
-	}
+	}*/
+	
+	valueAnzahlGesundeG.innerHTML =  this.value - valueAnzahlKrankeK.innerHTML;
+	valueAnzahlKrankeK.innerHTML = valueAnzahlKrankeK.innerHTML + valueAnzahlGesundeG.innerHTML;
 	document.getElementById("anzahlKrankeK").max = this.value;
 }
 

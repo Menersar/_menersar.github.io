@@ -82,7 +82,7 @@ html   {
 }
 
 #canvas{
-clip-path: inset(0px 200px 0px 200px);
+/*clip-path: inset(0px 200px 0px 200px);*/
 }
 
 
@@ -152,7 +152,7 @@ clip-path: inset(0px 200px 0px 200px);
 
 
 .disabledSlider:hover {
-  opacity: .2;
+  opacity: .25;
   cursor: default;
 }
 
@@ -164,7 +164,7 @@ clip-path: inset(0px 200px 0px 200px);
   border-radius: 5px;
   background: red;
   outline: none;
-  opacity: 0.2;
+  opacity: 0.25;
   -webkit-transition: .2s;
   transition: opacity .2s;
   cursor: default;
@@ -196,9 +196,38 @@ clip-path: inset(0px 200px 0px 200px);
 .chart {
   max-width: 400px;
   max-height: 400px;
-
+/*
   margin-left: 0;
   margin-right: 0;
-  display: flex;
-  justify-content:left;
+  display: flex;*/
+  justify-content: right;
+}
+
+
+#checkboxParent {
+  margin-left: 20;
+  color: #33b5e5;
+
+
+}
+
+
+#checkboxText {
+  color: #33b5e5;
+}
+
+
+
+.disabledCheckbox {
+  opacity: .25;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+  cursor: default;
+}
+
+.checkboxParent {
+  opacity: 1;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+  cursor: pointer ;
 }
