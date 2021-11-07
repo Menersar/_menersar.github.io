@@ -4,6 +4,9 @@ var vertices, indicesLines, indicesTris;
 start2();
 
 function start2 () {
+
+
+
     linesActivated = !linesActivated;
 
 // Get the WebGL context.

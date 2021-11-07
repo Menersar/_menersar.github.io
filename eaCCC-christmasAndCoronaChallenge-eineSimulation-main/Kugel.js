@@ -26,6 +26,7 @@ class Kugel {
 		this.sound = true;
 
 		this.soundFile = new Audio('pew.wav');
+		this.soundFile.volume = .1;
 
 		this.canBecomeImmune = _canBecomeImmune;
 
@@ -38,6 +39,7 @@ class Kugel {
 	createPosition (_minPos, _maxPos, _kugelMod) {
 		this.startPunkt =  [getRandomArbitrary(_minPos, _maxPos), getRandomArbitrary(_minPos, _maxPos), getRandomArbitrary(_minPos, _maxPos)];
 
+		// damit die Startposition immer an anderen Orten wie die der anderen Kugeln ist
 		if (_kugelMod.length > 0) {
 			_kugelMod.forEach((k) => {
 			if (this.intersect(k.startPunkt)) {
@@ -55,7 +57,40 @@ class Kugel {
 
 	moveKugel() {
 
-		if (!this.gesund) {
+		
+
+
+		vec3.scaleAndAdd(this.startPunkt, this.startPunkt, this.richtung, this.geschwindigkeit);
+
+
+		if (this.startPunkt[0] + this.radius > 1 || this.startPunkt[1] + this.radius > 1 || this.startPunkt[2] + this.radius > 1) {
+			if (this.startPunkt[0] + this.radius > 1) {
+				this.startPunkt[0] = -1 + this.radius;
+			} else if (this.startPunkt[1] + this.radius > 1) {
+				this.startPunkt[1] = -1 + this.radius;
+			} else if (this.startPunkt[2] + this.radius > 1) {
+				this.startPunkt[2] = -1 + this.radius;
+			}
+		} else if (this.startPunkt[0] - this.radius < -1 || this.startPunkt[1] - this.radius < -1 || this.startPunkt[2] - this.radius < -1) {
+			if (this.startPunkt[0] - this.radius < -1) {
+				this.startPunkt[0] = 1 - this.radius;
+			} else if (this.startPunkt[1] - this.radius < -1) {
+				this.startPunkt[1] = 1 - this.radius;
+
+			} else if (this.startPunkt[2] - this.radius < -1) {
+				this.startPunkt[2] = 1 - this.radius;
+			}
+		}
+
+
+		//	if (kugel.gesund) {
+		//	console.log("test if infected touch me");
+		//		kugel.gesund = testInfection(kugel);
+		//	}
+
+		if (this.gesund) {
+			return;
+		} else if (!this.gesund) {
 			this.vergangeneZeitschritte++;
 			if (this.vergangeneZeitschritte >= this.zeitZumGesundwerden) {
 				this.gesund = true;
@@ -65,9 +100,7 @@ class Kugel {
 				//chartVariables.immune ++;
 				}
 			}
-		}
-
-		if (this.immun && !this.gesund) {
+		} else if (this.immun && !this.gesund) {
 			this.vergangeneZeitschritte++;
 			if (this.vergangeneZeitschritte >= 10) {
 				this.gesund = true;
@@ -75,42 +108,6 @@ class Kugel {
 				//this.immun = true;
 			}
 		}
-
-
-		vec3.scaleAndAdd(this.startPunkt, this.startPunkt, this.richtung, this.geschwindigkeit);
-
-
-		if (this.startPunkt[0] + this.radius > 1) {
-			this.startPunkt[0] = -1 + this.radius;
-		}
-
-		if (this.startPunkt[0] - this.radius < -1) {
-			this.startPunkt[0] = 1 - this.radius;
-		}
-
-
-		if (this.startPunkt[1] + this.radius > 1) {
-			this.startPunkt[1] = -1 + this.radius;
-		}
-
-		if (this.startPunkt[1] - this.radius < -1) {
-			this.startPunkt[1] = 1 - this.radius;
-		}
-
-
-		if (this.startPunkt[2] + this.radius > 1) {
-			this.startPunkt[2] = -1 + this.radius;
-		}
-
-		if (this.startPunkt[2] - this.radius < -1) {
-			this.startPunkt[2] = 1 - this.radius;
-		}
-
-		//	if (kugel.gesund) {
-		//	console.log("test if infected touch me");
-		//		kugel.gesund = testInfection(kugel);
-		//	}
-
 	}
 
 
@@ -133,7 +130,7 @@ class Kugel {
 
 					if (this.sound && _sound) {
 					//	this.readyToPlay = false;
-					this.soundFile.volume = .1;
+					
 					this.soundFile.play();
 					//this.soundFile.onended = function() {makeReadyToPlay()};
 					}

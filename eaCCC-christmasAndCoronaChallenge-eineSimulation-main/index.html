@@ -29,6 +29,7 @@
 
         <script defer src="eaCCC.js"></script>
         <script src="Kugel.js"></script>
+        <script src="MyChart.js"></script>
 
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -203,7 +204,7 @@
                         <br>
 
                         
-                       <h5 id="textCanvas" >1. Kugel-Rekursionsschritt <br><br></h5>    
+                       <h5 id="textCanvas" >1. Kugel-Rekursionsschritt</h5>    
                        
                         <div class="cardImages">
                            <!-- <canvas id="canvas" width="1000" height="500"></canvas>     -->
@@ -226,45 +227,64 @@
 
                         <div class="card-content">
 
-                            <button id="startSimulation">Start</button>
-                            <button disabled = true id="stopSimulation">Stop</button>
-                            <button id="soundButton">Sound: An</button>
+                          <!--  <button id="startSimulation">Start</button>
+                            <button disabled = true id="stopSimulation">Stop</button>-->
+
+                            <a id="startSimulation" class="waves-effect waves-light btn">Start Simulation</a>
+                            <a id="stopSimulation" class="btn disabled">Stop Simulation</a>
+
+                         <!--   <button id="soundButton">Sound: An</button>-->
+
+                         <label id="checkboxParent">
+                            <input id="checkbox" type="checkbox" checked="checked" />
+                            <span id="checkboxText">Wiederansteckungsszenario (ohne immune Kugeln)</span>
+                          </label>
+
+                            <label id="checkboxSoundParent">
+                                <input id="checkboxSound" type="checkbox" checked="checked" />
+                                <span id="checkboxSoundText">Soundeffekte</span>
+                              </label>
 
                             
-                                <label id="checkboxParent">
-                                  <input id="checkbox" type="checkbox" checked="checked" />
-                                  <span id="checkboxText">Wiederansteckungsszenario (ohne immune Kugeln)</span>
-                                </label>
+                               
                              
 
                             <audio id="sound">   
                                 <source src="pew.wav" /></audio> 
                             <br>
                             <br>
-                           
+                            <br>
+
                                 
                                 <div class="slidecontainer" id="sliders">
 
                                     <p>Anzahl Kugeln: <span id="valueAnzahlKugelnN"></span></p>
                                     <input type="range" min="1" max="20" value="15" class="slider" id="anzahlKugelnN">
                                     <br>
+                                    <br>
 
 
                                     <p>Anzahl Kranke: <span id="valueAnzahlKrankeK"></span>, Anzahl Gesunde:  <span id="valueAnzahlGesundeG"></span></p>
                                     <input type="range" min="0" max="20" value="10" class="slider" id="anzahlKrankeK">
                                     <br>
+                                    <br>
+
 
                                     <p>Radius Kugeln (Kontaktwahrscheinlichkeit): <span id="valueKugelRadiusR"></span></p>
                                     <input type="range" min="1" max="10" value="7" class="slider" id="kugelRadiusR">
                                     <br>
+                                    <br>
 
                                     <p>Zeitschritte zur Gesundung: <span id="valueGesundungsZeitschritteZ"></span></p>
                                     <input type="range" min="1" max="500" value="500" class="slider" id="gesundungsZeitschritteZ">
+                                    <br>
+                                    <br>
+
                                     
-                                    
-                                    <p>Simulationsgeschwindigkeit: <span id="valueSimulationsGeschwindigkeit"></span></p>
+                                    <p>Simulationsgeschwindigkeit (Zeitschritte): <span id="valueSimulationsGeschwindigkeit"></span></p>
                                     <input type="range" min="1" max="100" value="25" class="slider" id="simulationsGeschwindigkeit">
 
+                                    
 
                                 </div>
 
@@ -276,9 +296,8 @@
                             <p><b>W</b>, <b>A</b>: Bewegung der Kamera nach vorne und hinten zum Mittelpunkt der Szene.</p>
                             <p><b>S</b>, <b>D</b>: Bewegung der Kamera nach links und rechts um den Mittelpunkt der Szene.</p>
                             <p><b>Q</b>, <b>E</b>: Bewegung der Kamera hoch und runter um den Mittelpunkt der Szene.</p>
-                            <p><b>C</b>: Ein- / Ausschalten der Kameraeinschränkung, wodurch eine Bewegung unter die Ebene nicht möglich ist (default: An).</p>
                             <p><b>T</b>: Wireframe-Modus an / aus.</p>
-                            <p><b>1</b> - <b>5</b>: Einstellen der Rekursionstiefe der Kugeln.</p>
+                            <p><b>1</b> - <b>4</b>: Einstellen der Rekursionstiefe der Kugeln.</p>
                             <br>
                             <p style= "color: gray;"><b>P</b>: Perspektivische Projektion der Szene (default).</p>
                             <p style= "color: gray;"><b>O</b>: Orthogonale Projektion der Szene.</p>
@@ -286,8 +305,7 @@
                             <p style= "color: gray;"><b>Z</b>: Zoom der Kamera in den Mittelpunkt der Szene.</p>
                             <p style= "color: gray;"><b>Shift</b> + <b>Z</b>: Zoom der Kamera aus den Mittelpunkt der Szene heraus.</p>
 
-                            <h5>Toon Shading</h5>
-                            <p><a href="index-2.html">Link zur gleichen Szene mit Toon- / Cell-Shading.</a></p>
+                        
 
 
                             
@@ -313,10 +331,8 @@
                             <p><b>W</b>, <b>A</b>: Bewegung der Kamera nach vorne und hinten zum Mittelpunkt der Szene.</p>
                             <p><b>S</b>, <b>D</b>: Bewegung der Kamera nach links und rechts um den Mittelpunkt der Szene.</p>
                             <p><b>Q</b>, <b>E</b>: Bewegung der Kamera hoch und runter um den Mittelpunkt der Szene.</p>
-                            <p><b>C</b>: Ein- / Ausschalten der Kameraeinschränkung, wodurch eine Bewegung unter die Ebene nicht möglich ist (default: An).</p>
                             <p><b>T</b>: Wireframe-Modus an / aus.</p>
-                            <p><b>1</b> - <b>5</b>: Einstellen der Rekursionstiefe der Kugeln.</p>
-
+                            <p><b>1</b> - <b>4</b>: Einstellen der Rekursionstiefe der Kugeln.</p>
                             <p style= "color: gray;"><b>P</b>: Perspektivische Projektion der Szene (default).</p>
                             <p style= "color: gray;"><b>O</b>: Orthogonale Projektion der Szene.</p>
                             <p style= "color: gray;"><b>F</b>: Frustum-Projektion der Szene.</p>
@@ -325,18 +341,42 @@
                         
                      
                             <h5>Aufgabenstellung </h5>
-                            <p>Erstellen Sie eine Szene aus mindestens drei Grundkörpern die sich gegenseitig überschneiden, die Körper sollen also Schnittvolumen bilden. Stellen Sie den Tiefenbuffer (Z-Buffer), das heißt die Z-Werte der Fragments im Framebuffer, als Graustufen da. Die Fragments, die in Z-Richtung näher an der Kamera sind, sollen dunkler dargestellt werden.</p>
+                            <p>Lassen Sie N Kugeln in einem Kubus nach einem zufälligen Muster fliegen. Die Kugeln starten an einem zufälligen Punkt, in eine zufällige Richtung und mit einer zufälligen Geschwindigkeit. Nur bei einem Zusammenstoß ändern Sie die Richtung. Der Radius der Kugeln sei R, er repräsentiert die Kontaktwahrscheinlichkeit (relativ zur festen Kantenlänge des Kubus).</p>
+                            <p>Der Würfel ist unendlich, indem die rechte Seite virtuell mit der Linken verbunden wird, oben mit unten, und vorne mit hinten. Fliegt also eine Kugel rechts raus, kommt sie links wieder rein.</p>
+                            <p>Es gibt N Kugeln in zwei Farben: grüne = gesunde (Anzahl G) und rote = kranke (Anzahl K)  Kugeln. Kranke Kugeln werden nach Z (Voreinstellung=100) Zeitschriften wieder gesund. Kugeln sterben nicht. Wenn zwei Kugeln zusammen stoßen wird die Krankheit mit einer Wahrscheinlichkeit p (Voreinstellung=0,5)  übertragen. Dies ist das Wiederansteckungsszenario.</p>
+                            <p>Die Variablen N, K, (G wir ausgerechnet) und die Parameter R, Z und p sind frei einstellbar. Finden Sie spannende [Start-]Werte, das bedeutet Werte bei denen der Endzustand der Simulation, bei zufälliger Initialisierung der Kugeln, nicht, oder nur schwer, vorhergesagt werden kann (so dass alle Ausgänge etwa gleich wahrscheinlich sind).</p>
+                            <p>Es gibt noch andere Parameter in dieser Simulation, zum Beispiel die Größe des Würfels und die Verteilung der Geschwindigkeiten (vielleicht normal verteilt). Auch dabei können Sie selber entscheiden und ausprobieren.</p>
+                            <p></p>
+                            <p></p>
+                            <p></p>
+                            <p></p>
     
-                                
+                            <h5>Darstellung</h5>
+                            <p>Die aktuellen Werte von N und G während der Simulation werden graphisch, z.B. über ein Balken- oder Pie-Diagramm angezeigt.</p>
                            
                             <h5>Interaktion</h5>
-                            <p>Bewegung der Kamera über die Pfeiltasten (oder über die Tasten WASD).</p>
+                            <p>Die Simulation läuft automatisch ab. Man kann sie pausieren (Pause-Button) und über einen Schieberegler beschleunigen oder verlangsamen. Die Parameter und Startwerte der Variablen sind über ein GUI einstellbar.</p>
+                            
+                            <h5>Erweiterungen</h5>
+                            <p>a) Simulieren Sie eine Berührung mit einem zusätzlichen Effekt. Dieser kann eine farbliche Variation oder auch eine Deformation beinhalten. Auch Geräusche sind eine Möglichkeit.</p>
+                            <p>b) Erweitern Sie die Simulation auf drei Zustände: gesund, krankt und geheilt = immun (blau, Anzahl L). Nachdem eine Kugel einmal krank war wird sie immun. Option: Auch Immune Kugeln können sich wieder anstecken und werden für einen Moment =X=10 Zeitschritte gelb und können die Krankheit dann noch übertragen. Nach X schritten sind sie wieder gesund=immun=blau.</p>
     
                            
                             <h5>Umsetzung</h5>
-                            <p><b>Grundlagen für das Erstellen der Modelle, Interaktionen und der Shader:</b> Moodle Kurs-Materialien des Kurses Graphical Visualisation Technologies, Lerneinheiten 1-12 bis einschließlich SHA.</p>
-                            <p>In der Funktion moveLightsAroundModels ist die Bewegung der beiden Lichter auf einer Kreisbahn um die Modelle realisiert. Die Positionen der Lichter werden jeweils, über die Taste L, neu berechnet und gesetzt.</p>
-                            <p>Anhand der Demo (<a href="https://webglsamples.org/toon-shading/toon-shading.html">https://webglsamples.org/toon-shading/toon-shading.html</a>) und Informationen (<a href="http://de.wikipedia.org/wiki/Cel_Shading">http://de.wikipedia.org/wiki/Cel_Shading</a>, <a href="http://en.wikibooks.org/wiki/GLSL_Programming/Unity/Toon_Shading">http://en.wikibooks.org/wiki/GLSL_Programming/Unity/Toon_Shading</a>), ist das Toon-Shading im Fragment-Shader, ausgehend von dem Programm für die Lichter auf Kreisbahn, realisiert.</p>
+                            <p><b>Grundlagen für das Erstellen der Modelle, Interaktionen und der Shader:</b> Moodle Kurs-Materialien des Kurses Graphical Visualisation Technologies, Lerneinheiten 1-14 bis einschließlich BEL.</p>
+                            <p><b>Grundlagen für das Erstellen des Diagramms:</b> Charts.js (<a href="https://www.chartjs.org">https://www.chartjs.org</a>).</p>
+                            <p><b>Grundlagen für das Erstellen der Buttons und Checkboxen:</b> Materialize (<a href="https://materializecss.com">https://materializecss.com</a>).</p>
+                            <p>Der Kubus ist aus Planes, welche im Wireframedarstellung gerendert werden, erstellt.</p>
+                            <p>Die Kugelmodelle werden, je nach eingestellter Kugelanzahl, nach Klicken des Start-Buttons erstellt.</p>
+                            <p>Jedes Kugel-Objekt besitzt Parameter, die über die Slider, vor Start der Simulation, eingestellt oder zufällig zugewiesen werden (siehe Aufgabenstellung für näheres dazu).</p>
+                            <p>Die Simulationsgeschwindigkeit sowie die Soundeffekte sind auch während der Simulation einstellbar.</p>
+                            <p>Die Simulation ist, während sie läuft, pausierbar und kann ebenso gestoppt werden, sodass die Parameter für die Simulations wieder über die Slider einstellbar sind.</p>
+                            <p>Innerhalb der Kugel-Objekte wird eine Überprüfung durchgeführt, ob eine Überschneidung mit den anderen Kugelobjekten in dem Kugel-Array stattfindet. Ist das der Fall wird zum Einen (anhand der Krankheits-Parameter und vorherigen Einstellungen) ermittelt, ob eine Ansteckung stattfindet. Zum Anderen wird, über die Ermittlung eines Entfernungsvektors zwischen den betrachteten Kugeln, deren Richtungsveränderung ermittelt, sodass sie sich daraufhin in entgegengesetzte Richtungen weiterbewegen. So soll verhindert werden, dass sie sich daraufhin in die selbe Richtung bewegen und direkt wieder (und womöglich endlos) miteinander kollidieren.</p>
+                            <p>Kollidieren zwei Kugeln miteinander wird ein (über eine Checkbox deaktivierbarer) Sound abgespielt.</p>
+                            <p>Der jeweilige Zustand der Kugeln (Gesund, Krank; Optional: Immun, Immun und Krank) wird farblich dargestellt.</p>
+                            <p>Die Kugelzustände (Gesund, Krank; Optional: Immun, Immun und Krank) werden ganzheitlich über ein Pie-Diagramm dargestellt und deren Anteile somit verdeutlicht.</p>
+                            <p>Das Wiederansteckungsszenario (ohne immune Kugeln) ist vor der Simulation über eine Checkbox (de)aktivierbar.</p>
+                            <p>Die Standardeinstellungen, bei Aufruf der Seite, bewirken im Wiederansteckungsszenario (ohne immune Kugeln), und auch ohne Wiederansteckungsszenario, dass die Krankheit so gut wie nie verschwindet (außer in seltenen Fällen, in denen Kugel sich zufällig nicht treffen, da sie eventuell ineinanderglitchen, die Richtungen sehr "ungünstig"(, beziehungsweise "günstig",) zufällig berechnet wurde oder Ähnliches).</p>
 
                 </div>
                 <div class="modal-footer">

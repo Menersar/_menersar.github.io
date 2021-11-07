@@ -95,11 +95,9 @@ html   {
 
 
 .page-footer {
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out;
-  padding-bottom: 15px;
-  background-color: #ea484e;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
+  overflow: visible; 
+ opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+    padding-bottom: 15px;
+    background-color: #ea484e;
 }

@@ -3,6 +3,11 @@ var vertices, indicesLines, indicesTris;
 
 start1();
 function start1 () {
+
+    document.getElementById('page-footer').style.overflow = 'visible';
+    document.getElementById('page-footer').style.opacity = '1';
+
+    
     linesActivated = !linesActivated;
 
 // Get the WebGL context.

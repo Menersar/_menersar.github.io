@@ -18,6 +18,7 @@ var chartVariables = {
 
 var kugelnCanBecomeImmune;
 
+var myChart;
 
 
 var app = (function () {
@@ -201,11 +202,13 @@ var app = (function () {
 
 
 	function stop() {
-		document.getElementById('stopSimulation').disabled = true;
+		//document.getElementById('stopSimulation').disabled = true;
+		document.getElementById('stopSimulation').className ="btn disabled";
+		
 
 
-		if (document.getElementById('startSimulation').innerHTML == 'Pause') {
-			document.getElementById('startSimulation').innerHTML = 'Start';
+		if (document.getElementById('startSimulation').text == 'Pause Simulation') {
+			document.getElementById('startSimulation').text = 'Start Simulation';
 		}
 
 
@@ -240,46 +243,10 @@ var app = (function () {
 		render();
 
 
+		myChart.clear(chart);
 
 
-		chart.data= {
-			labels: ["Gesund", "Krank", "Immun", "Immun und Krank"],
-			//labels: [""],
-			datasets: [
-				{
-					backgroundColor: ["#9e9e9e"],
-					
-					//backgroundColor: ["#808080"],
-					//data: [2478, 5267, 734, 784, 433]
-					data: [100]
-				}
-			]
-		};
-
-		chart.options = {
-				
-				animation: {
-					duration: 1,
-				},
-
-				plugins: {  // 'legend' now within object 'plugins {}'
-					legend: {
-					  labels: {
-						color: "white",  // not 'fontColor:' anymore
-						// fontSize: 18  // not 'fontSize:' anymore
-						font: {
-						  //size: 18 // 'size' now within object 'font {}'
-						}
-					  }
-					}
-				},
-				
-				
-			
-		};
-
-
-		chart.update();
+		
 
 
 		//chart.toggleDataVisibility(0);
@@ -296,10 +263,10 @@ var app = (function () {
 	
 	document.getElementById('checkbox').onclick = () => {
 		if (document.getElementById('checkbox').checked) {
-			console.log("cant become immune");
+			//console.log("cant become immune");
 			kugelnCanBecomeImmune = false;
 		} else {
-			console.log("can become immune");
+			//console.log("can become immune");
 			kugelnCanBecomeImmune = true;
 		}
 	};
@@ -330,23 +297,23 @@ var app = (function () {
 		//console.log("clickedm start");
 		simulationRunning = !simulationRunning;
 
-		if (document.getElementById('startSimulation').innerHTML == 'Start') {
+		if (document.getElementById('startSimulation').text == 'Start Simulation') {
 
 			startSimulation();
 
 
 			simulationPaused = false;
 
-			document.getElementById('startSimulation').innerHTML = 'Pause';
+			document.getElementById('startSimulation').text = 'Pause Simulation';
 		} else {
 			simulationPaused = true;
 			pauseSimulation();
-			document.getElementById('startSimulation').innerHTML = 'Start';
+			document.getElementById('startSimulation').text = 'Start Simulation';
 		}
 
 	};
 
-	document.getElementById('soundButton').onclick = () => {
+	document.getElementById('checkboxSound').onclick = () => {
 		//console.log("clickedm start");
 		//sound = !sound;
 		kugelModels.forEach((kugel) => {
@@ -359,7 +326,7 @@ var app = (function () {
 			//}
 
 		});
-
+/*
 		if (document.getElementById('soundButton').innerHTML == 'Sound: An') {
 
 
@@ -369,7 +336,7 @@ var app = (function () {
 
 			document.getElementById('soundButton').innerHTML = 'Sound: An';
 		}
-
+*/
 	};
 
 
@@ -378,7 +345,8 @@ var app = (function () {
 
 
 	function startSimulation() {
-		document.getElementById('stopSimulation').removeAttribute("disabled");
+		//document.getElementById('stopSimulation').removeAttribute("disabled");
+		document.getElementById('stopSimulation').className = "waves-effect waves-light btn";
 		//console.log("p " + simulationPaused);
 
 
@@ -464,7 +432,8 @@ var app = (function () {
 			models = [];
 			initModels();
 			render();
-			chartRedraw();
+			//chartRedraw();
+			myChart.redraw(kugelModels);
 			kugelModels.forEach((kugel) => {
 
 				kugel.moveKugel();
@@ -484,50 +453,7 @@ var app = (function () {
 	}
 
 
-	function chartRedraw() {
-
-		chartVariables.immune = kugelModels.filter((kugel)=> kugel.immun == true && kugel.gesund == true).length;
-		chartVariables.kranke = kugelModels.filter((kugel)=> kugel.immun == false && kugel.gesund == false).length;
-		chartVariables.gesunde = kugelModels.filter((kugel)=> kugel.immun == false && kugel.gesund == true).length;
-		chartVariables.immuneKranke = kugelModels.filter((kugel)=> kugel.immun == true && kugel.gesund == false).length;
-
-	//	console.log(chartVariables.immune);
-
-
-		chart.data = {
-				labels: ["Gesund", "Krank", "Immun", "Immun und Krank"],
-				datasets: [
-					{
-						//label: "Population (millions)",
-						backgroundColor: ["#00c851", "#ff4444", "#33b5e5", "#ffbb33"],
-						data: [chartVariables.gesunde, chartVariables.kranke, chartVariables.immune,chartVariables.immuneKranke]
-					}
-				]
-			};
-
-			chart.options = {
-				
-				animation: {
-					duration: 0,
-				},
-				
-				plugins: {  // 'legend' now within object 'plugins {}'
-					legend: {
-					  labels: {
-						color: "white",  // not 'fontColor:' anymore
-						// fontSize: 18  // not 'fontSize:' anymore
-						font: {
-						  //size: 18 // 'size' now within object 'font {}'
-						}
-					  }
-					}
-				},
-			
-		};
-
-			chart.update();
-			
-	}
+	
 
 	
 	/*
@@ -615,6 +541,15 @@ var app = (function () {
 		valueGesundungsZeitschritteZ.innerHTML = sliderGesundungsZeitschritteZ.value;
 		valueKugelRadiusR.innerHTML = Math.round((sliderKugelRadiusR.value * .1) * 100) / 100;
 
+		console.log("html kugel N: " + valueAnzahlKugelnN.innerHTML);
+		console.log("html kranke: " + valueAnzahlKrankeK.innerHTML);
+		console.log("htlm gesunde: " + valueAnzahlGesundeG.innerHTML);
+
+		console.log("slider kugel N: " + sliderAnzahlKugelnN.value);
+		console.log("slider kranke: " + sliderAnzahlKrankeK.value);
+		console.log("slider gesunde: " + (sliderAnzahlKugelnN.value - sliderAnzahlKrankeK.value));
+		//console.log("kranke: " + );
+
 		valueSimulationsGeschwindigkeit.innerHTML = sliderSimulationsGeschwindigkeit.value;
 		speed = 400 / valueSimulationsGeschwindigkeit.innerHTML;
 		console.log("speed " + speed);
@@ -622,49 +557,8 @@ var app = (function () {
 		//document.getElementById('stopSimulation').disabled = true;
 
 
-		ctx = document.getElementById('chart').getContext('2d');
-
-		chart = new Chart(ctx, {
-
-			type: 'pie',
-			data: {
-				//labels: ["Kugeln", "Gesund", "Krank", "Immun", "Immun, Krank"],
-				labels: ["Gesund", "Krank", "Immun", "Immun und Krank"],
-				datasets: [
-					{
-						label: "Anzahl Kugeln (Prozent)",
-						//backgroundColor: ["#8e5ea2", "#3cba9f", "#e8c3b9", "#c45850"],
-						backgroundColor: ["#9e9e9e"],
-						data: [100, 0, 0, 0, 0]
-						//data: [100]
-					}
-				]
-			},
-			options: {
-				plugins: {  // 'legend' now within object 'plugins {}'
-					legend: {
-					  labels: {
-						color: "white",  // not 'fontColor:' anymore
-						// fontSize: 18  // not 'fontSize:' anymore
-						font: {
-						  //size: 18 // 'size' now within object 'font {}'
-						}
-					  }
-					}
-				},
-				tooltips: {
-					enabled: false,
-				},
-				animation: {
-					duration: 1,
-				},
-				title: {
-					display: true,
-					text: 'Grafische Darstellung der Corona-Simulation mit Anzahl der Kugeln'
-				},
-				
-			}
-		});
+		myChart = new MyChart();
+		myChart.createChart();
 
 
 
@@ -1299,13 +1193,13 @@ var app = (function () {
 					camera.distance += 1 * deltaTranslate;
 					break;
 
-				case ('C'):
+				/*case ('C'):
 					// Camera distance to center.
 					camLocked = !camLocked;
 					if (camera.eye[1] < 1.91) {
 						camera.eye[1] = 1.91;
 					}
-					break;
+					break;*/
 
 
 				// Habe noch if-Bedingungen hinzugefügt, sodass das rein und rauszoomen nicht bewirkt, dass die Kamera sich irgendwann dreht
@@ -1615,9 +1509,71 @@ var app = (function () {
 		//	console.log("speed");
 		//simulationPaused = false;
 
+		if (simulationRunning){
 		startSimulation();
+		}
 
 		simulationPaused = false;
+	}
+
+
+	document.getElementById("anzahlKugelnN").oninput = function () {
+		//console.log("_"+this.value);
+		//sliderAnzahlKugelnN.value = this.value;
+		valueAnzahlKugelnN.innerHTML = this.value;
+		document.getElementById("anzahlKrankeK").max= valueAnzahlKugelnN.innerHTML;
+		//console.log(document.getElementById("anzahlKrankeK").max);
+		//console.log(document.getElementById("valueAnzahlKrankeK").innerHTML);
+
+		if (document.getElementById("anzahlKrankeK").max < parseFloat( valueAnzahlKrankeK.innerHTML)) {
+			//console.log("uf");
+			sliderAnzahlKrankeK.value = sliderAnzahlKrankeK.max;
+			valueAnzahlKrankeK.innerHTML = sliderAnzahlKrankeK.value;
+		}
+
+		valueAnzahlGesundeG.innerHTML = this.value - sliderAnzahlKrankeK.value;
+		//if (valueAnzahlKrankeK.innerHTML > this.value) {
+	//		console.log("bigger");
+	//		sliderAnzahlKrankeK.value = this.value;
+	
+		//}
+	/*	if (this.value - valueAnzahlKrankeK.innerHTML >= 0) {
+			valueAnzahlGesundeG.innerHTML =  this.value - valueAnzahlKrankeK.innerHTML;
+		}*/
+		
+	//	valueAnzahlKrankeK.innerHTML = valueAnzahlKrankeK.innerHTML + valueAnzahlGesundeG.innerHTML;
+	//	document.getElementById("anzahlKrankeK").max = this.value;
+//	sliderAnzahlKrankeK.max = this.value;
+//	if(sliderAnzahlKrankeK.max < sliderAnzahlKrankeK.value){
+//		sliderAnzahlKrankeK.value = sliderAnzahlKrankeK.max;
+	//	document.getElementById("valueAnzahlKrankeK").innerHTML = 10;
+//	}
+
+	}
+
+	/*
+
+	document.getElementById("anzahlKugelnN").onpointerup = function () {
+		
+	//sliderAnzahlKrankeK.max = this.value;
+	if(sliderAnzahlKrankeK.max < sliderAnzahlKrankeK.value){
+		sliderAnzahlKrankeK.value = sliderAnzahlKrankeK.max;
+		document.getElementById("valueAnzahlKrankeK").innerHTML = sliderAnzahlKrankeK.max;
+	}
+
+	}
+
+	*/
+
+	document.getElementById("anzahlKrankeK").oninput = function () {
+		valueAnzahlKrankeK.innerHTML = this.value;
+		valueAnzahlGesundeG.innerHTML = valueAnzahlKugelnN.innerHTML - this.value;
+	}
+	document.getElementById("gesundungsZeitschritteZ").oninput = function () {
+		valueGesundungsZeitschritteZ.innerHTML = this.value;
+	}
+	document.getElementById("kugelRadiusR").oninput = function () {
+		valueKugelRadiusR.innerHTML = Math.round((this.value * .1) * 100) / 100;
 	}
 
 
@@ -1632,40 +1588,6 @@ var app = (function () {
 
 
 }());
-
-
-
-
-
-
-
-
-
-
-
-document.getElementById("anzahlKugelnN").oninput = function () {
-	valueAnzahlKugelnN.innerHTML = this.value;
-/*	if (document.getElementById("anzahlKrankeK").value > this.value) {
-		document.getElementById("anzahlKrankeK").value = this.value;
-		valueAnzahlKrankeK.innerHTML = this.value;
-	}*/
-	
-	valueAnzahlGesundeG.innerHTML =  this.value - valueAnzahlKrankeK.innerHTML;
-	valueAnzahlKrankeK.innerHTML = valueAnzahlKrankeK.innerHTML + valueAnzahlGesundeG.innerHTML;
-	document.getElementById("anzahlKrankeK").max = this.value;
-}
-
-document.getElementById("anzahlKrankeK").oninput = function () {
-	valueAnzahlKrankeK.innerHTML = this.value;
-	valueAnzahlGesundeG.innerHTML = valueAnzahlKugelnN.innerHTML - this.value;
-}
-document.getElementById("gesundungsZeitschritteZ").oninput = function () {
-	valueGesundungsZeitschritteZ.innerHTML = this.value;
-}
-document.getElementById("kugelRadiusR").oninput = function () {
-	valueKugelRadiusR.innerHTML = Math.round((this.value * .1) * 100) / 100;
-}
-
 
 
 
