@@ -346,44 +346,44 @@ var vertices = new Float32Array(pointArray);
          // Colors as rgba.
          var colors = new Float32Array([ 
           // dreieck vorne 
-          .55,0,0,1, 0.53,0.26,0.12,1, .55,0,0,1, 
+          .75,0,0,1, 0.63,0.36,0.22,1, .75,0,0,1, 
           //haus vorne
-          0.93,.91,0.91,1, 0.93,.91,0.91,1, .55,0,0,1, 
-          0.93,.91,0.91,1, .55,0,0,1, .55,0,0,1,
+          0.83,.81,0.81,1,  0.83,.81,0.81,1, .75,0,0,1, 
+          0.83,.81,0.81,1, .75,0,0,1, .75,0,0,1,
 
-          .55,0,0,1, .55,0,0,1, .55,0,0,1, 
-          0.93,.91,0.91,1, 0.93,.91,0.91,1, .55,0,0,1, 
-          0.93,.91,0.91,1, .55,0,0,1, .55,0,0,1, 
-          .55,0,0,1, .55,0,0,1, .55,0,0,1, 
+          .75,0,0,1, .75,0,0,1, .75,0,0,1, 
+          0.83,.81,0.81,1, 0.83,.81,0.81,1, .75,0,0,1, 
+          0.83,.81,0.81,1, .75,0,0,1, .75,0,0,1, 
+          .75,0,0,1, .75,0,0,1, .75,0,0,1, 
           // haus seite rechts
-          0.93,.91,0.91,1, .55,0,0,1, .55,0,0,1, 
-          .55,0,0,1, 0.93,.91,0.91,1, 0.93,.91,0.91,1, 
+          0.83,.81,0.81,1, .75,0,0,1, .75,0,0,1, 
+          .75,0,0,1, 0.83,.81,0.81,1, 0.83,.81,0.81,1, 
           // haus hinten
-          .55,0,0,1, 0.93,.91,0.91,1, .55,0,0,1, 
-          0.93,.91,0.91,1, 0.93,.91,0.91,1, .55,0,0,1, 
+          .75,0,0,1, 0.83,.81,0.81,1, .75,0,0,1, 
+          0.83,.81,0.81,1, 0.83,.81,0.81,1, .75,0,0,1, 
           // dach dreieck hinten
-          0.53,0.26,0.12,1, .55,0,0,1, .55,0,0,1,
+          0.63,0.36,0.22,1, .75,0,0,1, .75,0,0,1,
           // haus seite links
-          .55,0,0,1, .55,0,0,1, 0.93,.91,0.91,1, 
-          0.93,.91,0.91,1, 0.93,.91,0.91,1, .55,0,0,1, 
+          .75,0,0,1, .75,0,0,1, 0.83,.81,0.81,1, 
+          0.83,.81,0.81,1, 0.83,.81,0.81,1, .75,0,0,1, 
           // haus dach links
-          0.28,0.28,0.28,1, 0.93,.91,0.91,1, 0.93,.91,0.91,1, 
-          0.28,0.28,0.28,1, 0.93,.91,0.91,1, 0.28,0.28,0.28,1,
+          0.28,0.28,0.28,1, 0.83,.81,0.81,1, 0.83,.81,0.81,1, 
+          0.28,0.28,0.28,1, 0.83,.81,0.81,1, 0.28,0.28,0.28,1,
           // haus dach rechts
-          0.28,0.28,0.28,1, 0.93,.91,0.91,1, 0.93,.91,0.91,1, 
-          0.28,0.28,0.28,1, 0.93,.91,0.91,1, 0.28,0.28,0.28,1,
+          0.28,0.28,0.28,1, 0.83,.81,0.81,1, 0.83,.81,0.81,1, 
+          0.28,0.28,0.28,1, 0.83,.81,0.81,1, 0.28,0.28,0.28,1,
           // haus tür
-          0.93,.91,0.91,1, 0.38,.59,0.2,1, 0.38,.59,0.2,1, 
-          0.38,.59,0.2,1, 0.93,.91,0.91,1, 0.93,.91,0.91,1, 
+          0.83,.81,0.81,1, 0.38,.59,0.2,1, 0.38,.59,0.2,1, 
+          0.38,.59,0.2,1, 0.83,.81,0.81,1, 0.83,.81,0.81,1, 
 
           // haus wirbel vorne links
-          0.93,.91,0.91,1, .64,.58,.50,1, 0.93,.91,0.91,1, 
+          0.93,.91,0.91,1, .64,.48,.40,1, 0.93,.91,0.91,1, 
           // haus wirbel vorne rechts
-          0.93,.91,0.91,1, .64,.58,.50,1, 0.93,.91,0.91,1, 
+          0.93,.91,0.91,1, .64,.48,.40,1, 0.93,.91,0.91,1, 
           // haus wirbel vorne links
-          0.93,.91,0.91,1, .64,.58,.50,1, 0.93,.91,0.91,1,
+          0.93,.91,0.91,1, .64,.48,.40,1, 0.93,.91,0.91,1,
           // haus wirbel vorne links
-          0.93,.91,0.91,1, .64,.58,.50,1, 0.93,.91,0.91,1,
+          0.93,.91,0.91,1, .64,.48,.40,1, 0.93,.91,0.91,1,
    
 
      
@@ -707,10 +707,12 @@ var c = 0.75;
 
 var katzeAugeLinksAussen = [-0.35 * c, -0.2 * c];
 var katzeAugeLinksMitte = [-0.25 * c, -0.1 * c];
+var katzeAugeLinksMitteUnten = [-0.23 * c, -0.2 * c];
 var katzeAugeLinksInnen = [-0.15 * c, -0.2 * c];
 
 var katzeAugeRechtsAussen = [0.35 * c, -0.2 * c];
 var katzeAugeRechtsMitte = [0.25 * c, -0.1 * c];
+var katzeAugeRechtsMitteUnten = [0.27 * c, -0.2 * c];
 var katzeAugeRechtsInnen = [0.15 * c, -0.2 * c];
 
 var katzeNaseLinks = [-0.1 * c, -0.35 * c];
@@ -818,11 +820,11 @@ const vertices2 = new Float32Array([
   katzePfoteLinksUntenInnen[0], katzePfoteLinksUntenInnen[1], 0,
   katzePfoteLinksObenAussen[0], katzePfoteLinksObenInnen[1], 0,
 
-  katzePfoteLinksUntenAussen[0], katzePfoteLinksUntenAussen[1], 0, // katze pfote links außen
+  katzePfoteLinksUntenAussen[0]+.05, katzePfoteLinksUntenAussen[1], 0, // katze pfote links außen
   katzePfoteStrichtLinksObenAussen[0], katzePfoteStrichtLinksObenAussen[1], 0,
   katzePfoteStrichtLinksUntenAussen[0], katzePfoteStrichtLinksUntenAussen[1], 0,
 
-  katzePfoteLinksUntenInnen[0], katzePfoteLinksUntenInnen[1],  0,// katze pfote links innen
+  katzePfoteLinksUntenInnen[0]-.06, katzePfoteLinksUntenInnen[1],  0,// katze pfote links innen
   katzePfoteStrichtLinksObenInnen[0], katzePfoteStrichtLinksObenInnen[1], 0,
   katzePfoteStrichtLinksUntenInnen[0], katzePfoteStrichtLinksUntenInnen[1], 0,
 
@@ -838,11 +840,11 @@ const vertices2 = new Float32Array([
   katzePfoteRechtsObenAussen[0], katzePfoteRechtsObenAussen[1], 0,
 
 
-  katzePfoteRechtsUntenAussen[0], katzePfoteRechtsUntenAussen[1], 0, // katze pfote rechts außen
+  katzePfoteRechtsUntenAussen[0]-.05, katzePfoteRechtsUntenAussen[1], 0, // katze pfote rechts außen
   katzePfoteStrichtRechtsObenAussen[0], katzePfoteStrichtRechtsObenAussen[1], 0,
   katzePfoteStrichtRechtsUntenAussen[0], katzePfoteStrichtRechtsUntenAussen[1], 0,
 
-  katzePfoteRechtsUntenInnen[0], katzePfoteRechtsUntenInnen[1], 0, // katze pfote rechts innen
+  katzePfoteRechtsUntenInnen[0]+.09, katzePfoteRechtsUntenInnen[1], 0, // katze pfote rechts innen
   katzePfoteStrichtRechtsObenInnen[0], katzePfoteStrichtRechtsObenInnen[1], 0,
   katzePfoteStrichtRechtsUntenInnen[0], katzePfoteStrichtRechtsUntenInnen[1], 0,
 
@@ -869,37 +871,50 @@ const vertices2 = new Float32Array([
   katzeNaseUnten[0],katzeNaseUnten[1], 0,
   katzeNaseRechts[0],katzeNaseRechts[1],   0,
 
-  katzeAugeLinksAussen[0],katzeAugeLinksAussen[1], 0, // katze auge links
+ 
+  katzeAugeLinksAussen[0],katzeAugeLinksAussen[1], 0, // katze auge links aussen
   katzeAugeLinksMitte[0],katzeAugeLinksMitte[1], 0,
-  katzeAugeLinksInnen[0],katzeAugeLinksInnen[1], 0,
+  katzeAugeLinksMitteUnten[0],katzeAugeLinksMitteUnten[1], 0,
+  //katzeAugeLinksInnen[0],katzeAugeLinksInnen[1], 0,
 
-  katzeAugeRechtsAussen[0],katzeAugeRechtsAussen[1], 0, // katze auge rechts
-  katzeAugeRechtsMitte[0],katzeAugeRechtsMitte[1], 0, 
-  katzeAugeRechtsInnen[0],katzeAugeRechtsInnen[1], 0,
+  katzeAugeLinksInnen[0],katzeAugeLinksInnen[1], 0, // katze auge links innen
+  katzeAugeLinksMitteUnten[0],katzeAugeLinksMitteUnten[1], 0,
+  //katzeAugeLinksMitteUnten[0],katzeAugeLinksMitteUnten[1], 0,
+  katzeAugeLinksMitte[0],katzeAugeLinksMitte[1], 0,
 
+ 
+  katzeAugeRechtsAussen[0],katzeAugeRechtsAussen[1], 0, // katze auge rechts aussen
+  katzeAugeRechtsMitteUnten[0],katzeAugeRechtsMitteUnten[1], 0, 
+  katzeAugeRechtsMitte[0],katzeAugeRechtsMitte[1], 0,
+
+  katzeAugeRechtsInnen[0],katzeAugeRechtsInnen[1], 0, // katze auge rechts innen
+  katzeAugeRechtsMitteUnten[0],katzeAugeRechtsMitteUnten[1], 0, 
+  katzeAugeRechtsMitte[0],katzeAugeRechtsMitte[1], 0,
+
+  
   katzeSchnurrhaarLinksUntenInnen[0], katzeSchnurrhaarLinksUntenInnen[1], 0, // katze schnurrhaar links unten
   katzeSchnurrhaarLinksUntenAussen[0], katzeSchnurrhaarLinksUntenAussen[1], 0,
-  katzeSchnurrhaarLinksMitteInnen[0], katzeSchnurrhaarLinksMitteInnen[1], 0,
+  katzeSchnurrhaarLinksMitteInnen[0], katzeSchnurrhaarLinksMitteInnen[1]-.02, 0,
 
-  katzeSchnurrhaarLinksUntenInnen[0], katzeSchnurrhaarLinksUntenInnen[1], 0, // katze schnurrhaar links mitte
+  katzeSchnurrhaarLinksUntenInnen[0], katzeSchnurrhaarLinksUntenInnen[1]+.05, 0, // katze schnurrhaar links mitte
   katzeSchnurrhaarLinksMitteAussen[0], katzeSchnurrhaarLinksMitteAussen[1], 0,
-  katzeSchnurrhaarLinksObenInnen[0], katzeSchnurrhaarLinksObenInnen[1], 0,
+  katzeSchnurrhaarLinksObenInnen[0], katzeSchnurrhaarLinksObenInnen[1]-.05, 0,
 
   katzeSchnurrhaarLinksObenInnen[0], katzeSchnurrhaarLinksObenInnen[1], 0, // katze schnurrhaar links oben
   katzeSchnurrhaarLinksObenAussen[0], katzeSchnurrhaarLinksObenAussen[1], 0,
-  katzeSchnurrhaarLinksMitteInnen[0], katzeSchnurrhaarLinksMitteInnen[1], 0,
+  katzeSchnurrhaarLinksMitteInnen[0], katzeSchnurrhaarLinksMitteInnen[1]+.02, 0,
 
   katzeSchnurrhaarRechtsUntenInnen[0], katzeSchnurrhaarRechtsUntenInnen[1], 0, // katze schnurrhaar rechts unten
   katzeSchnurrhaarRechtsUntenAussen[0], katzeSchnurrhaarRechtsUntenAussen[1], 0,
-  katzeSchnurrhaarRechtsMitteInnen[0], katzeSchnurrhaarRechtsMitteInnen[1], 0,
+  katzeSchnurrhaarRechtsMitteInnen[0], katzeSchnurrhaarRechtsMitteInnen[1]-.02, 0,
 
-  katzeSchnurrhaarRechtsUntenInnen[0], katzeSchnurrhaarRechtsUntenInnen[1], 0, // katze schnurrhaar rechts mitte
+  katzeSchnurrhaarRechtsUntenInnen[0], katzeSchnurrhaarRechtsUntenInnen[1]+.05, 0, // katze schnurrhaar rechts mitte
   katzeSchnurrhaarRechtsMitteAussen[0], katzeSchnurrhaarRechtsMitteAussen[1], 0,
-  katzeSchnurrhaarRechtsObenInnen[0], katzeSchnurrhaarRechtsObenInnen[1], 0,
+  katzeSchnurrhaarRechtsObenInnen[0], katzeSchnurrhaarRechtsObenInnen[1]-.05, 0,
 
   katzeSchnurrhaarRechtsObenInnen[0], katzeSchnurrhaarRechtsObenInnen[1], 0, // katze schnurrhaar rechts oben
   katzeSchnurrhaarRechtsObenAussen[0], katzeSchnurrhaarRechtsObenAussen[1], 0,
-  katzeSchnurrhaarRechtsMitteInnen[0], katzeSchnurrhaarRechtsMitteInnen[1], 0,
+  katzeSchnurrhaarRechtsMitteInnen[0], katzeSchnurrhaarRechtsMitteInnen[1]+.02, 0,
 
 
   
@@ -928,9 +943,28 @@ const vertices2 = new Float32Array([
   katzeOhrRechtsMitte[0], katzeOhrRechtsMitte[1], 0,
   katzeOhrRechtsInnen[0], katzeOhrRechtsInnen[1], 0,
 
+// schatten pfote links
+  katzePfoteLinksObenAussen[0],  katzePfoteLinksObenAussen[1],0,
+  katzeKoerperLinks[0],  katzeKoerperLinks[1],0,
+  katzePfoteLinksUntenAussen[0],  katzePfoteLinksUntenAussen[1],0,
+// schatten pfote rechts
+katzePfoteRechtsObenInnen[0],  katzePfoteRechtsObenAussen[1],0,
+katzeKoerperLinks[0]+.45,  katzeKoerperLinks[1],0,
+katzePfoteRechtsUntenInnen[0],  katzePfoteRechtsUntenInnen[1],0,
  
+// schatten zunge
+katzeZungeMittellinieUnten[0],  katzeZungeMittellinieUnten[1],0,
+katzeZungeLinksUnten[0]-.03,  katzeZungeLinksUnten[1]-.03,0,
+katzeZungeLinksUnten[0],  katzeZungeLinksUnten[1],0,
 
- 
+katzeZungeLinksOben[0],  katzeZungeLinksOben[1],0,
+katzeZungeLinksUnten[0]-.03,  katzeZungeLinksUnten[1]-.03,0,
+katzeMundwinkelLinksUnten[0],  katzeMundwinkelLinksUnten[1],0,
+
+katzeZungeLinksUnten[0]-.03,  katzeZungeLinksUnten[1]-.03,0,
+katzeZungeLinksOben[0],  katzeZungeLinksOben[1],0,
+katzeZungeLinksUnten[0],  katzeZungeLinksUnten[1],0,
+
 
 //87
 
@@ -959,50 +993,61 @@ var colorGrey = [0.4, 0.4, 0.4, 1];
   0.98,0.98,0.98,1, 0.98,0.98,0.98,1, 0.98,0.98,0.98,1, 
   0.98,0.98,0.98,1, 0.98,0.98,0.98,1, 0.98,0.98,0.98,1, 
 //pfote rechts innen
-.4,0.4,0.4,1, .4,0.4,0.4,1, .4,0.4,0.4,1,
+.8,0.8,0.8,1, .8,0.8,0.8,1, .4,0.4,0.4,1,
 //pfote rechts außen
-.4,0.4,0.4,1, .4,0.4,0.4,1, .4,0.4,0.4,1,
+.8,0.8,0.8,1, .8,0.8,0.8,1, .4,0.4,0.4,1,
 // zunge links
   .55,.23,.38,1, .55,.23,.38,1, .55,.23,.38,1,
   .55,.23,.38,1, .55,.23,.38,1, .55,.23,.38,1,
   //zunge rechts
-  .65,.33,.48,1, .65,.33,.48,1, .65,.33,.48,1,
-  .65,.33,.48,1, .65,.33,.48,1, .65,.33,.48,1,
+  .65,.33,.48,1, .65,.33,.48,1, .85,.53,.68,1,
+  .85,.53,.68,1, .85,.53,.68,1, .65,.33,.48,1,
   // nase
-  0.55,.37,0.40,1, 0.55,.37,0.40,1, 0.55,.37,0.40,1,
-  //auge links
-  .43,0.68,0.39,1, .53,0.78,0.49,1, .53,0.78,0.49,1,
-  // auge rechts
-  .53,0.78,0.49,1, .53,0.78,0.49,1, .43,0.68,0.39,1,
+  0.55,.37,0.40,1, 0.55,.37,0.40,1, 0.85,.67,0.70,1,
+  //auge links aussen
+  .43,0.68,0.39,1, .85,0.85,0.85,1, .53,0.78,0.49,1,
+  //auge links innen
+  0.25,0.25,0.25,1, 0.25,0.25,0.25,1, .85,0.85,0.85,1,
+  // auge rechts aussen
+  0.25,0.25,0.25,1, 0.25,0.25,0.25,1, 0.85,0.85,0.85,1,
+    // auge rechts innen
+    .43,0.68,0.39,1, .53,0.78,0.49,1, .85,0.85,0.85,1,
   // schnurrhaar links unten
-  .4,0.4,0.4,1, .4,0.4,0.4,1, .4,0.4,0.4,1,
+  .4,0.4,0.4,1, .2,0.2,0.2,1, .4,0.4,0.4,1,
 // schnurrhaar links mitte
-0.80,0.80,0.80,1,  0.80,0.80,0.80,1,  0.80,0.80,0.80,1,  
+.8,0.8,0.8,1,  0.6,0.6,0.6,1,  0.80,0.80,0.80,1,  
 // schnurrhaar links oben
-0.98,0.98,0.98,1, 0.98,0.98,0.98,1, 0.98,0.98,0.98,1, 
+.88,0.88,0.88,1, 0.68,0.68,0.68,1, 0.88,0.88,0.88,1, 
 // schnurrhaar rechts unten
-.4,0.4,0.4,1, .4,0.4,0.4,1, .4,0.4,0.4,1,
+.4,0.4,0.4,1, .5,0.5,0.5,1, .4,0.4,0.4,1,
   // schnurrhaar rechts mitte
-  0.80,0.80,0.80,1,  0.80,0.80,0.80,1,  0.80,0.80,0.80,1,  
+  0.80,0.80,0.80,1,  1,1,1,1, 0.80,0.80,0.80,1,  
 // schnurrhaar rechts oben
-0.98,0.98,0.98,1, 0.98,0.98,0.98,1, 0.98,0.98,0.98,1, 
+0.88,0.88,0.88,1, 1,1,1,1, 0.88,0.88,0.88,1, 
 // mund links
 0.88,0.88,0.88,1, 0.88,0.88,0.88,1, 0.88,0.88,0.88,1, 
 0.88,0.88,0.88,1, 0.88,0.88,0.88,1, 0.88,0.88,0.88,1, 
 // mund rechts
-0.98,0.98,0.98,1, 0.98,0.98,0.98,1, 0.98,0.98,0.98,1, 
-0.98,0.98,0.98,1, 0.98,0.98,0.98,1, 0.98,0.98,0.98,1, 
+0.98,0.98,0.98,1, 1,1,1,1, 0.98,0.98,0.98,1, 
+0.98,0.98,0.98,1, 1.,1,1,1, 1,1,1,1, 
 // ohr links
 0.25,0.25,0.25,1, 0.25,0.25,0.25,1,0.25,0.25,0.25,1,
 // ohr rechts
-0.98,0.98,0.98,1, 0.98,0.98,0.98,1, 0.98,0.98,0.98,1, 
+0.98,0.98,0.98,1, 0.98,0.98,0.98,1, 0.68,0.68,0.68,1, 
+
+// schatten pfote links
+.4,0.4,0.4,1, .5,0.5,0.5,1, .4,0.4,0.4,1,
 
 
-
-
+// schatten pfote rechts
+.3,0.3,0.3,1, .5,0.5,0.5,1, .3,0.3,0.3,1,
  
+// schatten zunge
+.3,0.3,0.3,1, .5,0.5,0.5,1, .3,0.3,0.3,1,
 
+.3,0.3,0.3,1, .5,0.5,0.5,1, .3,0.3,0.3,1,
 
+.5,0.5,0.5,1, .3,0.3,0.3,1, .3,0.3,0.3,1,
 
             
 
