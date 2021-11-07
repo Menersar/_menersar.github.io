@@ -1,76 +1,44 @@
-var simulationRunning = false;
-let kugelModels = [];
 
-let simulationPaused = false;
-
-var speed = 50;
-
-var sound = true;
-var chart;
-var ctx;
-
-var chartVariables = {
-	immune: 0,
-	kranke: 0,
-	gesunde: 0,
-	immuneKranke: 0
-};
-
-var kugelnCanBecomeImmune;
-
-var myChart;
 
 
 var app = (function () {
 
-	
+	var kugelModels = [];
+
+	var simulationPaused = false;
+	var simulationRunning = false;
+
+	var speed = 50;
+
+	var sound = true;
+
+	var kugelnCanBecomeImmune;
+
+	var myChart;
+
+
 
 	// fillstyle
 	var wireFrameFill = "wireframefill";
 	var wireframe = "wireframe";
 	var fill = "fill";
 
-	var cDarkBrown = [.36, .25, 0.20, 1];
-	var cOcreBrown = [.53, .26, 0.12, 1];
-	var cPineGreen = [.0, .2, 0.0, 1];
-	var cDarkGray = [.32, .32, 0.32, 1];
-	var cDarkRed = [.40, .0, 0., 1];
-	var cDarkOrange = [.8, .4, 0., 1];
+
 	var cSnow = [1., .98, 0.98, 1];
-	var cBlue = [0, 0, 1, 1];
-	var cYellow = [0.81, 0.71, .23, 1];
 
 	var cKugelGreen = [0, .784, .318, 1];
 	var cKugelRed = [1., .267, .267, 1];
 	var cKugelBlue = [.2, .71, .898, 1];
 	var cKugelYellow = [1, .733, .2, 1];
- 
 
-
-
-
-
-
-
-	var mDefault = createPhongMaterial();
-	var mRed = createPhongMaterial({ kd: [1., 0., 0.] });
-	var mGreen = createPhongMaterial({ kd: [0., 1., 0.] });
-	var mBlue = createPhongMaterial({ kd: [0., 0., 1.] });
-	var mYellow = createPhongMaterial({ kd: [0.81, 0.71, .23] });
-	var mWhite = createPhongMaterial({ ka: [1., 1., 1.], kd: [.5, .5, .5], ks: [0., 0., 0.] });
-
-
-	var mDarkBrown = createPhongMaterial({ kd: [.36, .25, 0.20] });
-	var mOcreBrown = createPhongMaterial({ kd: [.53, .26, 0.12] });
-	var mPineGreen = createPhongMaterial({ kd: [.0, .2, 0.0] });
-	var mDarkGray = createPhongMaterial({ kd: [.32, .32, 0.32] });
-	var mDarkRed = createPhongMaterial({ kd: [.40, .0, 0.] });
-	var mDarkOrange = createPhongMaterial({ kd: [.8, .4, 0.] });
+	var mBlue = createPhongMaterial({ kd: [.2, .71, .898] });
+	var mYellow = createPhongMaterial({ kd: [1, .733, .2] });
+	var mGreen = createPhongMaterial({ kd: [0, .784, .318] });
+	var mRed = createPhongMaterial({ kd: [1., .267, .267] });
 	var mSnow = createPhongMaterial({ kd: [1., .98, 0.98] });
 
 
 	var rekursionsSchritt = 0;
-
 
 	var gl;
 
@@ -81,43 +49,11 @@ var app = (function () {
 	// Array of model objects.
 	var models = [];
 
-	//var kugelModels = [];
-
-	// Model that is target for user input.
-	var interactiveModel;
-
-	var sphereAngle = 0;
-
 	var camLocked = false;
-
-
-	var kugel = {
-		id: 0,
-		startPunkt: [0, 0, 0],
-		richtung: [0, 0, 0],
-		geschwindigkeit: 0,
-		radius: 1,
-		gesund: true,
-		vergangeneZeitschritte: 0,
-
-	};
 
 	let simulationInterval;
 
 	var kugelRadius = .1;
-
-
-	// N
-	var anzahlKugelnN = 0;
-	// K
-	var anzahlKrankeK = 0;
-	// G
-	// varanzahlGesundeG = anzahlKugelnN - anzahlKrankeK;
-	// R
-	var kugelRadiusR = .1;
-	// Z
-	var gesundungsZeitschritteZ = 100;
-
 
 	var sliderAnzahlKugelnN;
 	var sliderAnzahlKrankeK;
@@ -134,20 +70,7 @@ var app = (function () {
 
 	var valueSimulationsGeschwindigkeit;
 
-
-
-	// Model that is target for user input.
-	/*	var torus;
-		var sphere1;
-		var sphere2;
-		var sphere3;
-		var sphere4;
-		var sphere5;
-		var sphere6;
-		var sphere7;*/
-
 	var toggleWireframeOn = true;
-
 
 	var deltaRotate = Math.PI / 36;
 	var deltaTranslate = 0.05;
@@ -155,7 +78,6 @@ var app = (function () {
 	var currentLightRotation = 0;
 
 	var radiusLights = 5;
-
 
 	var camera = {
 		// Initial position of the camera.
@@ -192,25 +114,20 @@ var app = (function () {
 		]
 	};
 
+
 	function start() {
 		init();
 		render();
-		//console.log("app started");
-		//console.log(simulationRunning);
-
 	}
 
 
 	function stop() {
-		//document.getElementById('stopSimulation').disabled = true;
-		document.getElementById('stopSimulation').className ="btn disabled";
-		
 
+		document.getElementById('stopSimulation').className = "btn disabled";
 
 		if (document.getElementById('startSimulation').text == 'Pause Simulation') {
 			document.getElementById('startSimulation').text = 'Start Simulation';
 		}
-
 
 		document.getElementById("anzahlKugelnN").removeAttribute("disabled");
 		document.getElementById("anzahlKugelnN").className = "slider";
@@ -228,9 +145,6 @@ var app = (function () {
 		document.getElementById('checkboxParent').className = "checkboxParent";
 
 
-
-
-
 		simulationRunning = false;
 		simulationPaused = false;
 		kugelModels = [];
@@ -242,15 +156,8 @@ var app = (function () {
 		initModels();
 		render();
 
-
-		myChart.clear(chart);
-
-
-		
-
-
-		//chart.toggleDataVisibility(0);
-		}
+		myChart.clear();
+	}
 
 
 	document.getElementById('stopSimulation').onclick = () => {
@@ -260,41 +167,19 @@ var app = (function () {
 
 
 
-	
+
 	document.getElementById('checkbox').onclick = () => {
 		if (document.getElementById('checkbox').checked) {
-			//console.log("cant become immune");
 			kugelnCanBecomeImmune = false;
 		} else {
-			//console.log("can become immune");
 			kugelnCanBecomeImmune = true;
 		}
 	};
-/*
-	document.getElementById('stopSimulation').onclick = () => {
-		stop();
-		simulationRunning = false;
-	};
 
-
-
-	Anzahl Kugeln: 20
-
-
-	Anzahl Kranke: 10, Anzahl Gesunde: 10
-	
-	
-	Radius Kugeln (Kontaktwahrscheinlichkeit): 0.7
-	
-	
-	Zeitschritte zur Gesundung: 425
-	
-	Simulationsgeschwindigkeit: 62
-*/
 
 
 	document.getElementById('startSimulation').onclick = () => {
-		//console.log("clickedm start");
+
 		simulationRunning = !simulationRunning;
 
 		if (document.getElementById('startSimulation').text == 'Start Simulation') {
@@ -314,29 +199,11 @@ var app = (function () {
 	};
 
 	document.getElementById('checkboxSound').onclick = () => {
-		//console.log("clickedm start");
-		//sound = !sound;
+
 		kugelModels.forEach((kugel) => {
-
 			kugel.toggleSound();
-
-			//	if (kugel.gesund) {
-			//	console.log("test if infected touch me");
-			//	kugel.gesund = testInfection(kugel);
-			//}
-
 		});
-/*
-		if (document.getElementById('soundButton').innerHTML == 'Sound: An') {
 
-
-
-			document.getElementById('soundButton').innerHTML = 'Sound: Aus';
-		} else {
-
-			document.getElementById('soundButton').innerHTML = 'Sound: An';
-		}
-*/
 	};
 
 
@@ -345,9 +212,8 @@ var app = (function () {
 
 
 	function startSimulation() {
-		//document.getElementById('stopSimulation').removeAttribute("disabled");
+
 		document.getElementById('stopSimulation').className = "waves-effect waves-light btn";
-		//console.log("p " + simulationPaused);
 
 
 
@@ -356,16 +222,7 @@ var app = (function () {
 		}
 
 		sliderAnzahlKugelnN.disabled = true;
-
-
-		//sliderAnzahlKugelnN.style.background = "gray";
-		//document.querySelector("input").style.backgroundColor = "gray";
-
 		sliderAnzahlKugelnN.className = "disabledSlider";
-
-		//	let s = document.createElement("style");
-		//	document.head.appendChild(s);
-		// s.textContent = `.slider::-webkit-slider-thumb{background-color: 0, 100%, 50%)}`
 
 		sliderAnzahlKrankeK.disabled = true;
 		sliderAnzahlKrankeK.className = "disabledSlider";
@@ -380,100 +237,50 @@ var app = (function () {
 		document.getElementById('checkbox').setAttribute("disabled", "disabled");
 		document.getElementById('checkboxParent').className = "disabledCheckbox";
 
-		//sliderSimulationsGeschwindigkeit.disabled = true;
-		//sliderSimulationsGeschwindigkeit.className = "disabledSlider";
-
-
 		if (!simulationPaused) {
 			kugelRadius = valueKugelRadiusR.innerHTML * .2;
-			//	console.log("________ " + kugelRadius);
 			var kugelID = 0;
 			let kugelMinPunkt = -1 + kugelRadius;
 			let kugelMaxPunkt = 1 - kugelRadius;
-			// console.log("kugelMinPunkt" + kugelMinPunkt);
 
 			for (var j = 0; j < valueAnzahlKrankeK.innerHTML; j++) {
-				//var kugel = new kugel;
-				//		var kugel = new Kugel(kugelID, kugelRadius, false, valueAnzahlKrankeK.innerHTML, kugelMinPunkt, kugelMaxPunkt, valueGesundungsZeitschritteZ.innerHTML);
 				var kugel = new Kugel(kugelID, kugelRadius, false, kugelMinPunkt, kugelMaxPunkt, valueGesundungsZeitschritteZ.innerHTML, kugelModels, kugelnCanBecomeImmune);
 
 				kugelModels.push(kugel);
 				kugelID++;
 			}
 
-			//console.log (valueAnzahlGesundeG.innerHTML);
 			for (var j = 0; j < valueAnzahlGesundeG.innerHTML; j++) {
-				//var kugel = new kugel;
-
-
 				var kugel = new Kugel(kugelID, kugelRadius, true, kugelMinPunkt, kugelMaxPunkt, valueGesundungsZeitschritteZ.innerHTML, kugelModels, kugelnCanBecomeImmune);
-				//var kugel = new Kugel(kugelID, kugelRadius, true, valueAnzahlKrankeK.innerHTML, kugelMinPunkt, kugelMaxPunkt, valueGesundungsZeitschritteZ.innerHTML);
-
 
 				kugelModels.push(kugel);
 				kugelID++;
-				//console.log (kugelModels);
-
 			}
 		}
-		//kugelModels.forEach(initKugel);
-
-		//initModels();
-		//render();
-		//start();
 
 		simulationInterval = setInterval(() => {
 			if (!simulationRunning || simulationPaused) {
 				return;
 			}
 
-			//updateChart();
-			
 			models = [];
 			initModels();
 			render();
-			//chartRedraw();
+
 			myChart.redraw(kugelModels);
 			kugelModels.forEach((kugel) => {
 
 				kugel.moveKugel();
 				kugel.testInfection(kugelModels, sound);
 
-				//	if (kugel.gesund) {
-				//	console.log("test if infected touch me");
-				//	kugel.gesund = testInfection(kugel);
-				//}
-
 			});
 		}, speed);
 
-
-	//	chart.data[0] = kugelModels.length;
-		
 	}
 
 
-	
-
-	
-	/*
-	
-		function setSpeed(speed) {
-			kugelModels.forEach((k) => {
-				
-			});
-		}
-	*/
 
 
-
-	/*  function initKugel(k) {
-		if (k.gesund == false) {
-		createModel("sphere", "fill", cDarkRed, k.startPunkt, [0,0,0], [0.5, 0.5, 0.5], mDarkRed);
-		} else {
-			createModel("sphere", "fill", cPineGreen, k.currentPos, [0,0,0], [0.5, 0.5, 0.5], mPineGreen);
-		}
-	}*/
 
 
 
@@ -482,7 +289,6 @@ var app = (function () {
 		clearInterval(simulationInterval);
 
 		simulationPaused = true;
-
 	}
 
 
@@ -534,7 +340,6 @@ var app = (function () {
 
 
 
-		//	var output = document.getElementById("demo");
 		valueAnzahlKugelnN.innerHTML = sliderAnzahlKugelnN.value;
 		valueAnzahlKrankeK.innerHTML = sliderAnzahlKrankeK.value;
 		valueAnzahlGesundeG.innerHTML = sliderAnzahlKugelnN.value - sliderAnzahlKrankeK.value;
@@ -548,14 +353,10 @@ var app = (function () {
 		console.log("slider kugel N: " + sliderAnzahlKugelnN.value);
 		console.log("slider kranke: " + sliderAnzahlKrankeK.value);
 		console.log("slider gesunde: " + (sliderAnzahlKugelnN.value - sliderAnzahlKrankeK.value));
-		//console.log("kranke: " + );
 
 		valueSimulationsGeschwindigkeit.innerHTML = sliderSimulationsGeschwindigkeit.value;
 		speed = 400 / valueSimulationsGeschwindigkeit.innerHTML;
 		console.log("speed " + speed);
-
-		//document.getElementById('stopSimulation').disabled = true;
-
 
 		myChart = new MyChart();
 		myChart.createChart();
@@ -571,7 +372,7 @@ var app = (function () {
 
 			kugelnCanBecomeImmune = true;
 		}
-		
+
 
 
 
@@ -739,171 +540,9 @@ var app = (function () {
 
 
 
-		//  createModel("plane", wireframe, cSnow, [.5, 0, 0], [0, Math.PI, Math.PI*.5], [1, 1, 1], mSnow);
 
 
 
-		// createModel("plane", wireframe, cSnow, [0, 0, .5], [Math.PI*.5, 0, 0], [1, 1, 1], mSnow);
-		//  createModel("plane", wireframe, cSnow, [0, 0, -.5], [Math.PI*.5, Math.PI, Math.PI], [1, 1, 1], mSnow);
-		//
-		//  createModel("plane", wireframe, cSnow, [0.5, 0, .0], [0, Math.PI, Math.PI*.5], [1, 1, 1], mSnow);
-		//  createModel("plane", wireframe, cSnow, [-0.5, 0, .0], [Math.PI, Math.PI, Math.PI*.5], [1, 1, 1], mSnow);
-
-		//  createModel("plane", wireframe, cSnow, [0.5, 0, .0], [0, Math.PI, Math.PI*.5], [1, 1, 1], mSnow);
-
-
-
-
-		/*
- 
-		  // tanne hinten links
-		  createModel("kegel", fs, cDarkBrown, [-Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mDarkBrown);
-		createModel("zylinderUnten", fs, cPineGreen, [-Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mPineGreen);
-		createModel("zylinderMitte", fs, cPineGreen,  [-Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mPineGreen);
-		createModel("zylinderOben", fs, cPineGreen,  [-Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mPineGreen);
-		createModel("zylinderOben2", fs, cPineGreen,  [-Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mPineGreen);
-		//createModel("plate", fs, cPineGreen,  [-Math.PI, 1, -Math.PI], [Math.PI *.5, 0, 0], [.1, .1, .1], mDarkBrown);
-		createModel("plate", fs, cPineGreen,  [-Math.PI, 1.23, -Math.PI], [Math.PI *.5, 0, 0], [.55, .55, .55], mPineGreen);
- 
- 
- 
-		// tanne2 hinten rechts
-		createModel("kegel", fs, cDarkBrown, [Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mDarkBrown);
-		createModel("zylinderUnten", fs, cPineGreen, [Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mPineGreen);
-		createModel("zylinderMitte", fs, cPineGreen,  [Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mPineGreen);
-		createModel("zylinderOben", fs, cPineGreen,  [Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mPineGreen);
-		createModel("zylinderOben2", fs, cPineGreen,  [Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mPineGreen);
-		//createModel("plate", fs, cPineGreen,  [-Math.PI, 1, -Math.PI], [Math.PI *.5, 0, 0], [.1, .1, .1], mDarkBrown);
-		createModel("plate", fs, cPineGreen,  [Math.PI, 1.23, -Math.PI], [Math.PI *.5, 0, 0], [.55, .55, .55], mPineGreen);
- 
- 
-		// tanne3 hinten rechts unten
-		createModel("kegel", fs, cDarkBrown, [Math.PI*1.5, 0, -Math.PI*.5], [0, 0, 0], [1, 1, 1], mDarkBrown);
-		createModel("zylinderUnten", fs, cPineGreen, [Math.PI*1.5, 0, -Math.PI*.5], [0, 0, 0], [1, 1, 1], mPineGreen);
-		createModel("zylinderMitte", fs, cPineGreen,  [Math.PI*1.5, 0, -Math.PI*.5], [0, 0, 0], [1, 1, 1], mPineGreen);
-		createModel("zylinderOben", fs, cPineGreen,  [Math.PI*1.5, 0, -Math.PI*.5], [0, 0, 0], [1, 1, 1], mPineGreen);
-		createModel("zylinderOben2", fs, cPineGreen,  [Math.PI*1.5, 0, -Math.PI*.5], [0, 0, 0], [1, 1, 1], mPineGreen);
-		//createModel("plate", fs, cPineGreen,  [-Math.PI, 1, -Math.PI], [Math.PI *.5, 0, 0], [.1, .1, .1], mDarkBrown);
-		createModel("plate", fs, cPineGreen,  [Math.PI*1.5, 0.25, -Math.PI*.5], [Math.PI *.5, 0, 0], [.55, .55, .55], mPineGreen);
- 
-		// tanne4 hinten rechts unten tal
-		createModel("kegel", fs, cDarkBrown, [Math.PI*1, -1, Math.PI*.0], [0, 0, 0], [1, 3, 1], mDarkBrown);
-		createModel("zylinderUnten", fs, cPineGreen, [Math.PI*1, -.5, Math.PI*.0], [0, 0, 0], [.75, 1, .75], mPineGreen);
-		createModel("zylinderMitte", fs, cPineGreen,  [Math.PI*1, -.5, Math.PI*.0], [0, 0, 0], [.75, 1, .75], mPineGreen);
-		createModel("zylinderOben", fs, cPineGreen,  [Math.PI*1, -.5, Math.PI*.0], [0, 0, 0], [.75, 1, .75], mPineGreen);
-		createModel("zylinderOben2", fs, cPineGreen,  [Math.PI*1, -.5, Math.PI*.0], [0, 0, 0], [.75, 1, .75], mPineGreen);
-		//createModel("plate", fs, cPineGreen,  [-Math.PI, 1, -Math.PI], [Math.PI *.5, 0, 0], [.1, .1, .1], mDarkBrown);
-		createModel("plate", fs, cPineGreen,  [Math.PI*1, -.25, Math.PI*.0], [Math.PI *.5, 0, 0], [.41, .41, .41], mPineGreen);
- 
-		// tanne5 vorne
-		createModel("kegel", fs, cDarkBrown, [Math.PI*-.47, -.3, Math.PI*.8], [0, 0, 0], [2, 3, 2], mDarkBrown);
-		createModel("zylinderUnten", fs, cPineGreen, [Math.PI*-.47, .15, Math.PI*.8], [0, 0, 0], [1.25, 1, 1.25], mPineGreen);
-		createModel("zylinderMitte", fs, cPineGreen,  [Math.PI*-.47, .15, Math.PI*.8], [0, 0, 0], [1.25, 1, 1.25], mPineGreen);
-		createModel("zylinderOben", fs, cPineGreen,  [Math.PI*-.47, .15, Math.PI*.8], [0, 0, 0], [1.25, 1, 1.25], mPineGreen);
-		createModel("zylinderOben2", fs, cPineGreen,  [Math.PI*-.47, .15, Math.PI*.8], [0, 0, 0], [1.25, 1, 1.25], mPineGreen);
-		//createModel("plate", fs, cPineGreen,  [-Math.PI, 1, -Math.PI], [Math.PI *.5, 0, 0], [.1, .1, .1], mDarkBrown);
-		createModel("plate", fs, cPineGreen,  [Math.PI*-.47, 0.4, Math.PI*.8], [Math.PI *.5, 0, 0], [.69, .69, .69], mPineGreen);
- 
-		// tanne6 hinten mitte hügel
-		createModel("kegel", fs, cDarkBrown, [0, .98, -Math.PI * 2] , [0, 0, 0], [1, 1, 1], mDarkBrown);
-		createModel("zylinderUnten", fs, cPineGreen, [0, .98, -Math.PI * 2], [0, 0, 0], [1, 1, 1], mPineGreen);
-		createModel("zylinderMitte", fs, cPineGreen,  [0, .98, -Math.PI * 2], [0, 0, 0], [1, 1, 1], mPineGreen);
-		createModel("zylinderOben", fs, cPineGreen,  [0, .98, -Math.PI * 2], [0, 0, 0], [1, 1, 1], mPineGreen);
-		createModel("zylinderOben2", fs, cPineGreen,  [0, .98, -Math.PI * 2], [0, 0, 0], [1, 1, 1], mPineGreen);
-		//createModel("plate", fs, cPineGreen,  [-Math.PI, 1, -Math.PI], [Math.PI *.5, 0, 0], [.1, .1, .1], mPineGreen);
-		createModel("plate", fs, cPineGreen,  [0, 1.23, -Math.PI * 2], [Math.PI *.5, 0, 0], [.55, .55, .55], mPineGreen);
- 
-		// tanne7 hinten links unten
-		createModel("kegel", fs, cDarkBrown, [-Math.PI*1.5, 0, -Math.PI*.5], [0, 0, 0], [1, 3, 1], mDarkBrown);
-		createModel("zylinderUnten", fs, cPineGreen, [-Math.PI*1.5, .5, -Math.PI*.5], [0, 0, 0], [.75, 1, .75], mPineGreen);
-		createModel("zylinderMitte", fs, cPineGreen,  [-Math.PI*1.5, .5, -Math.PI*.5], [0, 0, 0], [.75, 1, .75], mPineGreen);
-		createModel("zylinderOben", fs, cPineGreen,  [-Math.PI*1.5, .5, -Math.PI*.5], [0, 0, 0], [.75, 1, .75], mPineGreen);
-		createModel("zylinderOben2", fs, cPineGreen,  [-Math.PI*1.5, .5, -Math.PI*.5], [0, 0, 0], [.75, 1, .75], mPineGreen);
-		//createModel("plate", fs, cPineGreen,  [-Math.PI, 1, -Math.PI], [Math.PI *.5, 0, 0], [.1, .1, .1], mPineGreen);
-		createModel("plate", fs, cPineGreen,  [-Math.PI*1.5, 0.75, -Math.PI*.5], [Math.PI *.5, 0, 0], [.41, .41, .41], mPineGreen);
- 
- 
-		// schneemann
-		createModel("sphere", fs, cSnow, [.75, -.2, 2], [0, 0, 0], [.3, .25, .3], mSnow);
-		createModel("sphere", fs, cSnow, [.75, .1, 2], [0, 0, 0], [.25, .2, .25], mSnow);
-		createModel("sphere", fs, cSnow, [.75, .35, 2], [0, 0, 0], [.15, .15, .15], mSnow);
- 
-		createModel("kegel", fs, cDarkGray, [.75, .45, 2], [0, 0, 0], [1, .75, 1], mDarkGray);
-		createModel("kegel", fs, cDarkGray, [.75, .45, 2], [0, 0, 0], [2, .1, 2], mDarkGray);
-		createModel("zylinderNase", fs, cDarkOrange, [.46	,.25, 2.17], [0, Math.PI *.175, 0], [.3, .075, .075], mDarkOrange);	
- 
-		createModel("plate", fs, cDarkGray, [.75, 0.6375	, 2], [Math.PI *-.5, 0, 0], [.1	, .1, .1], mDarkGray);
-		createModel("plate", fs, cDarkGray, [.75, .475, 2], [Math.PI *-.5, 0, 0], [.2	, .2, .2], mDarkGray);
-		createModel("plate", fs, cDarkGray, [.75, .45, 2], [Math.PI *.5, 0, 0], [.2	, .2, .2], mDarkGray);
- 
-		//arm links
-		createModel("zylinder", fs, cOcreBrown, [.65, .42, 2.7],[Math.PI*.35	, Math.PI*.00, Math.PI*0.06		], [.05, 1, .05], mOcreBrown);
-		createModel("zylinder", fs, cOcreBrown, [.58, .42, 2.68],[Math.PI*.35	, Math.PI*.00, Math.PI*0.2		], [.01, .23, .01], mOcreBrown);
- 
-		// arm rechts
-		createModel("zylinder", fs, cOcreBrown, [.4, .4, 1.7],[Math.PI*.75	, Math.PI*.00, Math.PI*.8		], [.05, 1, .05], mOcreBrown);
-		createModel("zylinder", fs, cOcreBrown, [.51, .4, 1.72],[Math.PI*.8	, Math.PI*.00, Math.PI*1		], [.01, .2, .01], mOcreBrown);
- 
- 
-	    
-		// baum
-		createModel("kegel", fs, cOcreBrown, [0, 1, 0], [0, 0, 0], [2, 1.5, 2], mOcreBrown);
-		createModel("kegel", fs, cOcreBrown, [0, .9, 0], [0, 0, 0], [2, 1.5, 2], mOcreBrown);
-		createModel("kegel", fs, cOcreBrown, [0, 1.2, 0], [Math.PI*.5, -.4, Math.PI *.5], [1.0, 2, 1.0], mOcreBrown);
-		createModel("kegel", fs, cOcreBrown, [-0.4, 1.39, 0], [Math.PI*.5, .1, Math.PI *.5], [1.0, 2, 1.0], mOcreBrown);
-		createModel("zylinder", fs, cOcreBrown, [-1.3, 1.82, 0], [Math.PI*.5, -.8, Math.PI *.5], [.15, 1, .15], mOcreBrown);
-		createModel("zylinder", fs, cOcreBrown, [-1.1, 1.6, .5], [Math.PI*.5, -.8, Math.PI *.2	], [.07, 1, .07], mOcreBrown);
-		createModel("zylinder", fs, cOcreBrown, [.28, 1.9	, .135], [Math.PI*0, Math.PI*-.15, Math.PI*-.15], [.285, 1.0, .285], mOcreBrown);
-		createModel("zylinder", fs, cOcreBrown, [.15, 2.1	, .23], [Math.PI*0, Math.PI*.5, Math.PI*0.1	], [.12, .7, .12], mOcreBrown);
-		createModel("zylinder", fs, cOcreBrown, [.34, 2.	, .16], [Math.PI*0, Math.PI*-.15, Math.PI*-.15], [.08, .7, .08], mOcreBrown);
-		createModel("zylinder", fs, cOcreBrown, [.325	, 2.5	, .2], [Math.PI*0, Math.PI*1, Math.PI*0.1	], [.04, .8, .01], mOcreBrown);
-		createModel("zylinder", fs, cOcreBrown, [-.42		, 2.1	, .00], [Math.PI*0, Math.PI*2, Math.PI*.2	], [.13, 1.1	, .13], mOcreBrown);
-		createModel("zylinder", fs, cOcreBrown, [-.62		, 2.15	, .00], [Math.PI*0, Math.PI*2, Math.PI*.36	], [.02, .4	, .02], mOcreBrown);
-		createModel("zylinder", fs, cOcreBrown, [.28	, 2.6	, .2], [Math.PI*0, Math.PI*1, Math.PI*-.02	], [.01, .3, .01], mOcreBrown);
-		createModel("zylinder", fs, cOcreBrown, [.45	, 2.45		, .2], [Math.PI*0, Math.PI*1, Math.PI*.3	], [.02, .3, .02], mOcreBrown);
- 
-		createModel("zylinder", fs, cOcreBrown, [0		, 1.5	, 1], [Math.PI*.37, Math.PI*1.5, Math.PI*-.05	], [.2, 1.4	, .2], mOcreBrown);
-		createModel("zylinder", fs, cOcreBrown, [.5		, 1.6	, 1.2], [Math.PI*.41, Math.PI*.01, Math.PI*-0.15	], [.13, 1.4	, .13], mOcreBrown);
-		createModel("zylinder", fs, cOcreBrown, [.35		, 1.58	, 2], [Math.PI*.47, Math.PI*.00, Math.PI*-0.03	], [.1, 1.8	, .05], mOcreBrown);
-		createModel("zylinder", fs, cOcreBrown, [.1		, 1.55	, 1.6], [Math.PI*.47, Math.PI*.00, Math.PI*0.11	], [.06	, .7	, .02], mOcreBrown);
- 
-		// schaukel
-		createModel("kegel", fs, cDarkRed, [.29		, 1.1	, 1.6], [0, 0, 0], [.05, 1.8, .05], mDarkRed);
-		createModel("kegel", fs, cDarkRed, [.29		, 1.08	, 1.2	], [0, 0, 0], [.05, 1.8, .05], mDarkRed);
-		createModel("torus", fs, cDarkGray, [.29		, 1	, 1.41	], [Math.PI*0, Math.PI*.5, Math.PI*0], [.4, .4, .75], mDarkGray);*/
-
-
-
-
-
-		interactiveModel = models[0];
-
-		/* sphereAngle = (sphereAngle + deltaRotate) % (2 * Math.PI);
-			   torus.rotate[1] += deltaRotate;
-			   // 0 - 2
-			   const cosOffset = 1 + (Math.cos(sphereAngle));
-			   // -1 bis 1
-			   const sinOffset = Math.sin(sphereAngle);
-			   //console.log ("cos" + cosOffset);
-			   //console.log (sinOffset);
-			   sphere1.translate[0] = cosOffset -2 ;
-			   sphere1.translate[2] = sinOffset ;
-			   sphere2.translate[0] = 1.3*(cosOffset  -1);
-			   sphere2.translate[2] = -1.3*(sinOffset -1);
-		   	
-			   sphere3.translate[0] = (cosOffset -1)*2;
-			   sphere3.translate[2] = (-sinOffset -1)*2;
-	
-			   sphere4.translate[0] = (-cosOffset)*1.5; 
-			   sphere4.translate[2] = sinOffset*1.5;	
-			   console.log("s"+sphereAngle);
-			   sphere5.translate[0] = (cosOffset)*1.5; 
-			   sphere5.translate[2] = (sinOffset+.25)*1.5;
-
-			   sphere6.translate[1] = cosOffset -1;
-			   sphere6.translate[2] = sinOffset;
-			   sphere7.translate[0] = -(cosOffset -1) *1.5;
-			   sphere7.translate[2] = -sinOffset*1.5;*/
 	}
 
 
@@ -912,11 +551,9 @@ var app = (function () {
 	function initKugel(k) {
 		if (!k.immun) {
 			if (k.gesund == false) {
-				//console.log("draw ungesund");
-				createModel("sphere", "fill", cKugelRed, k.startPunkt, [0, 0, 0], [k.radius, k.radius, k.radius], mDarkRed);
+				createModel("sphere", "fill", cKugelRed, k.startPunkt, [0, 0, 0], [k.radius, k.radius, k.radius], mRed);
 			} else if (k.gesund) {
-				//console.log("draw gesund");
-				createModel("sphere", "fill", cKugelGreen, k.startPunkt, [0, 0, 0], [k.radius, k.radius, k.radius], mPineGreen);
+				createModel("sphere", "fill", cKugelGreen, k.startPunkt, [0, 0, 0], [k.radius, k.radius, k.radius], mGreen);
 			}
 		} else {
 			if (k.gesund == false) {
@@ -1046,51 +683,13 @@ var app = (function () {
 					camera.projectionType = "perspective";
 					break;
 			}
-			// Camera move and orbit.
-			/*	switch(c) {
-					case('C'):
-						// Orbit camera.
-						camera.zAngle += sign * deltaRotate;
-						break;
-					case('H'):
-						// Move camera up and down.
-						camera.eye[1] += sign * deltaTranslate;
-						break;
-					case('D'):
-						// Camera distance to center.
-						camera.distance += sign * deltaTranslate;
-						break;
-					case('V'):
-						// Camera fovy in radian.
-						camera.fovy += sign * 5 * Math.PI / 180;
-						break;
-					case('B'):
-						// Camera near plane dimensions.
-						camera.lrtb += sign * 0.1;
-						break;
-				}*/
 
 
-			// Rotate interactive Model.
-			/* switch(c) {
-				 case('X'):
-					 interactiveModel.rotate[0] += sign * deltaRotate;
-					 break;
-				 case('Y'):
-					 interactiveModel.rotate[1] += sign * deltaRotate;
-					 break;
-				 case('Z'):
-					 interactiveModel.rotate[2] += sign * deltaRotate;
-					 break;
-			 }*/
+
 			rekursionsSchritt = parseInt(c) - 1;
 
 			switch (c) {
-				/*  case('S'):
-					  interactiveModel.scale[0] *= 1 + sign * deltaScale;
-					  interactiveModel.scale[1] *= 1 - sign * deltaScale;
-					  interactiveModel.scale[2] *= 1 + sign * deltaScale;
-					  break;*/
+
 
 				case ('1'):
 					console.log("1");
@@ -1117,18 +716,7 @@ var app = (function () {
 					initModels();
 					render();
 					break;
-				/*	case ('5'):
-						document.getElementById('textCanvas').innerHTML = rekursionsSchritt + ". Kugel-Rekursionsschritt";
-						models = [];
-						initModels();
-						render();
-						break;
-					case ('6'):
-						document.getElementById('textCanvas').innerHTML = rekursionsSchritt + ". Kugel-Rekursionsschritt";
-						models = [];
-						initModels();
-						render();
-						break;*/
+
 
 
 
@@ -1193,13 +781,7 @@ var app = (function () {
 					camera.distance += 1 * deltaTranslate;
 					break;
 
-				/*case ('C'):
-					// Camera distance to center.
-					camLocked = !camLocked;
-					if (camera.eye[1] < 1.91) {
-						camera.eye[1] = 1.91;
-					}
-					break;*/
+
 
 
 				// Habe noch if-Bedingungen hinzugefügt, sodass das rein und rauszoomen nicht bewirkt, dass die Kamera sich irgendwann dreht
@@ -1235,65 +817,7 @@ var app = (function () {
 					break;
 
 
-
-
-
-
-
-
 			}
-
-			/*switch(c) {
-				case('K'):
-				sphereAngle = (sphereAngle + deltaRotate) % (2 * Math.PI);
-				torus.rotate[1] += deltaRotate;
-				// 0 - 2
-				const cosOffset = 1 + (Math.cos(sphereAngle));
-				// -1 bis 1
-				const sinOffset = Math.sin(sphereAngle);
-				//console.log ("cos" + cosOffset);
-				//console.log (sinOffset);
-				sphere1.translate[0] = cosOffset -2 ;
-				sphere1.translate[2] = sinOffset ;
-				sphere2.translate[0] = 1.3*(cosOffset  -1);
-				sphere2.translate[2] = -1.3*(sinOffset -1);
-				
-				sphere3.translate[0] = (cosOffset -1)*2;
-				sphere3.translate[2] = (-sinOffset -1)*2;
-	
-				sphere4.translate[0] = (-cosOffset)*1.5; 
-				sphere4.translate[2] = sinOffset*1.5;	
-				console.log("s"+sphereAngle);
-				sphere5.translate[0] = (cosOffset)*1.5; 
-				sphere5.translate[2] = (sinOffset+.25)*1.5;
-
-				sphere6.translate[1] = cosOffset -1;
-				sphere6.translate[2] = sinOffset;
-				sphere7.translate[0] = -(cosOffset -1) *1.5;
-				sphere7.translate[2] = -sinOffset*1.5;
-					break;
-			}*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1316,8 +840,8 @@ var app = (function () {
 		illumination.light[0].position[0] = Math.cos(currentLightRotation) * radiusLights;
 		illumination.light[0].position[2] = Math.sin(currentLightRotation) * radiusLights;
 
-	//	illumination.light[1].position[0] = Math.cos(Math.PI + currentLightRotation) * radiusLights;
-	//	illumination.light[1].position[2] = Math.sin(Math.PI + currentLightRotation) * radiusLights;
+		//	illumination.light[1].position[0] = Math.cos(Math.PI + currentLightRotation) * radiusLights;
+		//	illumination.light[1].position[2] = Math.sin(Math.PI + currentLightRotation) * radiusLights;
 	}
 
 
@@ -1467,10 +991,10 @@ var app = (function () {
 		// Setup rendering lines.
 		var wireframe = (model.fillstyle.search(/wireframe/) != -1);
 		if (wireframe && toggleWireframeOn) {
-		//	gl.uniform4fv(prog.colorUniform, [0., 0., 0., 1.]);
+			//	gl.uniform4fv(prog.colorUniform, [0., 0., 0., 1.]);
 			gl.disableVertexAttribArray(prog.normalAttrib);
 			gl.vertexAttrib3f(prog.normalAttrib, 0, 0, 0);
-			gl.uniform4fv(prog.colorUniform, [0.95,0.95,0.95,.5]);
+			gl.uniform4fv(prog.colorUniform, [0.95, 0.95, 0.95, .5]);
 			gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, model.iboLines);
 			gl.drawElements(gl.LINES, model.iboLines.numberOfElements,
 				gl.UNSIGNED_SHORT, 0);
@@ -1489,28 +1013,16 @@ var app = (function () {
 
 	document.getElementById("simulationsGeschwindigkeit").oninput = function () {
 		valueSimulationsGeschwindigkeit.innerHTML = this.value;
-		//clearInterval(simulationInterval);
-		//simulationPaused = true;
-		//clearInterval(simulationInterval);
+
 		pauseSimulation();
 		speed = 400 / this.value;
 		console.log("speed" + speed);
-		//simulationPaused = false;
-
-
 	}
 
 	document.getElementById("simulationsGeschwindigkeit").onpointerup = function () {
-		//	valueSimulationsGeschwindigkeit.innerHTML = this.value;
-		//clearInterval(simulationInterval);
-		//simulationPaused = true;
-		//clearInterval(simulationInterval);
-		//speed = this.value;
-		//	console.log("speed");
-		//simulationPaused = false;
 
-		if (simulationRunning){
-		startSimulation();
+		if (simulationRunning) {
+			startSimulation();
 		}
 
 		simulationPaused = false;
@@ -1518,63 +1030,43 @@ var app = (function () {
 
 
 	document.getElementById("anzahlKugelnN").oninput = function () {
-		//console.log("_"+this.value);
-		//sliderAnzahlKugelnN.value = this.value;
-		valueAnzahlKugelnN.innerHTML = this.value;
-		document.getElementById("anzahlKrankeK").max= valueAnzahlKugelnN.innerHTML;
-		//console.log(document.getElementById("anzahlKrankeK").max);
-		//console.log(document.getElementById("valueAnzahlKrankeK").innerHTML);
 
-		if (document.getElementById("anzahlKrankeK").max < parseFloat( valueAnzahlKrankeK.innerHTML)) {
-			//console.log("uf");
+		valueAnzahlKugelnN.innerHTML = this.value;
+		document.getElementById("anzahlKrankeK").max = valueAnzahlKugelnN.innerHTML;
+
+
+		if (document.getElementById("anzahlKrankeK").max < parseFloat(valueAnzahlKrankeK.innerHTML)) {
 			sliderAnzahlKrankeK.value = sliderAnzahlKrankeK.max;
 			valueAnzahlKrankeK.innerHTML = sliderAnzahlKrankeK.value;
 		}
 
 		valueAnzahlGesundeG.innerHTML = this.value - sliderAnzahlKrankeK.value;
-		//if (valueAnzahlKrankeK.innerHTML > this.value) {
-	//		console.log("bigger");
-	//		sliderAnzahlKrankeK.value = this.value;
-	
-		//}
-	/*	if (this.value - valueAnzahlKrankeK.innerHTML >= 0) {
-			valueAnzahlGesundeG.innerHTML =  this.value - valueAnzahlKrankeK.innerHTML;
-		}*/
-		
-	//	valueAnzahlKrankeK.innerHTML = valueAnzahlKrankeK.innerHTML + valueAnzahlGesundeG.innerHTML;
-	//	document.getElementById("anzahlKrankeK").max = this.value;
-//	sliderAnzahlKrankeK.max = this.value;
-//	if(sliderAnzahlKrankeK.max < sliderAnzahlKrankeK.value){
-//		sliderAnzahlKrankeK.value = sliderAnzahlKrankeK.max;
-	//	document.getElementById("valueAnzahlKrankeK").innerHTML = 10;
-//	}
-
 	}
 
-	/*
 
-	document.getElementById("anzahlKugelnN").onpointerup = function () {
-		
-	//sliderAnzahlKrankeK.max = this.value;
-	if(sliderAnzahlKrankeK.max < sliderAnzahlKrankeK.value){
-		sliderAnzahlKrankeK.value = sliderAnzahlKrankeK.max;
-		document.getElementById("valueAnzahlKrankeK").innerHTML = sliderAnzahlKrankeK.max;
-	}
-
-	}
-
-	*/
 
 	document.getElementById("anzahlKrankeK").oninput = function () {
 		valueAnzahlKrankeK.innerHTML = this.value;
 		valueAnzahlGesundeG.innerHTML = valueAnzahlKugelnN.innerHTML - this.value;
 	}
+
+
 	document.getElementById("gesundungsZeitschritteZ").oninput = function () {
 		valueGesundungsZeitschritteZ.innerHTML = this.value;
 	}
+
+
 	document.getElementById("kugelRadiusR").oninput = function () {
 		valueKugelRadiusR.innerHTML = Math.round((this.value * .1) * 100) / 100;
 	}
+
+
+
+
+
+	$(document).ready(function () {
+		$('.modal').modal();
+	});
 
 
 	// App interface.
@@ -1582,18 +1074,7 @@ var app = (function () {
 		start: start
 	}
 
-
-
-
-
-
 }());
 
 
 
-
-
-
-$(document).ready(function () {
-	$('.modal').modal();
-});

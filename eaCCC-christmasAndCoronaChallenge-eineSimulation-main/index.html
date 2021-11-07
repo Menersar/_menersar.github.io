@@ -10,19 +10,8 @@
         <script src="js/materialize.min.js"></script>
 
 		<script src="ext/gl-matrix.js"></script>
-		<script src="GVT_Src_vertexData_plane.js"></script>
-
-
-        <script src="GVT_Src_vertexData_torus.js"></script>
-		<script src="GVT_Src_vertexData_kegel.js"></script>
-		<script src="GVT_Src_vertexData_zylinder_unten.js"></script>
-		<script src="GVT_Src_vertexData_zylinder_mitte.js"></script>
-		<script src="GVT_Src_vertexData_zylinder_oben.js"></script>
-		<script src="GVT_Src_vertexData_zylinder_oben2.js"></script>
+		<script src="GVT_Src_vertexData_plane.js"></script>      
 		<script src="GVT_Src_vertexData_sphere.js"></script>
-        <script src="GVT_Src_vertexData_zylinder_nase.js"></script>
-        <script src="GVT_Src_vertexData_plate.js"></script>
-        <script src="GVT_Src_vertexData_zylinder.js"></script>
 		
 
 		<link rel="stylesheet" href="styles.css" />
@@ -113,13 +102,6 @@
 				}
 				return result;
 			}
-
-
-
-
-
-           // varying vec3 vNormal;
-           // varying vec4 vPosition;
 
             
           
@@ -376,7 +358,9 @@
                             <p>Der jeweilige Zustand der Kugeln (Gesund, Krank; Optional: Immun, Immun und Krank) wird farblich dargestellt.</p>
                             <p>Die Kugelzustände (Gesund, Krank; Optional: Immun, Immun und Krank) werden ganzheitlich über ein Pie-Diagramm dargestellt und deren Anteile somit verdeutlicht.</p>
                             <p>Das Wiederansteckungsszenario (ohne immune Kugeln) ist vor der Simulation über eine Checkbox (de)aktivierbar.</p>
-                            <p>Die Standardeinstellungen, bei Aufruf der Seite, bewirken im Wiederansteckungsszenario (ohne immune Kugeln), und auch ohne Wiederansteckungsszenario, dass die Krankheit so gut wie nie verschwindet (außer in seltenen Fällen, in denen Kugel sich zufällig nicht treffen, da sie eventuell ineinanderglitchen, die Richtungen sehr "ungünstig"(, beziehungsweise "günstig",) zufällig berechnet wurde oder Ähnliches).</p>
+                            <p>Die Standardeinstellungen, bei Aufruf der Seite, bewirken im Wiederansteckungsszenario (ohne immune Kugeln), und auch oft ohne Wiederansteckungsszenario, dass die Krankheit so gut wie nie verschwindet (außer in seltenen Fällen, in denen Kugel sich zufällig nicht treffen, da sie eventuell ineinanderglitchen, die Richtungen sehr "ungünstig"(, beziehungsweise "günstig",) zufällig berechnet wurde oder Ähnliches).</p>
+                            <p>Zur Erhöhung der Wahrscheinlichkeit dass die Krankheit nicht verschwindet hilft zudem die Erhöhung der Kugelradien(, beziehungsweise Kontaktwahrscheinlichkeit).</p>
+                            <p>Für die Darstellung durch die Shader wurde der Toon-Shader der vorherigen Abgabe, EA 8 – Lichter auf Kreisbahn mit Toon Shading, wiederverwendet.</p>
 
                 </div>
                 <div class="modal-footer">
