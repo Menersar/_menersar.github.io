@@ -80,10 +80,10 @@ html   {
  /* font-weight: lighter;*/
 }
 
-/*
-#canvas{*/
-/*clip-path: inset(0px 200px 0px 200px);*/
-/*}*/
+
+#canvas{
+clip-path: inset(20px 0px 0px 0px);
+}
 
 
 .cardImages {
@@ -247,7 +247,7 @@ html   {
 #checkboxSoundParent {
 position: absolute;
 right: 0 ;
-margin-right: 20;
+margin-right: 25;
 
 
 }

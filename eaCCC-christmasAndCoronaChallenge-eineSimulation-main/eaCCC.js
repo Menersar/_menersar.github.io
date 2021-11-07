@@ -113,7 +113,6 @@ var app = (function () {
 		{ isOn: true, position: [4.33012701892218, 1., -2.5000000000000218], color: [1., 1., 1.] },
 	
 	//	{ isOn: true, position: [radiusLights, 1., 0.], color: [1., 1., 1.] },
-
 		//	{ isOn: true, position: [-radiusLights, 1., 0.], color: [1., 1., 1.] },
 		]
 
