@@ -109,9 +109,15 @@ var app = (function () {
 	var illumination = {
 		ambientLight: [.5, .5, .5],
 		light: [
-			{ isOn: true, position: [radiusLights, 1., 0.], color: [1., 1., 1.] },
-			{ isOn: true, position: [-radiusLights, 1., 0.], color: [1., 1., 1.] },
+		//	{ isOn: true, position: [Math.cos( (Math.PI / 36) * -2) * radiusLights, 1., Math.sin((Math.PI / 36)*-2) * radiusLights], color: [1., 1., 1.] },
+		{ isOn: true, position: [4.33012701892218, 1., -2.5000000000000218], color: [1., 1., 1.] },
+	
+	//	{ isOn: true, position: [radiusLights, 1., 0.], color: [1., 1., 1.] },
+
+		//	{ isOn: true, position: [-radiusLights, 1., 0.], color: [1., 1., 1.] },
 		]
+
+	
 	};
 
 
@@ -199,9 +205,9 @@ var app = (function () {
 	};
 
 	document.getElementById('checkboxSound').onclick = () => {
-
+		sound = !sound;
 		kugelModels.forEach((kugel) => {
-			kugel.toggleSound();
+			kugel.toggleSound(sound);
 		});
 
 	};
@@ -244,14 +250,14 @@ var app = (function () {
 			let kugelMaxPunkt = 1 - kugelRadius;
 
 			for (var j = 0; j < valueAnzahlKrankeK.innerHTML; j++) {
-				var kugel = new Kugel(kugelID, kugelRadius, false, kugelMinPunkt, kugelMaxPunkt, valueGesundungsZeitschritteZ.innerHTML, kugelModels, kugelnCanBecomeImmune);
+				var kugel = new Kugel(kugelID, kugelRadius, false, kugelMinPunkt, kugelMaxPunkt, valueGesundungsZeitschritteZ.innerHTML, kugelModels, kugelnCanBecomeImmune, sound);
 
 				kugelModels.push(kugel);
 				kugelID++;
 			}
 
 			for (var j = 0; j < valueAnzahlGesundeG.innerHTML; j++) {
-				var kugel = new Kugel(kugelID, kugelRadius, true, kugelMinPunkt, kugelMaxPunkt, valueGesundungsZeitschritteZ.innerHTML, kugelModels, kugelnCanBecomeImmune);
+				var kugel = new Kugel(kugelID, kugelRadius, true, kugelMinPunkt, kugelMaxPunkt, valueGesundungsZeitschritteZ.innerHTML, kugelModels, kugelnCanBecomeImmune, sound);
 
 				kugelModels.push(kugel);
 				kugelID++;
@@ -840,11 +846,14 @@ var app = (function () {
 		illumination.light[0].position[0] = Math.cos(currentLightRotation) * radiusLights;
 		illumination.light[0].position[2] = Math.sin(currentLightRotation) * radiusLights;
 
+	
+
+
 		//	illumination.light[1].position[0] = Math.cos(Math.PI + currentLightRotation) * radiusLights;
 		//	illumination.light[1].position[2] = Math.sin(Math.PI + currentLightRotation) * radiusLights;
 	}
 
-
+	
 	/**
 	 * Run the rendering pipeline.
 	 */

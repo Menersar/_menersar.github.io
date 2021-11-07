@@ -4,7 +4,7 @@
 class Kugel {
 
 
-	constructor(_id, _radius, _gesund, _minPosition, _maxPosition, _zeitZumGesundwerden, _kugelModels, _canBecomeImmune) {
+	constructor(_id, _radius, _gesund, _minPosition, _maxPosition, _zeitZumGesundwerden, _kugelModels, _canBecomeImmune, _sound) {
 
 		this.id = _id;
 		this.radius = _radius;
@@ -21,7 +21,7 @@ class Kugel {
 
 		this.immun = false;
 
-		this.sound = true;
+		this.sound = _sound;
 
 		this.soundFile = new Audio('pew.wav');
 		this.soundFile.volume = .1;
@@ -44,8 +44,8 @@ class Kugel {
 	}
 
 
-	toggleSound() {
-		this.sound = !this.sound;
+	toggleSound(_sound) {
+		this.sound = _sound;
 	}
 
 
