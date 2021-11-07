@@ -23,9 +23,7 @@
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 		<script type="x-shader/x-vertex" id="vertexshader">
-            
             precision mediump float;
-
 
             attribute vec3 aPosition;
             attribute vec3 aNormal;
@@ -47,7 +45,6 @@
             // Ambient light.
             uniform vec3 ambientLight;
 
-
             // Pointlights.
             const int MAX_LIGHT_SOURCES = 8;
             struct LightSource {
@@ -65,9 +62,6 @@
                 float ke; 
             };
             uniform PhongMaterial material;
-
-
-
 
             // Phong illumination for single light source,
 			// no ambient light.
@@ -102,10 +96,6 @@
 				}
 				return result;
 			}
-
-            
-          
-          
             
             void main(){
                 // Calculate vertex position in eye coordinates. 
@@ -130,7 +120,6 @@
             }
 		</script>
 		<script type="x-shader/x-fragment" id="fragmentshader">
-
             precision mediump float;
 
             varying vec4 vPos;
@@ -162,14 +151,7 @@
 		</script>
 	</head>
 
-
-
-
-
-
 		<body onload="app.start()"> 
-
-
 
             <nav>
                 <div class="nav-wrapper">
@@ -195,16 +177,6 @@
                   
                             <!--     <canvas onclick="start2()" id="canvas2" width="500" height="500"></canvas> -->
                     </div>
-
-                   <!-- <div id="tesselation">
-                        <label>
-                            Sphere tesselation level:
-                            <input id="tesselation-level" type="number" value="5" min="0" max="5">
-                        </label>
-                        <br>
-                        <div><strong>"WASD"</strong> Move camera <br/></div>
-                    </div>-->
-
 
 
                         <div class="card-content">
