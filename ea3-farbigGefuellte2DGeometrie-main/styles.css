@@ -47,7 +47,8 @@ align-self: flex-end;
 /*align-self: center;*/
 margin-bottom: 85 ;
 height: 225;
-width: 450;
+/*width: 450;*/
+width: 400;
 
 clip-path: inset(0px 100px 0px 100px);
 
