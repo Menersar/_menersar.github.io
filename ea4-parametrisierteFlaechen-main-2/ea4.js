@@ -165,7 +165,7 @@ var app = ( function() {
 		  
 			  colorApple = new Float32Array(_model.vertices.length*3);
 		  
-			  console.log(_model.vertices.length);
+			  //console.log(_model.vertices.length);
 		  
 			  for (var i = 0; i < _model.vertices.length*3; i +=4) {
 				colorApple[i] = 0;
@@ -174,7 +174,7 @@ var app = ( function() {
 				colorApple[i+3] = 1;
 		  
 			  }
-			  console.log(colorApple);
+			  //console.log(colorApple);
 		  
 		  
 		  
