@@ -80,9 +80,9 @@ var app = ( function() {
 		gl.clearColor(.60, .80, 1, 1);
 
 		// Backface culling.
-		gl.frontFace(gl.CCW);
-		gl.enable(gl.CULL_FACE);
-		gl.cullFace(gl.BACK);
+		//gl.frontFace(gl.CCW);
+		//gl.enable(gl.CULL_FACE);
+		//gl.cullFace(gl.BACK);
 
 		// Depth(Z)-Buffer.
 		gl.enable(gl.DEPTH_TEST);
@@ -161,6 +161,17 @@ var app = ( function() {
 		createModel("plate", fs, [.75, 1.0375	, 2], [Math.PI *-.5, 0, 0], [.1	, .1, .1]);
 		createModel("plate", fs, [.75, .875, 2], [Math.PI *-.5, 0, 0], [.2	, .2, .2]);
 		createModel("plate", fs, [.75, .85, 2], [Math.PI *.5, 0, 0], [.2	, .2, .2]);
+		
+		
+		createModel("apple", fs, [.75, 1.08, 2], [0, 0, 0], [.03	, .03, .03]);
+		
+		createModel("acorn", fs, [-0.15, .05, 0.5], [Math.PI *.5, 0, -Math.PI *.175], [.08	, .08, .08]);
+		createModel("kegel", fs, [-0.22, .05, 0.38], [Math.PI *.5, 0, -Math.PI *.175], [.05, .2, .05]);
+//Math.PI *.65,Math.PI *.75
+		createModel("bowtie", fs, [.62, .68, 2.07], [Math.PI *.8, Math.PI *.4,Math.PI *1], [.2	, .2, .2]);
+		createModel("sphere", fs, [.63, .68, 2.07], [0, 0, 0], [.04, .03, .04]);
+
+
 
 		createModel("plane", "fillwireframe", [0, 0, 0], [0, 0, 0], [1, 1, 1]);
 
