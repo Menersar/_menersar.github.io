@@ -41,9 +41,9 @@ var sphere = ( function() {
 				var z = r * Math.cos(v);
 
 				
-                x = x * 0.2;
-                y = y * 0.2;
-                z = z * 0.2;
+                x = x * 0.13;
+                y = y * 0.10;
+                z = z * 0.07;
 
 				// Set vertex positions.
 				vertices[iVertex * 3] = x;
