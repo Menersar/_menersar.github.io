@@ -189,7 +189,7 @@ var app = (function () {
 			[Math.PI * .1, Math.PI * .15, Math.PI * .7], [1, 1, .5]);
 
 		createModel("sphere", fs, [.25, .25, .25, 1], [-1.05, -.05, 1.65],
-			[Math.PI * .1, Math.PI * .15, Math.PI * .0], [.6, .5, .4]);
+			[Math.PI * .1, Math.PI * .15, Math.PI * .0], [1.0, 1., 1]);
 
 		createModel("acorn", fs, [0.53, .26, 0.12, 1], [2, .45, 1],
 			[0, 0, 0], [.5, .5, .5]);
