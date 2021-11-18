@@ -16,6 +16,8 @@ var app = ( function() {
 
 	var toggleWireframeOn = true;
 
+	var cameraLocked = true;
+
 
 	var camera = {
 		// Initial position of the camera.
@@ -266,6 +268,12 @@ var app = ( function() {
 
 	function initEventHandler() {
 
+		window.addEventListener("keydown", function(e) {
+			if(["Space","ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
+				e.preventDefault();
+			}
+		}, false);
+
 
 		// Rotation step.
         var deltaRotate = Math.PI / 36;
@@ -283,6 +291,7 @@ var app = ( function() {
 
 			var key = evt.which ? evt.which : evt.keyCode;
 			var c = String.fromCharCode(key);
+		//	console.log(c);
 			rekursionsSchritt = parseInt(c)-1;
 
 			//console.log(c);
@@ -345,12 +354,19 @@ var app = ( function() {
                     break;*/
 				case('A'):
                     // Orbit camera.
-                    camera.zAngle += -1 * deltaRotate;
+                    //camera.zAngle += -1 * deltaRotate;
+					camera.eye[0] += - 1 * deltaTranslate;
+					camera.center[0] += - 1 * deltaTranslate;
                     break;
 					case('D'):
+					camera.eye[0] += 1 * deltaTranslate;
+					camera.center[0] += 1 * deltaTranslate;
                     // Orbit camera.
-                    camera.zAngle += 1 * deltaRotate;
+                    //camera.zAngle += 1 * deltaRotate;
+					//deltaRotate
                     break;
+
+
 
 
 				case('F'):
@@ -367,24 +383,38 @@ var app = ( function() {
                     camera.eye[1] += sign * deltaTranslate;
                     break;*/
 
-					case('Q'):
+				/*	case('Q'):
                     // Move camera up and down.
                     camera.eye[1] += -1 * deltaTranslate;
                     break;
 					case('E'):
                     // Move camera up and down.
                     camera.eye[1] += 1 * deltaTranslate;
-                    break;
+                    break;*/
                case('W'):
                     // Camera distance to center.
-					if (camera.distance >1) {
+				/*	if (camera.distance >1) {
                     	camera.distance += -1 * deltaTranslate;
-					} 
+					} */
+					camera.eye[1] += 1 * deltaTranslate;
+					camera.center[1] += 1 * deltaTranslate;
+
+					//console.log("eye"+camera.eye[1]);
                     break;
+
+					
+					
 
 					case('S'):
                     // Camera distance to center.
-                    camera.distance += 1 * deltaTranslate;
+                   // camera.distance += 1 * deltaTranslate;
+				   if (!cameraLocked || camera.center[1] > -.15) { 
+					camera.eye[1] += - 1 * deltaTranslate;
+					camera.center[1] += - 1 * deltaTranslate;
+				   }
+				   console.log("center" + camera.center[1]);
+				   console.log("eye"+camera.eye[1]);
+
                     break;
 
 
@@ -425,6 +455,57 @@ var app = ( function() {
 				case('T'):
                     toggleWireframeOn = !toggleWireframeOn;
                     break;
+
+
+
+					// arrows
+				case ('&'):
+					camera.eye[1] += 1 * deltaTranslate;
+        	break;
+
+			case ('%'):
+				camera.zAngle += -1 * deltaRotate;
+        	break;
+
+			case ("'"):
+				camera.zAngle += 1 * deltaRotate;
+				
+				
+        	break;
+
+			
+			case ('('):
+				if (camera.eye[1] >= .79 || !cameraLocked) {
+				camera.eye[1] += -1 * deltaTranslate;
+				}
+				//console.log(camera.eye[1]);
+        	break;
+
+			case('R'):
+			if (sign >= 0) {
+			camera.distance += 1 * deltaTranslate;
+			} else {
+				if (camera.distance >1) {
+					camera.distance += -1 * deltaTranslate;
+				} 
+
+			}
+                    break;
+			
+			case ("L"):
+				cameraLocked = !cameraLocked;
+				if (camera.eye[1] < .74) {
+					camera.eye[1] = .85;
+					camera.center[1] = -.15;
+				}
+				if (camera.center[1] < 0) {
+					camera.center[1] = -.15;
+				}
+				
+				//console.log(cameraLocked)
+        	break;
+
+	
 
 
 			}
