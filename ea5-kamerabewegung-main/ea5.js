@@ -499,7 +499,7 @@ var app = ( function() {
 					camera.center[1] = -.15;
 				}
 				if (camera.center[1] < 0) {
-					camera.center[1] = -.15;
+					camera.center[1] = -.1;
 				}
 				
 				//console.log(cameraLocked)
