@@ -412,6 +412,10 @@ var app = ( function() {
 					camera.eye[1] += - 1 * deltaTranslate;
 					camera.center[1] += - 1 * deltaTranslate;
 				   }
+				   if (camera.eye[1] < .79 && cameraLocked) {
+					camera.eye[1] +=  1 * deltaTranslate;
+					//camera.center[1] = -.15;
+					}
 				   console.log("center" + camera.center[1]);
 				   console.log("eye"+camera.eye[1]);
 
@@ -475,7 +479,7 @@ var app = ( function() {
 
 			
 			case ('('):
-				if (camera.eye[1] >= .79 || !cameraLocked) {
+				if (camera.eye[1] > .84 || !cameraLocked) {
 				camera.eye[1] += -1 * deltaTranslate;
 				}
 				//console.log(camera.eye[1]);
@@ -494,14 +498,22 @@ var app = ( function() {
 			
 			case ("L"):
 				cameraLocked = !cameraLocked;
-				if (camera.eye[1] < .74) {
+				if (camera.eye[1] < .74 && cameraLocked) {
 					camera.eye[1] = .85;
 					camera.center[1] = -.15;
 				}
-				if (camera.center[1] < 0) {
+				if (camera.center[1] < 0 && cameraLocked) {
 					camera.center[1] = -.15;
 				}
-				
+/*
+				if (camera.eye[1] < .79 && cameraLocked) {
+					camera.eye[1] = 1;
+					camera.center[1] = 0;
+				}
+				if (camera.center[1] < 0 && cameraLocked) {
+					camera.center[1] = 0;
+				}
+				*/
 				//console.log(cameraLocked)
         	break;
 
