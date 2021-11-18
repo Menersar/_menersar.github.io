@@ -31,6 +31,10 @@ var plane = ( function() {
 		var iLines = 0;
 		var iTris = 0;
 
+		 // colors
+         this.color = new Float32Array(vertices.length*3);
+         var color = this.color;
+
         // Loop u.
         for(var i = 0, u = -10; i <= n; i++, u += du) {
             // Loop v.
@@ -56,6 +60,8 @@ var plane = ( function() {
 				// continue;
 				// }
 
+				
+
 				// Set index.
 				// Line on beam.
 				if(j > 0 && i > 0) {
@@ -80,6 +86,13 @@ var plane = ( function() {
 					indicesTris[iTris++] = iVertex - (m + 1);
 				}
 			}
+		}
+		for (var i = 0; i < vertices.length*3; i +=4*1) {
+			color[i] = 1;
+			color[i+1] = .98;
+			color[i+2] = .98;
+			color[i+3] = 1;
+	
 		}
 	}
 

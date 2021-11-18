@@ -3,8 +3,8 @@ var acorn = (function () {
 
     function createVertexData() {
 
-        var n = 16;
-        var m = 16;
+        var n = 64;
+        var m = 64;
 
         
         // Positions.

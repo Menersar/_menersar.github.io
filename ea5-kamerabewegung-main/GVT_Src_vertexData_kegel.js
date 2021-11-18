@@ -24,6 +24,10 @@ var kegel = ( function() {
 		var iTris = 0;
 		var verschiebungY = 0;
 
+		 // colors
+         this.color = new Float32Array(vertices.length*3);
+         var color = this.color;
+
 		// Loop angle u.
 		for(var i=0, u=-Math.PI; i <= n; i++, u += du) {
 			// Loop height v.
@@ -39,6 +43,11 @@ var kegel = ( function() {
 				vertices[iVertex * 3] = x;
 				vertices[iVertex * 3 + 1] = y;
 				vertices[iVertex * 3 + 2] = z;
+
+				color[iVertex * 4] = .0+ j/5;
+                    color[iVertex * 4 + 1] = .0+j/10;
+                    color[iVertex * 4 + 2] = .0 + j/20;
+                    color[iVertex * 4 + 3] = 1;
 
 				// Calc and set normals.
 				var nx = Math.cos(u) * Math.cos(v);

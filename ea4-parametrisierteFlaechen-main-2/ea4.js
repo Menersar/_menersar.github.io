@@ -70,7 +70,7 @@ var app = (function () {
 		initUniforms()
 		initModels();
 
-		initColors(models[0]);
+		//initColors(models[0]);
 
 		initEventHandler();
 		initPipline();
@@ -158,7 +158,7 @@ var app = (function () {
 		prog.nMatrixUniform = gl.getUniformLocation(prog, "uNMatrix");
 
 	}
-
+/*
 	function initColors(_model) {
 
 		//  var red = [1,0,0,1];
@@ -176,7 +176,7 @@ var app = (function () {
 		}
 		//console.log(colorApple);
 	}
-
+*/
 	function initModels() {
 		// fillstyle
 		var fs = "wireframefill";
@@ -199,13 +199,13 @@ var app = (function () {
 
 		// Select one model that can be manipulated interactively by user.
 		// interactiveModel = models[0];
-		[
+	/*	[
 			apple,
 			bowtie,
 			sphere,
 			acorn,
 			kegel
-		] = models;
+		] = models;*/
 
 
 		//  apple.color[0] = [ 0., 1, .0, 1 ];

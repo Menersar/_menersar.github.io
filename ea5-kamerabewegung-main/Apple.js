@@ -2,9 +2,9 @@
 var apple = (function () {
 
     function createVertexData() {
-
-        var n = 16;
-        var m = 16;
+       
+        var n = 32;
+        var m = 32;
         // Positions.
        // vertices = new Float32Array(3 * (n + 1) * (m + 1));
         //colors = new Float32Array(3 * (n + 1) * (m + 1));

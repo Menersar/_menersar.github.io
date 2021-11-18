@@ -26,6 +26,10 @@ var zylinderOben2 = ( function() {
 		var verschiebungY = 1.4;
 		var verschiebungZ = 0;
 
+		 // colors
+         this.color = new Float32Array(vertices.length*3);
+         var color = this.color;
+
 		// Loop angle u.
 		for(var i=0, u=-Math.PI; i <= n; i++, u += du) {
 			// Loop height v.
@@ -87,6 +91,13 @@ var zylinderOben2 = ( function() {
                             indicesTris[iTris++] = iVertex - (m+1);                            
                         }
 			}
+		}
+		for (var i = 0; i < vertices.length*3; i +=4*1) {
+			color[i] = .0;
+			color[i+1] = .2;
+			color[i+2] = .0;
+			color[i+3] = 1;
+	
 		}
 	}
 

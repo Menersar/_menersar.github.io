@@ -24,6 +24,10 @@ var torus = ( function() {
 		var iLines = 0;
 		var iTris = 0;
 
+		 // colors
+         this.color = new Float32Array(vertices.length*3);
+         var color = this.color;
+
 		// Loop angle u.
 		for(var i = 0, u = 0; i <= n; i++, u += du) {
 			// Loop angle v.

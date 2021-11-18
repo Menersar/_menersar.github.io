@@ -1,4 +1,4 @@
-var sphere = ( function() {
+var sphere2 = ( function() {
 	var initialized = false;
 	var   translateX = 0;
 	var   translateY = 0;
@@ -108,9 +108,9 @@ var sphere = ( function() {
 	 var color = this.color;
 
 	  for (var i = 0; i < vertices.length*3; i +=4*1) {
-		color[i] = 1;
-		color[i+1] = .98;
-		color[i+2] = .98;
+		color[i] = .25;
+		color[i+1] = .25;
+		color[i+2] = .25;
 		color[i+3] = 1;
 
 	}

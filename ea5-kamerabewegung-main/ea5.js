@@ -140,44 +140,52 @@ var app = ( function() {
 
 		// Model-View-Matrix.
 		prog.mvMatrixUniform = gl.getUniformLocation(prog, "uMVMatrix");
+
+		prog.colorUniform = gl.getUniformLocation(prog, "uColor");
+
+		// die Uniform-Variable uNMatrix wird durch prog.nMatrixUniform referenziert
+		prog.nMatrixUniform = gl.getUniformLocation(prog, "uNMatrix");
+
 	}
 
 	function initModels() {
 		// fill-style
-		var fs = "fillwireframe";
-		createModel("kegel", fs, [0, 0, 0], [0, 0, 0], [1, 1, 1]);
-		createModel("zylinderUnten", fs, [0, 0, 0], [0, 0, 0], [1, 1, 1]);
-		createModel("zylinderMitte", fs, [0, 0, 0], [0, 0, 0], [1, 1, 1]);
-		createModel("zylinderOben", fs, [0, 0, 0], [0, 0, 0], [1, 1, 1]);
-		createModel("zylinderOben2", fs, [0, 0, 0], [0, 0, 0], [1, 1, 1]);
-		createModel("sphere", fs, [.75, .2, 2], [0, 0, 0], [.3, .25, .3]);
-		createModel("sphere", fs, [.75, .5, 2], [0, 0, 0], [.25, .2, .25]);
-		createModel("sphere", fs, [.75, .75, 2], [0, 0, 0], [.15, .15, .15]);
+		var fs = "wireframefill";
+		createModel("kegel", fs, [0, 0, 0, 1], [0, 0, 0], [0, 0, 0], [1, 1, 1]);
+		createModel("zylinderUnten", fs, [0, 0, 0, 1], [0, 0, 0], [0, 0, 0], [1, 1, 1]);
+		createModel("zylinderMitte", fs, [0, 0, 0, 1], [0, 0, 0], [0, 0, 0], [1, 1, 1]);
+		createModel("zylinderOben", fs, [0, 0, 0, 1], [0, 0, 0], [0, 0, 0], [1, 1, 1]);
+		createModel("zylinderOben2", fs, [0, 0, 0, 1], [0, 0, 0], [0, 0, 0], [1, 1, 1]);
+		createModel("sphere", fs, [0, 0, 0, 1], [.75, .2, 2], [0, 0, 0], [.3, .25, .3]);
+		createModel("sphere", fs, [0, 0, 0, 1], [.75, .5, 2], [0, 0, 0], [.25, .2, .25]);
+		createModel("sphere", fs, [0, 0, 0, 1], [.75, .75, 2], [0, 0, 0], [.15, .15, .15]);
 
-		createModel("kegel", fs, [.75, .85, 2], [0, 0, 0], [1, .75, 1]);
-		createModel("kegel", fs, [.75, .85, 2], [0, 0, 0], [2, .1, 2]);
-		createModel("zylinderNase", fs, [.46	,.65, 2.17], [0, Math.PI *.175, 0], [.3, .075, .075]);
-		createModel("plate", fs, [0, 0, 0], [Math.PI *.5, 0, 0], [.1, .1, .1]);
-		createModel("plate", fs, [0, .25, 0], [Math.PI *.5, 0, 0], [.55, .55, .55]);
+		createModel("kegel2", fs, [0, 0, 0, 1], [.75, .85, 2], [0, 0, 0], [1, .75, 1]);
+		createModel("kegel2", fs, [0, 0, 0, 1], [.75, .85, 2], [0, 0, 0], [2, .1, 2]);
+		createModel("zylinderNase", fs, [0, 0, 0, 1], [.46	,.65, 2.17], [0, Math.PI *.175, 0], [.3, .075, .075]);
+		createModel("plate", fs, [0, 0, 0, 1], [0, 0, 0], [Math.PI *.5, 0, 0], [.1, .1, .1]);
+		createModel("plate", fs, [0, 0, 0, 1], [0, .25, 0], [Math.PI *.5, 0, 0], [.55, .55, .55]);
 
-		createModel("plate", fs, [.75, 1.0375	, 2], [Math.PI *-.5, 0, 0], [.1	, .1, .1]);
-		createModel("plate", fs, [.75, .875, 2], [Math.PI *-.5, 0, 0], [.2	, .2, .2]);
-		createModel("plate", fs, [.75, .85, 2], [Math.PI *.5, 0, 0], [.2	, .2, .2]);
+		createModel("plate", fs, [0, 0, 0, 1], [.75, 1.0375	, 2], [Math.PI *-.5, 0, 0], [.1	, .1, .1]);
+		createModel("plate", fs, [0, 0, 0, 1], [.75, .875, 2], [Math.PI *-.5, 0, 0], [.2	, .2, .2]);
+		createModel("plate", fs, [0, 0, 0, 1], [.75, .85, 2], [Math.PI *.5, 0, 0], [.2	, .2, .2]);
 		
 		
-		createModel("apple", fs, [.75, 1.08, 2], [0, 0, 0], [.03	, .03, .03]);
+		createModel("apple", fs, [0, 0, 0, 1], [.75, 1.08, 2], [0, 0, 0], [.03	, .03, .03]);
 		
-		createModel("acorn", fs, [-0.15, .05, 0.5], [Math.PI *.5, 0, -Math.PI *.175], [.08	, .08, .08]);
-		createModel("kegel", fs, [-0.22, .05, 0.38], [Math.PI *.5, 0, -Math.PI *.175], [.05, .2, .05]);
+		createModel("acorn", fs, [0, 0, 0, 1], [-0.15, .05, 0.5], [Math.PI *.5, 0, -Math.PI *.175], [.08	, .08, .08]);
+		createModel("kegel", fs, [0, 0, 0, 1], [-0.22, .05, 0.38], [Math.PI *.5, 0, -Math.PI *.175], [.05, .2, .05]);
 //Math.PI *.65,Math.PI *.75
-		createModel("bowtie", fs, [.62, .68, 2.07], [Math.PI *.8, Math.PI *.4,Math.PI *1], [.2	, .2, .2]);
-		createModel("sphere", fs, [.63, .68, 2.07], [0, 0, 0], [.04, .03, .04]);
+		createModel("bowtie", fs, [0.25, 0.25, 0.25, 1], [.62, .68, 2.07], [Math.PI *.8, Math.PI *.4,Math.PI *1], [.2	, .2, .2]);
+		createModel("sphere2", fs, [0.25, 0.25, 0.25, 1], [.63, .68, 2.07], [0, 0, 0], [.04, .03, .04]);
 
 
 
-		createModel("plane", "fillwireframe", [0, 0, 0], [0, 0, 0], [1, 1, 1]);
+		createModel("plane", "wireframefill", [0, 0, 0], [0, 0, 0], [0, 0, 0], [1, 1, 1]);
 
-		interactiveModel = models[5];
+		//interactiveModel = models[5];
+
+	
 
 
 
@@ -189,9 +197,12 @@ var app = ( function() {
 	 * @parameter geometryname: string with name of geometry.
 	 * @parameter fillstyle: wireframe, fill, fillwireframe.
 	 */
-	 function createModel(geometryname, fillstyle, translate, rotate, scale) {
+	 function createModel(geometryname, fillstyle, color, translate, rotate, scale) {
 		var model = {};
 		model.fillstyle = fillstyle;
+		model.color = color;
+
+
 		initDataAndBuffers(model, geometryname);
 		// Create and initialize Model-View-Matrix.
 	//	model.mvMatrix = mat4.create();
@@ -214,6 +225,9 @@ var app = ( function() {
 	
 		// Create and initialize Model-View-Matrix.
 		model.mvMatrix = mat4.create();
+
+		model.nMatrix = mat3.create();
+
 	}
 
 
@@ -554,10 +568,19 @@ var app = ( function() {
 			//mat4.copy(models[i].mvMatrix, camera.vMatrix);
 			updateTransformations(models[i]);
 
-
 			// Set uniforms for model.
 			gl.uniformMatrix4fv(prog.mvMatrixUniform, false,
 				models[i].mvMatrix);
+
+
+			// Uniform-Variable uColor wird über die Referenz prog.colorUniform mit dem Farbwert aus dem jeweiligen Modell belegt
+			gl.uniform4fv(prog.colorUniform, models[i].color);
+
+
+			// innerhalb des Loops wird über die Modelle die Normal-Matrix Uniform-Variable uNMatrix über die Referenz prog.nMatrixUniform gesetzt
+			gl.uniformMatrix3fv(prog.nMatrixUniform, false,
+				models[i].nMatrix);
+			
 			
 			draw(models[i]);
 		}
@@ -593,6 +616,9 @@ var app = ( function() {
 		// Combine view and model matrix
         // by matrix multiplication to mvMatrix.        
         mat4.multiply(mvMatrix, camera.vMatrix, mMatrix);
+
+		// Calculate normal matrix from model-view matrix.
+		mat3.normalFromMat4(model.nMatrix, mvMatrix);
 	}
 
 
@@ -622,6 +648,17 @@ var app = ( function() {
 	}
 
 	function draw(model) {
+
+		// Setup color vertex buffer object.
+		var vboCol = gl.createBuffer();
+		gl.bindBuffer(gl.ARRAY_BUFFER, vboCol);
+		gl.bufferData(gl.ARRAY_BUFFER, model.color, gl.STATIC_DRAW);
+		// Bind vertex buffer to attribute variable.
+		var colAttrib = gl.getAttribLocation(prog, 'col');
+		gl.vertexAttribPointer(colAttrib, 4, gl.FLOAT, false, 0, 0);
+		gl.enableVertexAttribArray(colAttrib);
+
+
 		// Setup position VBO.
 		gl.bindBuffer(gl.ARRAY_BUFFER, model.vboPos);
 		gl.vertexAttribPointer(prog.positionAttrib,3,gl.FLOAT,false,0,0);
