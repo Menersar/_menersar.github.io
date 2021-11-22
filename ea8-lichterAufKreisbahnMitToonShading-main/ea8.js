@@ -968,6 +968,12 @@ var app = ( function() {
 				gl.UNSIGNED_SHORT, 0);
 		}
 	}
+/*
+	function goToToonShading () {
+
+		<p><a href="index-2.html">Link zur gleichen Szene mit Toon- / Cell-Shading.</a></p>
+
+	}*/
 
 	// App interface.
 	return {
