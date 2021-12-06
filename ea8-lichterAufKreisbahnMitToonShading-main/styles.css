@@ -21,7 +21,15 @@ canvas {
  margin-bottom: 10;
 
 
+
 }
+/*
+#canvas {
+  width: 5000px;
+  height: 500px;
+
+}
+*/
 canvas > * {
   grid-column-start: 1;
   grid-row-start: 1;
