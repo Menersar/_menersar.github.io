@@ -23,6 +23,9 @@
         <script src="GVT_Src_vertexData_zylinder_nase.js"></script>
         <script src="GVT_Src_vertexData_plate.js"></script>
         <script src="GVT_Src_vertexData_zylinder.js"></script>
+        <script src="Apple.js"></script>
+        <script src="Acorn.js"></script>
+        <script src="Bowtie.js"></script>
 		
 
 		<link rel="stylesheet" href="styles.css" />
@@ -178,7 +181,7 @@
                         <h5>Umsetzung</h5>
                         <p><b>Grundlagen für das Erstellen der Modelle, Interaktionen und der Shader:</b> Moodle Kurs-Materialien des Kurses Graphical Visualisation Technologies, Lerneinheiten 1-12 bis einschließlich SHA.</p>
                         <p>Bei der Erstellung der Plane wird über <b>displacement = Math.cos(x) * Math.cos(z);</b>  und <b>y = y + displacement;</b> der y-Wert, also die Höhe der Plane, variiert.</p>
-                        <p>Die Szene wurde aus unterschiedlichen Grundkörpern zusammengesetzt. Der Baum besteht aus Kegeln und Zylindern. Die Schaukel aus Kegeln und einem Torus. Der Schneemann ist aus drei Kugeln, deren Rekusionstiefe sich verstellen lässt, Kegeln und Zylindern zusammengesetzt. Die Tannen setzen sind aus Kegeln und Zylindern zusammen.</p>
+                        <p>Die Szene wurde aus unterschiedlichen Grundkörpern zusammengesetzt. Der <b>Baum</b> besteht aus <b>Kegeln</b> und <b>Zylindern</b>. Die <b>Schaukel</b> aus <b>Kegeln</b> und einem <b>Torus</b>. Der <b>Schneemann</b> ist aus drei <b>Kugeln</b>, deren Rekusionstiefe sich verstellen lässt, <b>Kegeln</b> und <b>Zylindern</b> zusammengesetzt. Die <b>Tannen</b> setzen sind aus <b>Kegeln</b> und <b>Zylindern</b> zusammen. Zusätzlich wurden der Szene ein <b>Apfel</b> (in der Schaukel), erstellt durch die <b>Apple-Surface</b>, eine <b>Eichel</b> (an einem Ast), durch einen <b>Kegel</b> und die <b>Acorn-Surface</b>, sowie eine <b>Fliege</b> (am Schneemann), durch eine <b>Kugel</b> und die <b>Bowtie-Surface</b>, hinzugefügt.</p>
                         <p>In dem Fragment-Shader werd über <b>gl_FragColor = vec4(gl_FragCoord.z, gl_FragCoord.z, gl_FragCoord.z, 1.0);</b> die Z-Werte der Fragments im Framebuffer als Graustufen dargestellt. So werden die Fragments, die in Z-Richtung näher an der Kamera sind, dunkler dargestellt.</p>
 
                         <h5>Anmerkungen</h5>

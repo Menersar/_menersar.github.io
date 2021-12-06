@@ -273,6 +273,10 @@ var app = ( function() {
 		createModel("sphere", fs, [1, 1, 1, 1], [.75, .1, 2], [0, 0, 0], [.25, .2, .25]);
 		createModel("sphere", fs, [1, 1, 1, 1], [.75, .35, 2], [0, 0, 0], [.15, .15, .15]);
 
+		// Fliege
+		createModel("bowtie", fs, [0.25, 0.25, 0.25, 1], [.62, .28, 2.07], [Math.PI *.8, Math.PI *.4,Math.PI *1], [.2	, .2, .2]);
+		createModel("sphere", fs, [0.25, 0.25, 0.25, 1], [.63, .28, 2.07], [0, 0, 0], [.04, .03, .04]);
+
 		createModel("kegel", fs, [1, 1, 1, 1], [.75, .45, 2], [0, 0, 0], [1, .75, 1]);
 		createModel("kegel", fs, [1, 1, 1, 1], [.75, .45, 2], [0, 0, 0], [2, .1, 2]);
 		createModel("zylinderNase", fs, [1, 1, 1, 1], [.46	,.25, 2.17], [0, Math.PI *.175, 0], [.3, .075, .075]);	
@@ -310,12 +314,21 @@ var app = ( function() {
 		createModel("zylinder", fs, [1, 1, 1, 1], [0		, 1.5	, 1], [Math.PI*.37, Math.PI*1.5, Math.PI*-.05	], [.2, 1.4	, .2]);
 		createModel("zylinder", fs, [1, 1, 1, 1], [.5		, 1.6	, 1.2], [Math.PI*.41, Math.PI*.01, Math.PI*-0.15	], [.13, 1.4	, .13]);
 		createModel("zylinder", fs, [1, 1, 1, 1], [.35		, 1.58	, 2], [Math.PI*.47, Math.PI*.00, Math.PI*-0.03	], [.1, 1.8	, .05]);
+		// Eichel am Ast
+		createModel("acorn", fs, [1, 1, 1, 1], [.345		, 1.51	, 1.95], [Math.PI, 0,0	], [.04, .04	, .04]);
+		createModel("kegel", fs, [1, 1, 1, 1], [.345		, 1.575	, 1.95], [Math.PI, 0,0	], [.02, .2	, .02]);
+	
 		createModel("zylinder", fs, [1, 1, 1, 1], [.1		, 1.55	, 1.6], [Math.PI*.47, Math.PI*.00, Math.PI*0.11	], [.06	, .7	, .02]);
+
+		
 
 		// schaukel
 		createModel("kegel", fs, [1, 1, 1, 1], [.29		, 1.1	, 1.6], [0, 0, 0], [.05, 1.8, .05]);
 		createModel("kegel", fs, [1, 1, 1, 1], [.29		, 1.08	, 1.2	], [0, 0, 0], [.05, 1.8, .05]);
 		createModel("torus", fs, [1, 1, 1, 1], [.29		, 1	, 1.41	], [Math.PI*0, Math.PI*.5, Math.PI*0], [.4, .4, .75]);
+		
+		// Apfel in der Schaukel
+		createModel("apple", fs, [1, 1, 1, 1], [.29		, .88	, 1.41	], [Math.PI*0, Math.PI*.5, Math.PI*0], [.03, .03, .03]);
 
 
 
