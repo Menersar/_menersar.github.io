@@ -1,4 +1,4 @@
-var app = ( function() {
+var app = (function () {
 
 	var rekursionsSchritt = 0;
 
@@ -12,23 +12,23 @@ var app = ( function() {
 	// Array of model objects.
 	var models = [];
 
-	 // Model that is target for user input.
-	 var interactiveModel;
+	// Model that is target for user input.
+	// var interactiveModel;
 
-	var sphereAngle = 0;
+	// var sphereAngle = 0;
 
 	var camLocked = true;
 
-	
+
 	// Model that is target for user input.
-/*	var torus;
-	var sphere1;
-	var sphere2;
-	var sphere3;
-	var sphere4;
-	var sphere5;
-	var sphere6;
-	var sphere7;*/
+	/*	var torus;
+		var sphere1;
+		var sphere2;
+		var sphere3;
+		var sphere4;
+		var sphere5;
+		var sphere6;
+		var sphere7;*/
 
 	var toggleWireframeOn = true;
 
@@ -43,38 +43,38 @@ var app = ( function() {
 
 	var camera = {
 		// Initial position of the camera.
-		eye : [0, 1, 4],
+		eye: [0, 1, 4],
 		// Point to look at.
-		center : [0, 0, 0],
+		center: [0, 0, 0],
 		// Roll and pitch of the camera.
-		up : [0, 1, 0],
+		up: [0, 1, 0],
 		// Opening angle given in radian.
 		// radian = degree*2*PI/360.
-		fovy : 60.0 * Math.PI / 180,
+		fovy: 60.0 * Math.PI / 180,
 		// Camera near plane dimensions:
 		// value for left right top bottom in projection.
-		lrtb : 2.0,
+		lrtb: 2.0,
 		// View matrix.
-		vMatrix : mat4.create(),
+		vMatrix: mat4.create(),
 		// Projection matrix.
-		pMatrix : mat4.create(),
+		pMatrix: mat4.create(),
 		// Projection types: ortho, perspective, frustum.
-		projectionType : "perspective",
+		projectionType: "perspective",
 		// Angle to Z-Axis for camera when orbiting the center
 		// given in radian.
-		zAngle : 0,
+		zAngle: 0,
 		// Distance in XZ-Plane from center when orbiting.
-		distance : 4,
+		distance: 4,
 	};
 
 	// Objekt with light sources characteristics in the scene.
-    var illumination = {
-        ambientLight : [ .5, .5, .5 ],
-        light : [
-			{isOn:true, position:[radiusLights,1.,0.], color:[1.,0.,.4]},
-			{isOn:true, position:[-radiusLights,1.,0.], color:[0.,1.,.4]},
+	var illumination = {
+		ambientLight: [.5, .5, .5],
+		light: [
+			{ isOn: true, position: [radiusLights, 1., 0.], color: [1., 0., .4] },
+			{ isOn: true, position: [-radiusLights, 1., 0.], color: [0., 1., .4] },
 		]
-    };
+	};
 
 	function start() {
 		init();
@@ -104,8 +104,8 @@ var app = ( function() {
 	 * be in render function.
 	 */
 	function initPipline() {
-	//	gl.clearColor(0.18, 0.31, 0.31, 1);
-	//	gl.clearColor(0.95, 0.95, 0.95, 1);
+		//	gl.clearColor(0.18, 0.31, 0.31, 1);
+		//	gl.clearColor(0.95, 0.95, 0.95, 1);
 		//gl.clearColor(1, 1, 1, 1);
 
 		// Backface culling.
@@ -156,7 +156,7 @@ var app = ( function() {
 		var shaderSource = document.getElementById(SourceTagId).text;
 		gl.shaderSource(shader, shaderSource);
 		gl.compileShader(shader);
-		if(!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+		if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
 			console.log(SourceTagId + ": " + gl.getShaderInfoLog(shader));
 			return null;
 		}
@@ -178,30 +178,30 @@ var app = ( function() {
 
 		// Light.
 		prog.ambientLightUniform = gl.getUniformLocation(prog,
-            "ambientLight");
-    	// Array for light sources uniforms.
-    	prog.lightUniform = [];
-    	// Loop over light sources.
-    	for (var j = 0; j < illumination.light.length; j++) {
-        	var lightNb = "light[" + j + "]";
-        	// Store one object for every light source.
-        	var l = {};
-        	l.isOn = gl.getUniformLocation(prog, lightNb + ".isOn");
-        	l.position = gl.getUniformLocation(prog, lightNb + ".position");
-        	l.color = gl.getUniformLocation(prog, lightNb + ".color");
-        	prog.lightUniform[j] = l;
-    	}
+			"ambientLight");
+		// Array for light sources uniforms.
+		prog.lightUniform = [];
+		// Loop over light sources.
+		for (var j = 0; j < illumination.light.length; j++) {
+			var lightNb = "light[" + j + "]";
+			// Store one object for every light source.
+			var l = {};
+			l.isOn = gl.getUniformLocation(prog, lightNb + ".isOn");
+			l.position = gl.getUniformLocation(prog, lightNb + ".position");
+			l.color = gl.getUniformLocation(prog, lightNb + ".color");
+			prog.lightUniform[j] = l;
+		}
 
 		// Material.
-        prog.materialKaUniform = gl.getUniformLocation(prog, "material.ka");
-        prog.materialKdUniform = gl.getUniformLocation(prog, "material.kd");
-        prog.materialKsUniform = gl.getUniformLocation(prog, "material.ks");
-        prog.materialKeUniform = gl.getUniformLocation(prog, "material.ke");
-	
+		prog.materialKaUniform = gl.getUniformLocation(prog, "material.ka");
+		prog.materialKdUniform = gl.getUniformLocation(prog, "material.kd");
+		prog.materialKsUniform = gl.getUniformLocation(prog, "material.ks");
+		prog.materialKeUniform = gl.getUniformLocation(prog, "material.ke");
+
 	}
 
 
-	function createPhongMaterial(material){
+	function createPhongMaterial(material) {
 		material = material || {};
 		// Set some default values,
 		// if not defined in material paramter.
@@ -209,13 +209,13 @@ var app = ( function() {
 		material.kd = material.kd || [0.6, 0.6, 0.6];
 		material.ks = material.ks || [0.8, 0.8, 0.8];
 		material.ke = material.ke || 10.;
-		
+
 		return material;
 	}
 
 
 
-    function initModels() {
+	function initModels() {
 		// fillstyle
 		var fs = "wireframefill";
 		/*createModel("torus", fs, [ .25, .25, .25, 1], [ 0, 0, 0 ], [ 0, 0, 0 ], [
@@ -239,8 +239,8 @@ var app = ( function() {
 		createModel("sphere", fs, [ .95, .95, .95, 1 ], [ 0, 0, 0],
 			[ Math.PI *.5, 0, 0 ], [ .1, .1, .1 ]);
     
-        // Select one model that can be manipulated interactively by user.
-       // interactiveModel = models[0];
+		// Select one model that can be manipulated interactively by user.
+	   // interactiveModel = models[0];
 		[
 			torus,
 			sphere1,
@@ -253,191 +253,193 @@ var app = ( function() {
 		  ] = models;*/
 
 
-		   // Create some default material.
-		   var mDefault = createPhongMaterial();
-		   var mRed = createPhongMaterial({kd:[1.,0.,0.]});
-		   var mGreen = createPhongMaterial({kd:[0.,1.,0.]});
-		   var mBlue = createPhongMaterial({kd:[0.,0.,1.]});
-		   var mWhite = createPhongMaterial({ka:[1.,1.,1.], kd:[.5,.5,.5], ks:[0.,0.,0.]});
-		   
-		   var mDarkBrown = createPhongMaterial({kd:[.36,.25,0.20]});
-		   var mOcreBrown = createPhongMaterial({kd:[.53,.26,0.12]});
-		   var mPineGreen = createPhongMaterial({kd:[.0,.2,0.0]});
-		   var mDarkGray = createPhongMaterial({kd:[.32,.32,0.32]});
-		   var mDarkRed = createPhongMaterial({kd:[.40,.0,0.]});
-		   var mDarkOrange = createPhongMaterial({kd:[.8,.4,0.]});
-		   var mSnow = createPhongMaterial({kd:[1.,.98,0.98]});
+		// Create some default material.
+		/*
+		var mDefault = createPhongMaterial();
+		var mRed = createPhongMaterial({ kd: [1., 0., 0.] });
+		var mGreen = createPhongMaterial({ kd: [0., 1., 0.] });
+		var mBlue = createPhongMaterial({ kd: [0., 0., 1.] });
+		var mWhite = createPhongMaterial({ ka: [1., 1., 1.], kd: [.5, .5, .5], ks: [0., 0., 0.] });
+		*/
 
-   
-		   var cDarkBrown = [.36,.25,0.20, 1];
-		   var cOcreBrown = [.53,.26,0.12, 1];
-		   var cPineGreen = [.0,.2,0.0, 1];
-		   var cDarkGray = [.32,.32,0.32, 1];
-		   var cDarkRed = [.40,.0,0., 1];
-		   var cDarkOrange = [.8,.4,0., 1];
-		   var cSnow = [1.,.98,0.98, 1];
-   
-   
-			 createModel("plane", fs, cSnow, [0, 0, 0], [0, 0, 0], [1, 1, 1], mSnow);
-   
-			 // tanne hinten links
-			 createModel("kegel", fs, cDarkBrown, [-Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mDarkBrown);
-		   createModel("zylinderUnten", fs, cPineGreen, [-Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mPineGreen);
-		   createModel("zylinderMitte", fs, cPineGreen,  [-Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mPineGreen);
-		   createModel("zylinderOben", fs, cPineGreen,  [-Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mPineGreen);
-		   createModel("zylinderOben2", fs, cPineGreen,  [-Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mPineGreen);
-		   //createModel("plate", fs, cPineGreen,  [-Math.PI, 1, -Math.PI], [Math.PI *.5, 0, 0], [.1, .1, .1], mDarkBrown);
-		   createModel("plate", fs, cPineGreen,  [-Math.PI, 1.23, -Math.PI], [Math.PI *.5, 0, 0], [.55, .55, .55], mPineGreen);
-   
-   
-   
-		   // tanne2 hinten rechts
-		   createModel("kegel", fs, cDarkBrown, [Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mDarkBrown);
-		   createModel("zylinderUnten", fs, cPineGreen, [Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mPineGreen);
-		   createModel("zylinderMitte", fs, cPineGreen,  [Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mPineGreen);
-		   createModel("zylinderOben", fs, cPineGreen,  [Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mPineGreen);
-		   createModel("zylinderOben2", fs, cPineGreen,  [Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mPineGreen);
-		   //createModel("plate", fs, cPineGreen,  [-Math.PI, 1, -Math.PI], [Math.PI *.5, 0, 0], [.1, .1, .1], mDarkBrown);
-		   createModel("plate", fs, cPineGreen,  [Math.PI, 1.23, -Math.PI], [Math.PI *.5, 0, 0], [.55, .55, .55], mPineGreen);
-   
-   
-		   // tanne3 hinten rechts unten
-		   createModel("kegel", fs, cDarkBrown, [Math.PI*1.5, 0, -Math.PI*.5], [0, 0, 0], [1, 1, 1], mDarkBrown);
-		   createModel("zylinderUnten", fs, cPineGreen, [Math.PI*1.5, 0, -Math.PI*.5], [0, 0, 0], [1, 1, 1], mPineGreen);
-		   createModel("zylinderMitte", fs, cPineGreen,  [Math.PI*1.5, 0, -Math.PI*.5], [0, 0, 0], [1, 1, 1], mPineGreen);
-		   createModel("zylinderOben", fs, cPineGreen,  [Math.PI*1.5, 0, -Math.PI*.5], [0, 0, 0], [1, 1, 1], mPineGreen);
-		   createModel("zylinderOben2", fs, cPineGreen,  [Math.PI*1.5, 0, -Math.PI*.5], [0, 0, 0], [1, 1, 1], mPineGreen);
-		   //createModel("plate", fs, cPineGreen,  [-Math.PI, 1, -Math.PI], [Math.PI *.5, 0, 0], [.1, .1, .1], mDarkBrown);
-		   createModel("plate", fs, cPineGreen,  [Math.PI*1.5, 0.25, -Math.PI*.5], [Math.PI *.5, 0, 0], [.55, .55, .55], mPineGreen);
-   
-		   // tanne4 hinten rechts unten tal
-		   createModel("kegel", fs, cDarkBrown, [Math.PI*1, -1, Math.PI*.0], [0, 0, 0], [1, 3, 1], mDarkBrown);
-		   createModel("zylinderUnten", fs, cPineGreen, [Math.PI*1, -.5, Math.PI*.0], [0, 0, 0], [.75, 1, .75], mPineGreen);
-		   createModel("zylinderMitte", fs, cPineGreen,  [Math.PI*1, -.5, Math.PI*.0], [0, 0, 0], [.75, 1, .75], mPineGreen);
-		   createModel("zylinderOben", fs, cPineGreen,  [Math.PI*1, -.5, Math.PI*.0], [0, 0, 0], [.75, 1, .75], mPineGreen);
-		   createModel("zylinderOben2", fs, cPineGreen,  [Math.PI*1, -.5, Math.PI*.0], [0, 0, 0], [.75, 1, .75], mPineGreen);
-		   //createModel("plate", fs, cPineGreen,  [-Math.PI, 1, -Math.PI], [Math.PI *.5, 0, 0], [.1, .1, .1], mDarkBrown);
-		   createModel("plate", fs, cPineGreen,  [Math.PI*1, -.25, Math.PI*.0], [Math.PI *.5, 0, 0], [.41, .41, .41], mPineGreen);
-   
-		   // tanne5 vorne
-		   createModel("kegel", fs, cDarkBrown, [Math.PI*-.47, -.3, Math.PI*.8], [0, 0, 0], [2, 3, 2], mDarkBrown);
-		   createModel("zylinderUnten", fs, cPineGreen, [Math.PI*-.47, .15, Math.PI*.8], [0, 0, 0], [1.25, 1, 1.25], mPineGreen);
-		   createModel("zylinderMitte", fs, cPineGreen,  [Math.PI*-.47, .15, Math.PI*.8], [0, 0, 0], [1.25, 1, 1.25], mPineGreen);
-		   createModel("zylinderOben", fs, cPineGreen,  [Math.PI*-.47, .15, Math.PI*.8], [0, 0, 0], [1.25, 1, 1.25], mPineGreen);
-		   createModel("zylinderOben2", fs, cPineGreen,  [Math.PI*-.47, .15, Math.PI*.8], [0, 0, 0], [1.25, 1, 1.25], mPineGreen);
-		   //createModel("plate", fs, cPineGreen,  [-Math.PI, 1, -Math.PI], [Math.PI *.5, 0, 0], [.1, .1, .1], mDarkBrown);
-		   createModel("plate", fs, cPineGreen,  [Math.PI*-.47, 0.4, Math.PI*.8], [Math.PI *.5, 0, 0], [.69, .69, .69], mPineGreen);
-   
-		   // tanne6 hinten mitte hügel
-		   createModel("kegel", fs, cDarkBrown, [0, .98, -Math.PI * 2] , [0, 0, 0], [1, 1, 1], mDarkBrown);
-		   createModel("zylinderUnten", fs, cPineGreen, [0, .98, -Math.PI * 2], [0, 0, 0], [1, 1, 1], mPineGreen);
-		   createModel("zylinderMitte", fs, cPineGreen,  [0, .98, -Math.PI * 2], [0, 0, 0], [1, 1, 1], mPineGreen);
-		   createModel("zylinderOben", fs, cPineGreen,  [0, .98, -Math.PI * 2], [0, 0, 0], [1, 1, 1], mPineGreen);
-		   createModel("zylinderOben2", fs, cPineGreen,  [0, .98, -Math.PI * 2], [0, 0, 0], [1, 1, 1], mPineGreen);
-		   //createModel("plate", fs, cPineGreen,  [-Math.PI, 1, -Math.PI], [Math.PI *.5, 0, 0], [.1, .1, .1], mPineGreen);
-		   createModel("plate", fs, cPineGreen,  [0, 1.23, -Math.PI * 2], [Math.PI *.5, 0, 0], [.55, .55, .55], mPineGreen);
-   
-		   // tanne7 hinten links unten
-		   createModel("kegel", fs, cDarkBrown, [-Math.PI*1.5, 0, -Math.PI*.5], [0, 0, 0], [1, 3, 1], mDarkBrown);
-		   createModel("zylinderUnten", fs, cPineGreen, [-Math.PI*1.5, .5, -Math.PI*.5], [0, 0, 0], [.75, 1, .75], mPineGreen);
-		   createModel("zylinderMitte", fs, cPineGreen,  [-Math.PI*1.5, .5, -Math.PI*.5], [0, 0, 0], [.75, 1, .75], mPineGreen);
-		   createModel("zylinderOben", fs, cPineGreen,  [-Math.PI*1.5, .5, -Math.PI*.5], [0, 0, 0], [.75, 1, .75], mPineGreen);
-		   createModel("zylinderOben2", fs, cPineGreen,  [-Math.PI*1.5, .5, -Math.PI*.5], [0, 0, 0], [.75, 1, .75], mPineGreen);
-		   //createModel("plate", fs, cPineGreen,  [-Math.PI, 1, -Math.PI], [Math.PI *.5, 0, 0], [.1, .1, .1], mPineGreen);
-		   createModel("plate", fs, cPineGreen,  [-Math.PI*1.5, 0.75, -Math.PI*.5], [Math.PI *.5, 0, 0], [.41, .41, .41], mPineGreen);
-   
-   
-		   // schneemann
-		   createModel("sphere", fs, cSnow, [.75, -.2, 2], [0, 0, 0], [.3, .25, .3], mSnow);
-		   createModel("sphere", fs, cSnow, [.75, .1, 2], [0, 0, 0], [.25, .2, .25], mSnow);
-		   createModel("sphere", fs, cSnow, [.75, .35, 2], [0, 0, 0], [.15, .15, .15], mSnow);
+		var mDarkBrown = createPhongMaterial({ kd: [.36, .25, 0.20] });
+		var mOcreBrown = createPhongMaterial({ kd: [.53, .26, 0.12] });
+		var mPineGreen = createPhongMaterial({ kd: [.0, .2, 0.0] });
+		var mDarkGray = createPhongMaterial({ kd: [.32, .32, 0.32] });
+		var mDarkRed = createPhongMaterial({ kd: [.40, .0, 0.] });
+		var mDarkOrange = createPhongMaterial({ kd: [.8, .4, 0.] });
+		var mSnow = createPhongMaterial({ kd: [1., .98, 0.98] });
 
-		   		// Fliege
-		createModel("bowtie", fs, cDarkRed, [.7, .65, 2.1], [-0.4, -.6,-0.5], [.2	, .2, .2], mDarkRed);
+
+		var cDarkBrown = [.36, .25, 0.20, 1];
+		var cOcreBrown = [.53, .26, 0.12, 1];
+		var cPineGreen = [.0, .2, 0.0, 1];
+		var cDarkGray = [.32, .32, 0.32, 1];
+		var cDarkRed = [.40, .0, 0., 1];
+		var cDarkOrange = [.8, .4, 0., 1];
+		var cSnow = [1., .98, 0.98, 1];
+
+
+		createModel("plane", fs, cSnow, [0, 0, 0], [0, 0, 0], [1, 1, 1], mSnow);
+
+		// tanne hinten links
+		createModel("kegel", fs, cDarkBrown, [-Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mDarkBrown);
+		createModel("zylinderUnten", fs, cPineGreen, [-Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mPineGreen);
+		createModel("zylinderMitte", fs, cPineGreen, [-Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mPineGreen);
+		createModel("zylinderOben", fs, cPineGreen, [-Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mPineGreen);
+		createModel("zylinderOben2", fs, cPineGreen, [-Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mPineGreen);
+		//createModel("plate", fs, cPineGreen,  [-Math.PI, 1, -Math.PI], [Math.PI *.5, 0, 0], [.1, .1, .1], mDarkBrown);
+		createModel("plate", fs, cPineGreen, [-Math.PI, 1.23, -Math.PI], [Math.PI * .5, 0, 0], [.55, .55, .55], mPineGreen);
+
+
+
+		// tanne2 hinten rechts
+		createModel("kegel", fs, cDarkBrown, [Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mDarkBrown);
+		createModel("zylinderUnten", fs, cPineGreen, [Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mPineGreen);
+		createModel("zylinderMitte", fs, cPineGreen, [Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mPineGreen);
+		createModel("zylinderOben", fs, cPineGreen, [Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mPineGreen);
+		createModel("zylinderOben2", fs, cPineGreen, [Math.PI, .98, -Math.PI], [0, 0, 0], [1, 1, 1], mPineGreen);
+		//createModel("plate", fs, cPineGreen,  [-Math.PI, 1, -Math.PI], [Math.PI *.5, 0, 0], [.1, .1, .1], mDarkBrown);
+		createModel("plate", fs, cPineGreen, [Math.PI, 1.23, -Math.PI], [Math.PI * .5, 0, 0], [.55, .55, .55], mPineGreen);
+
+
+		// tanne3 hinten rechts unten
+		createModel("kegel", fs, cDarkBrown, [Math.PI * 1.5, 0, -Math.PI * .5], [0, 0, 0], [1, 1, 1], mDarkBrown);
+		createModel("zylinderUnten", fs, cPineGreen, [Math.PI * 1.5, 0, -Math.PI * .5], [0, 0, 0], [1, 1, 1], mPineGreen);
+		createModel("zylinderMitte", fs, cPineGreen, [Math.PI * 1.5, 0, -Math.PI * .5], [0, 0, 0], [1, 1, 1], mPineGreen);
+		createModel("zylinderOben", fs, cPineGreen, [Math.PI * 1.5, 0, -Math.PI * .5], [0, 0, 0], [1, 1, 1], mPineGreen);
+		createModel("zylinderOben2", fs, cPineGreen, [Math.PI * 1.5, 0, -Math.PI * .5], [0, 0, 0], [1, 1, 1], mPineGreen);
+		//createModel("plate", fs, cPineGreen,  [-Math.PI, 1, -Math.PI], [Math.PI *.5, 0, 0], [.1, .1, .1], mDarkBrown);
+		createModel("plate", fs, cPineGreen, [Math.PI * 1.5, 0.25, -Math.PI * .5], [Math.PI * .5, 0, 0], [.55, .55, .55], mPineGreen);
+
+		// tanne4 hinten rechts unten tal
+		createModel("kegel", fs, cDarkBrown, [Math.PI * 1, -1, Math.PI * .0], [0, 0, 0], [1, 3, 1], mDarkBrown);
+		createModel("zylinderUnten", fs, cPineGreen, [Math.PI * 1, -.5, Math.PI * .0], [0, 0, 0], [.75, 1, .75], mPineGreen);
+		createModel("zylinderMitte", fs, cPineGreen, [Math.PI * 1, -.5, Math.PI * .0], [0, 0, 0], [.75, 1, .75], mPineGreen);
+		createModel("zylinderOben", fs, cPineGreen, [Math.PI * 1, -.5, Math.PI * .0], [0, 0, 0], [.75, 1, .75], mPineGreen);
+		createModel("zylinderOben2", fs, cPineGreen, [Math.PI * 1, -.5, Math.PI * .0], [0, 0, 0], [.75, 1, .75], mPineGreen);
+		//createModel("plate", fs, cPineGreen,  [-Math.PI, 1, -Math.PI], [Math.PI *.5, 0, 0], [.1, .1, .1], mDarkBrown);
+		createModel("plate", fs, cPineGreen, [Math.PI * 1, -.25, Math.PI * .0], [Math.PI * .5, 0, 0], [.41, .41, .41], mPineGreen);
+
+		// tanne5 vorne
+		createModel("kegel", fs, cDarkBrown, [Math.PI * -.47, -.3, Math.PI * .8], [0, 0, 0], [2, 3, 2], mDarkBrown);
+		createModel("zylinderUnten", fs, cPineGreen, [Math.PI * -.47, .15, Math.PI * .8], [0, 0, 0], [1.25, 1, 1.25], mPineGreen);
+		createModel("zylinderMitte", fs, cPineGreen, [Math.PI * -.47, .15, Math.PI * .8], [0, 0, 0], [1.25, 1, 1.25], mPineGreen);
+		createModel("zylinderOben", fs, cPineGreen, [Math.PI * -.47, .15, Math.PI * .8], [0, 0, 0], [1.25, 1, 1.25], mPineGreen);
+		createModel("zylinderOben2", fs, cPineGreen, [Math.PI * -.47, .15, Math.PI * .8], [0, 0, 0], [1.25, 1, 1.25], mPineGreen);
+		//createModel("plate", fs, cPineGreen,  [-Math.PI, 1, -Math.PI], [Math.PI *.5, 0, 0], [.1, .1, .1], mDarkBrown);
+		createModel("plate", fs, cPineGreen, [Math.PI * -.47, 0.4, Math.PI * .8], [Math.PI * .5, 0, 0], [.69, .69, .69], mPineGreen);
+
+		// tanne6 hinten mitte hügel
+		createModel("kegel", fs, cDarkBrown, [0, .98, -Math.PI * 2], [0, 0, 0], [1, 1, 1], mDarkBrown);
+		createModel("zylinderUnten", fs, cPineGreen, [0, .98, -Math.PI * 2], [0, 0, 0], [1, 1, 1], mPineGreen);
+		createModel("zylinderMitte", fs, cPineGreen, [0, .98, -Math.PI * 2], [0, 0, 0], [1, 1, 1], mPineGreen);
+		createModel("zylinderOben", fs, cPineGreen, [0, .98, -Math.PI * 2], [0, 0, 0], [1, 1, 1], mPineGreen);
+		createModel("zylinderOben2", fs, cPineGreen, [0, .98, -Math.PI * 2], [0, 0, 0], [1, 1, 1], mPineGreen);
+		//createModel("plate", fs, cPineGreen,  [-Math.PI, 1, -Math.PI], [Math.PI *.5, 0, 0], [.1, .1, .1], mPineGreen);
+		createModel("plate", fs, cPineGreen, [0, 1.23, -Math.PI * 2], [Math.PI * .5, 0, 0], [.55, .55, .55], mPineGreen);
+
+		// tanne7 hinten links unten
+		createModel("kegel", fs, cDarkBrown, [-Math.PI * 1.5, 0, -Math.PI * .5], [0, 0, 0], [1, 3, 1], mDarkBrown);
+		createModel("zylinderUnten", fs, cPineGreen, [-Math.PI * 1.5, .5, -Math.PI * .5], [0, 0, 0], [.75, 1, .75], mPineGreen);
+		createModel("zylinderMitte", fs, cPineGreen, [-Math.PI * 1.5, .5, -Math.PI * .5], [0, 0, 0], [.75, 1, .75], mPineGreen);
+		createModel("zylinderOben", fs, cPineGreen, [-Math.PI * 1.5, .5, -Math.PI * .5], [0, 0, 0], [.75, 1, .75], mPineGreen);
+		createModel("zylinderOben2", fs, cPineGreen, [-Math.PI * 1.5, .5, -Math.PI * .5], [0, 0, 0], [.75, 1, .75], mPineGreen);
+		//createModel("plate", fs, cPineGreen,  [-Math.PI, 1, -Math.PI], [Math.PI *.5, 0, 0], [.1, .1, .1], mPineGreen);
+		createModel("plate", fs, cPineGreen, [-Math.PI * 1.5, 0.75, -Math.PI * .5], [Math.PI * .5, 0, 0], [.41, .41, .41], mPineGreen);
+
+
+		// schneemann
+		createModel("sphere", fs, cSnow, [.75, -.2, 2], [0, 0, 0], [.3, .25, .3], mSnow);
+		createModel("sphere", fs, cSnow, [.75, .1, 2], [0, 0, 0], [.25, .2, .25], mSnow);
+		createModel("sphere", fs, cSnow, [.75, .35, 2], [0, 0, 0], [.15, .15, .15], mSnow);
+
+		// Fliege
+		createModel("bowtie", fs, cDarkRed, [.7, .65, 2.1], [-0.4, -.6, -0.5], [.2, .2, .2], mDarkRed);
 		createModel("sphere", fs, cDarkRed, [.7, .65, 2.1], [0, 0, 0], [.04, .03, .04], mDarkRed);
-   
-		   createModel("kegel", fs, cDarkGray, [.75, .45, 2], [0, 0, 0], [1, .75, 1], mDarkGray);
-		   createModel("kegel", fs, cDarkGray, [.75, .45, 2], [0, 0, 0], [2, .1, 2], mDarkGray);
-		   createModel("zylinderNase", fs, cDarkOrange, [.46	,.25, 2.17], [0, Math.PI *.175, 0], [.3, .075, .075], mDarkOrange);	
-   
-		   createModel("plate", fs, cDarkGray, [.75, 0.6375	, 2], [Math.PI *-.5, 0, 0], [.1	, .1, .1], mDarkGray);
-		   createModel("plate", fs, cDarkGray, [.75, .475, 2], [Math.PI *-.5, 0, 0], [.2	, .2, .2], mDarkGray);
-		   createModel("plate", fs, cDarkGray, [.75, .45, 2], [Math.PI *.5, 0, 0], [.2	, .2, .2], mDarkGray);
-   
-		   //arm links
-		   createModel("zylinder", fs, cOcreBrown, [.65, .42, 2.7],[Math.PI*.35	, Math.PI*.00, Math.PI*0.06		], [.05, 1, .05], mOcreBrown);
-		   createModel("zylinder", fs, cOcreBrown, [.58, .42, 2.68],[Math.PI*.35	, Math.PI*.00, Math.PI*0.2		], [.01, .23, .01], mOcreBrown);
-   
-		   // arm rechts
-		   createModel("zylinder", fs, cOcreBrown, [.4, .4, 1.7],[Math.PI*.75	, Math.PI*.00, Math.PI*.8		], [.05, 1, .05], mOcreBrown);
-		   createModel("zylinder", fs, cOcreBrown, [.51, .4, 1.72],[Math.PI*.8	, Math.PI*.00, Math.PI*1		], [.01, .2, .01], mOcreBrown);
-   
-   
-		   
-		   // baum
-		   createModel("kegel", fs, cOcreBrown, [0, 1, 0], [0, 0, 0], [2, 1.5, 2], mOcreBrown);
-		   createModel("kegel", fs, cOcreBrown, [0, .9, 0], [0, 0, 0], [2, 1.5, 2], mOcreBrown);
-		   createModel("kegel", fs, cOcreBrown, [0, 1.2, 0], [Math.PI*.5, -.4, Math.PI *.5], [1.0, 2, 1.0], mOcreBrown);
-		   createModel("kegel", fs, cOcreBrown, [-0.4, 1.39, 0], [Math.PI*.5, .1, Math.PI *.5], [1.0, 2, 1.0], mOcreBrown);
-		   createModel("zylinder", fs, cOcreBrown, [-1.3, 1.82, 0], [Math.PI*.5, -.8, Math.PI *.5], [.15, 1, .15], mOcreBrown);
-		   createModel("zylinder", fs, cOcreBrown, [-1.1, 1.6, .5], [Math.PI*.5, -.8, Math.PI *.2	], [.07, 1, .07], mOcreBrown);
-		   createModel("zylinder", fs, cOcreBrown, [.28, 1.9	, .135], [Math.PI*0, Math.PI*-.15, Math.PI*-.15], [.285, 1.0, .285], mOcreBrown);
-		   createModel("zylinder", fs, cOcreBrown, [.15, 2.1	, .23], [Math.PI*0, Math.PI*.5, Math.PI*0.1	], [.12, .7, .12], mOcreBrown);
-		   createModel("zylinder", fs, cOcreBrown, [.34, 2.	, .16], [Math.PI*0, Math.PI*-.15, Math.PI*-.15], [.08, .7, .08], mOcreBrown);
-		   createModel("zylinder", fs, cOcreBrown, [.325	, 2.5	, .2], [Math.PI*0, Math.PI*1, Math.PI*0.1	], [.04, .8, .01], mOcreBrown);
-		   createModel("zylinder", fs, cOcreBrown, [-.42		, 2.1	, .00], [Math.PI*0, Math.PI*2, Math.PI*.2	], [.13, 1.1	, .13], mOcreBrown);
-		   createModel("zylinder", fs, cOcreBrown, [-.62		, 2.15	, .00], [Math.PI*0, Math.PI*2, Math.PI*.36	], [.02, .4	, .02], mOcreBrown);
-		   createModel("zylinder", fs, cOcreBrown, [.28	, 2.6	, .2], [Math.PI*0, Math.PI*1, Math.PI*-.02	], [.01, .3, .01], mOcreBrown);
-		   createModel("zylinder", fs, cOcreBrown, [.45	, 2.45		, .2], [Math.PI*0, Math.PI*1, Math.PI*.3	], [.02, .3, .02], mOcreBrown);
-   
-		   createModel("zylinder", fs, cOcreBrown, [0		, 1.5	, 1], [Math.PI*.37, Math.PI*1.5, Math.PI*-.05	], [.2, 1.4	, .2], mOcreBrown);
-		   createModel("zylinder", fs, cOcreBrown, [.5		, 1.6	, 1.2], [Math.PI*.41, Math.PI*.01, Math.PI*-0.15	], [.13, 1.4	, .13], mOcreBrown);
-		   createModel("zylinder", fs, cOcreBrown, [.35		, 1.58	, 2], [Math.PI*.47, Math.PI*.00, Math.PI*-0.03	], [.1, 1.8	, .05], mOcreBrown);
-		   		// Eichel am Ast
-		createModel("acorn", fs, cOcreBrown, [.345		, 1.51	, 1.95], [Math.PI, 0,0	], [.04, .04	, .04], mOcreBrown);
-		createModel("kegel", fs,cOcreBrown, [.345		, 1.575	, 1.95], [Math.PI, 0,0	], [.02, .2	, .02], mOcreBrown);
 
-		   createModel("zylinder", fs, cOcreBrown, [.1		, 1.55	, 1.6], [Math.PI*.47, Math.PI*.00, Math.PI*0.11	], [.06	, .7	, .02], mOcreBrown);
-   
-		   // schaukel
-		   createModel("kegel", fs, cDarkRed, [.29		, 1.1	, 1.6], [0, 0, 0], [.05, 1.8, .05], mDarkRed);
-		   createModel("kegel", fs, cDarkRed, [.29		, 1.08	, 1.2	], [0, 0, 0], [.05, 1.8, .05], mDarkRed);
-		   createModel("torus", fs, cDarkGray, [.29		, 1	, 1.41	], [Math.PI*0, Math.PI*.5, Math.PI*0], [.4, .4, .75], mDarkGray);
+		createModel("kegel", fs, cDarkGray, [.75, .45, 2], [0, 0, 0], [1, .75, 1], mDarkGray);
+		createModel("kegel", fs, cDarkGray, [.75, .45, 2], [0, 0, 0], [2, .1, 2], mDarkGray);
+		createModel("zylinderNase", fs, cDarkOrange, [.46, .25, 2.17], [0, Math.PI * .175, 0], [.3, .075, .075], mDarkOrange);
 
-		   		// Apfel in der Schaukel
-		createModel("apple", fs, cDarkRed, [.29		, .88	, 1.41	], [Math.PI*0, Math.PI*.5, Math.PI*0], [.03, .03, .03], mDarkRed);
+		createModel("plate", fs, cDarkGray, [.75, 0.6375, 2], [Math.PI * -.5, 0, 0], [.1, .1, .1], mDarkGray);
+		createModel("plate", fs, cDarkGray, [.75, .475, 2], [Math.PI * -.5, 0, 0], [.2, .2, .2], mDarkGray);
+		createModel("plate", fs, cDarkGray, [.75, .45, 2], [Math.PI * .5, 0, 0], [.2, .2, .2], mDarkGray);
+
+		//arm links
+		createModel("zylinder", fs, cOcreBrown, [.65, .42, 2.7], [Math.PI * .35, Math.PI * .00, Math.PI * 0.06], [.05, 1, .05], mOcreBrown);
+		createModel("zylinder", fs, cOcreBrown, [.58, .42, 2.68], [Math.PI * .35, Math.PI * .00, Math.PI * 0.2], [.01, .23, .01], mOcreBrown);
+
+		// arm rechts
+		createModel("zylinder", fs, cOcreBrown, [.4, .4, 1.7], [Math.PI * .75, Math.PI * .00, Math.PI * .8], [.05, 1, .05], mOcreBrown);
+		createModel("zylinder", fs, cOcreBrown, [.51, .4, 1.72], [Math.PI * .8, Math.PI * .00, Math.PI * 1], [.01, .2, .01], mOcreBrown);
 
 
 
-		  interactiveModel = models[0];
+		// baum
+		createModel("kegel", fs, cOcreBrown, [0, 1, 0], [0, 0, 0], [2, 1.5, 2], mOcreBrown);
+		createModel("kegel", fs, cOcreBrown, [0, .9, 0], [0, 0, 0], [2, 1.5, 2], mOcreBrown);
+		createModel("kegel", fs, cOcreBrown, [0, 1.2, 0], [Math.PI * .5, -.4, Math.PI * .5], [1.0, 2, 1.0], mOcreBrown);
+		createModel("kegel", fs, cOcreBrown, [-0.4, 1.39, 0], [Math.PI * .5, .1, Math.PI * .5], [1.0, 2, 1.0], mOcreBrown);
+		createModel("zylinder", fs, cOcreBrown, [-1.3, 1.82, 0], [Math.PI * .5, -.8, Math.PI * .5], [.15, 1, .15], mOcreBrown);
+		createModel("zylinder", fs, cOcreBrown, [-1.1, 1.6, .5], [Math.PI * .5, -.8, Math.PI * .2], [.07, 1, .07], mOcreBrown);
+		createModel("zylinder", fs, cOcreBrown, [.28, 1.9, .135], [Math.PI * 0, Math.PI * -.15, Math.PI * -.15], [.285, 1.0, .285], mOcreBrown);
+		createModel("zylinder", fs, cOcreBrown, [.15, 2.1, .23], [Math.PI * 0, Math.PI * .5, Math.PI * 0.1], [.12, .7, .12], mOcreBrown);
+		createModel("zylinder", fs, cOcreBrown, [.34, 2., .16], [Math.PI * 0, Math.PI * -.15, Math.PI * -.15], [.08, .7, .08], mOcreBrown);
+		createModel("zylinder", fs, cOcreBrown, [.325, 2.5, .2], [Math.PI * 0, Math.PI * 1, Math.PI * 0.1], [.04, .8, .01], mOcreBrown);
+		createModel("zylinder", fs, cOcreBrown, [-.42, 2.1, .00], [Math.PI * 0, Math.PI * 2, Math.PI * .2], [.13, 1.1, .13], mOcreBrown);
+		createModel("zylinder", fs, cOcreBrown, [-.62, 2.15, .00], [Math.PI * 0, Math.PI * 2, Math.PI * .36], [.02, .4, .02], mOcreBrown);
+		createModel("zylinder", fs, cOcreBrown, [.28, 2.6, .2], [Math.PI * 0, Math.PI * 1, Math.PI * -.02], [.01, .3, .01], mOcreBrown);
+		createModel("zylinder", fs, cOcreBrown, [.45, 2.45, .2], [Math.PI * 0, Math.PI * 1, Math.PI * .3], [.02, .3, .02], mOcreBrown);
 
-		 /* sphereAngle = (sphereAngle + deltaRotate) % (2 * Math.PI);
-				torus.rotate[1] += deltaRotate;
-				// 0 - 2
-				const cosOffset = 1 + (Math.cos(sphereAngle));
-				// -1 bis 1
-				const sinOffset = Math.sin(sphereAngle);
-				//console.log ("cos" + cosOffset);
-				//console.log (sinOffset);
-				sphere1.translate[0] = cosOffset -2 ;
-				sphere1.translate[2] = sinOffset ;
-				sphere2.translate[0] = 1.3*(cosOffset  -1);
-				sphere2.translate[2] = -1.3*(sinOffset -1);
-				
-				sphere3.translate[0] = (cosOffset -1)*2;
-				sphere3.translate[2] = (-sinOffset -1)*2;
+		createModel("zylinder", fs, cOcreBrown, [0, 1.5, 1], [Math.PI * .37, Math.PI * 1.5, Math.PI * -.05], [.2, 1.4, .2], mOcreBrown);
+		createModel("zylinder", fs, cOcreBrown, [.5, 1.6, 1.2], [Math.PI * .41, Math.PI * .01, Math.PI * -0.15], [.13, 1.4, .13], mOcreBrown);
+		createModel("zylinder", fs, cOcreBrown, [.35, 1.58, 2], [Math.PI * .47, Math.PI * .00, Math.PI * -0.03], [.1, 1.8, .05], mOcreBrown);
+		// Eichel am Ast
+		createModel("acorn", fs, cOcreBrown, [.345, 1.51, 1.95], [Math.PI, 0, 0], [.04, .04, .04], mOcreBrown);
+		createModel("kegel", fs, cOcreBrown, [.345, 1.575, 1.95], [Math.PI, 0, 0], [.02, .2, .02], mOcreBrown);
+
+		createModel("zylinder", fs, cOcreBrown, [.1, 1.55, 1.6], [Math.PI * .47, Math.PI * .00, Math.PI * 0.11], [.06, .7, .02], mOcreBrown);
+
+		// schaukel
+		createModel("kegel", fs, cDarkRed, [.29, 1.1, 1.6], [0, 0, 0], [.05, 1.8, .05], mDarkRed);
+		createModel("kegel", fs, cDarkRed, [.29, 1.08, 1.2], [0, 0, 0], [.05, 1.8, .05], mDarkRed);
+		createModel("torus", fs, cDarkGray, [.29, 1, 1.41], [Math.PI * 0, Math.PI * .5, Math.PI * 0], [.4, .4, .75], mDarkGray);
+
+		// Apfel in der Schaukel
+		createModel("apple", fs, cDarkRed, [.29, .88, 1.41], [Math.PI * 0, Math.PI * .5, Math.PI * 0], [.03, .03, .03], mDarkRed);
+
+
+
+		// interactiveModel = models[0];
+
+		/* sphereAngle = (sphereAngle + deltaRotate) % (2 * Math.PI);
+			   torus.rotate[1] += deltaRotate;
+			   // 0 - 2
+			   const cosOffset = 1 + (Math.cos(sphereAngle));
+			   // -1 bis 1
+			   const sinOffset = Math.sin(sphereAngle);
+			   //console.log ("cos" + cosOffset);
+			   //console.log (sinOffset);
+			   sphere1.translate[0] = cosOffset -2 ;
+			   sphere1.translate[2] = sinOffset ;
+			   sphere2.translate[0] = 1.3*(cosOffset  -1);
+			   sphere2.translate[2] = -1.3*(sinOffset -1);
+		   	
+			   sphere3.translate[0] = (cosOffset -1)*2;
+			   sphere3.translate[2] = (-sinOffset -1)*2;
 	
-				sphere4.translate[0] = (-cosOffset)*1.5; 
-				sphere4.translate[2] = sinOffset*1.5;	
-				console.log("s"+sphereAngle);
-				sphere5.translate[0] = (cosOffset)*1.5; 
-				sphere5.translate[2] = (sinOffset+.25)*1.5;
+			   sphere4.translate[0] = (-cosOffset)*1.5; 
+			   sphere4.translate[2] = sinOffset*1.5;	
+			   console.log("s"+sphereAngle);
+			   sphere5.translate[0] = (cosOffset)*1.5; 
+			   sphere5.translate[2] = (sinOffset+.25)*1.5;
 
-				sphere6.translate[1] = cosOffset -1;
-				sphere6.translate[2] = sinOffset;
-				sphere7.translate[0] = -(cosOffset -1) *1.5;
-				sphere7.translate[2] = -sinOffset*1.5;*/
-    }
+			   sphere6.translate[1] = cosOffset -1;
+			   sphere6.translate[2] = sinOffset;
+			   sphere7.translate[0] = -(cosOffset -1) *1.5;
+			   sphere7.translate[2] = -sinOffset*1.5;*/
+	}
 
 	/**
 	 * Create model object, fill it and push it in models array.
@@ -445,7 +447,7 @@ var app = ( function() {
 	 * @parameter geometryname: string with name of geometry.
 	 * @parameter fillstyle: wireframe, fill, fillwireframe.
 	 */
-	 function createModel(geometryname, fillstyle, color, translate, rotate, scale, material) {
+	function createModel(geometryname, fillstyle, color, translate, rotate, scale, material) {
 		var model = {};
 		model.fillstyle = fillstyle;
 		model.color = color;
@@ -457,12 +459,6 @@ var app = ( function() {
 
 		models.push(model);
 	}
-
-
-
-
-
-	
 
 
 
@@ -516,7 +512,7 @@ var app = ( function() {
 		// Setup lines index buffer object.
 		model.iboLines = gl.createBuffer();
 		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, model.iboLines);
-		gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, model.indicesLines, 
+		gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, model.indicesLines,
 			gl.STATIC_DRAW);
 		model.iboLines.numberOfElements = model.indicesLines.length;
 		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
@@ -524,7 +520,7 @@ var app = ( function() {
 		// Setup triangle index buffer object.
 		model.iboTris = gl.createBuffer();
 		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, model.iboTris);
-		gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, model.indicesTris, 
+		gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, model.indicesTris,
 			gl.STATIC_DRAW);
 		model.iboTris.numberOfElements = model.indicesTris.length;
 		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
@@ -532,11 +528,11 @@ var app = ( function() {
 
 	function initEventHandler() {
 		// Rotation step.
-		
-		var deltaScale = 0.05;
+
+		// var deltaScale = 0.05;
 
 
-		window.onkeydown = function(evt) {
+		window.onkeydown = function (evt) {
 			var key = evt.which ? evt.which : evt.keyCode;
 			var c = String.fromCharCode(key);
 			// console.log(evt);
@@ -544,108 +540,108 @@ var app = ( function() {
 			var sign = evt.shiftKey ? -1 : 1;
 
 			// Change projection of scene.
-			switch(c) {
-				case('O'):
+			switch (c) {
+				case ('O'):
 					camera.projectionType = "ortho";
 					camera.lrtb = 2;
 					break;
-				case('F'):
+				case ('F'):
 					camera.projectionType = "frustum";
 					camera.lrtb = 1.2;
 					break;
-				case('P'):
+				case ('P'):
 					camera.projectionType = "perspective";
 					break;
 			}
 			// Camera move and orbit.
-		/*	switch(c) {
-				case('C'):
-					// Orbit camera.
-					camera.zAngle += sign * deltaRotate;
-					break;
-				case('H'):
-					// Move camera up and down.
-					camera.eye[1] += sign * deltaTranslate;
-					break;
-				case('D'):
-					// Camera distance to center.
-					camera.distance += sign * deltaTranslate;
-					break;
-				case('V'):
-					// Camera fovy in radian.
-					camera.fovy += sign * 5 * Math.PI / 180;
-					break;
-				case('B'):
-					// Camera near plane dimensions.
-					camera.lrtb += sign * 0.1;
-					break;
-			}*/
+			/*	switch(c) {
+					case('C'):
+						// Orbit camera.
+						camera.zAngle += sign * deltaRotate;
+						break;
+					case('H'):
+						// Move camera up and down.
+						camera.eye[1] += sign * deltaTranslate;
+						break;
+					case('D'):
+						// Camera distance to center.
+						camera.distance += sign * deltaTranslate;
+						break;
+					case('V'):
+						// Camera fovy in radian.
+						camera.fovy += sign * 5 * Math.PI / 180;
+						break;
+					case('B'):
+						// Camera near plane dimensions.
+						camera.lrtb += sign * 0.1;
+						break;
+				}*/
 
 
 			// Rotate interactive Model.
-           /* switch(c) {
-                case('X'):
-                    interactiveModel.rotate[0] += sign * deltaRotate;
-                    break;
-                case('Y'):
-                    interactiveModel.rotate[1] += sign * deltaRotate;
-                    break;
-                case('Z'):
-                    interactiveModel.rotate[2] += sign * deltaRotate;
-                    break;
-            }*/
-			rekursionsSchritt = parseInt(c)-1;
+			/* switch(c) {
+				 case('X'):
+					 interactiveModel.rotate[0] += sign * deltaRotate;
+					 break;
+				 case('Y'):
+					 interactiveModel.rotate[1] += sign * deltaRotate;
+					 break;
+				 case('Z'):
+					 interactiveModel.rotate[2] += sign * deltaRotate;
+					 break;
+			 }*/
+			rekursionsSchritt = parseInt(c) - 1;
 
-			switch(c) {
-              /*  case('S'):
-                    interactiveModel.scale[0] *= 1 + sign * deltaScale;
-                    interactiveModel.scale[1] *= 1 - sign * deltaScale;
-                    interactiveModel.scale[2] *= 1 + sign * deltaScale;
-                    break;*/
-					
-				case('1'):
+			switch (c) {
+				/*  case('S'):
+					  interactiveModel.scale[0] *= 1 + sign * deltaScale;
+					  interactiveModel.scale[1] *= 1 - sign * deltaScale;
+					  interactiveModel.scale[2] *= 1 + sign * deltaScale;
+					  break;*/
+
+				case ('1'):
 					console.log("1");
 					document.getElementById("textCanvas").innerHTML = rekursionsSchritt + ". Kugel-Rekursionsschritt";
 					models = [];
 					initModels();
 					render();
-				break;
-				case('2'):
+					break;
+				case ('2'):
 					document.getElementById('textCanvas').innerHTML = rekursionsSchritt + ". Kugel-Rekursionsschritt";
 					models = [];
 					initModels();
 					render();
-				break;
-				case('3'):
+					break;
+				case ('3'):
 					document.getElementById("textCanvas").innerHTML = rekursionsSchritt + ". Kugel-Rekursionsschritt";
 					models = [];
 					initModels();
 					render();
-				break;
-				case('4'):
+					break;
+				case ('4'):
 					document.getElementById('textCanvas').innerHTML = rekursionsSchritt + ". Kugel-Rekursionsschritt";
 					models = [];
 					initModels();
 					render();
-				break;
-				case('5'):
+					break;
+				case ('5'):
 					document.getElementById('textCanvas').innerHTML = rekursionsSchritt + ". Kugel-Rekursionsschritt";
 					models = [];
 					initModels();
 					render();
-				break;
-				case('6'):
+					break;
+				case ('6'):
 					document.getElementById('textCanvas').innerHTML = rekursionsSchritt + ". Kugel-Rekursionsschritt";
 					models = [];
 					initModels();
 					render();
-				break;
+					break;
 
 
 
 
 
-				case('T'):
+				case ('T'):
 					toggleWireframeOn = !toggleWireframeOn;
 					break;
 
@@ -656,69 +652,69 @@ var app = ( function() {
 
 
 
-					case('A'):
-                    // Orbit camera.
-                    camera.zAngle += -1 * deltaRotate;
-                    break;
-					case('D'):
-                    // Orbit camera.
-                    camera.zAngle += 1 * deltaRotate;
-                    break;
+				case ('A'):
+					// Orbit camera.
+					camera.zAngle += -1 * deltaRotate;
+					break;
+				case ('D'):
+					// Orbit camera.
+					camera.zAngle += 1 * deltaRotate;
+					break;
 
 
-				case('F'):
-                    camera.projectionType = "frustum";
-                    camera.lrtb = 1.2;
-                    break;
-                case('P'):
-                    camera.projectionType = "perspective";
-                    break;
+				case ('F'):
+					camera.projectionType = "frustum";
+					camera.lrtb = 1.2;
+					break;
+				case ('P'):
+					camera.projectionType = "perspective";
+					break;
 
-				case('Q'):
-                    // Move camera up and down.
-					if (!camLocked || camera.eye[1] > 1.91) { 
+				case ('Q'):
+					// Move camera up and down.
+					if (!camLocked || camera.eye[1] > 1.91) {
 						camera.eye[1] += -1 * deltaTranslate;
-					//	console.log(camera.eye[1]);
-                    	
+						//	console.log(camera.eye[1]);
+
 					}
 					break;
-                    
-				case('E'):
+
+				case ('E'):
 					//if (camera.eye[1] < 1.5) {
-						// Move camera up and down.
-						camera.eye[1] += 1 * deltaTranslate;
-						//console.log(camera.eye[1]);
+					// Move camera up and down.
+					camera.eye[1] += 1 * deltaTranslate;
+					//console.log(camera.eye[1]);
 					//}
-                    
 
-                    break;
-               case('W'):
-                    // Camera distance to center.
-					if (camera.distance >1) {
-                    	camera.distance += -1 * deltaTranslate;
-					} 
-                    break;
 
-				case('S'):
-                    // Camera distance to center.
-                    camera.distance += 1 * deltaTranslate;
-                    break;
+					break;
+				case ('W'):
+					// Camera distance to center.
+					if (camera.distance > 1) {
+						camera.distance += -1 * deltaTranslate;
+					}
+					break;
 
-					case('C'):
-                    // Camera distance to center.
-                    camLocked = !camLocked;
-					if (camera.eye[1]< 1.91) {
+				case ('S'):
+					// Camera distance to center.
+					camera.distance += 1 * deltaTranslate;
+					break;
+
+				case ('C'):
+					// Camera distance to center.
+					camLocked = !camLocked;
+					if (camera.eye[1] < 1.91) {
 						camera.eye[1] = 1.91;
 					}
-                    break;
+					break;
 
 
-					// Habe noch if-Bedingungen hinzugefügt, sodass das rein und rauszoomen nicht bewirkt, dass die Kamera sich irgendwann dreht
-					// Bei der perspektivischen Sicht wird beim Rauszoomen sichergestellt, dass camera.fovy nie größer als pi wird (über: * (Math.PI - camera.fovy))
-					// Bei der perspektivischen Sicht wird beim Reinzoomen sichergestellt, dass camera.fovy nie kleiner als 0 wird (über: *  0.5; denn so wird der Abstand zur Mitte, oder zu 0, immer nur halbiert und kann so nie unter 0 fallen)
-					// Bei der frustum Sicht wird beim Reinzoomen sichergestellt, dass camera.lrtb nie kleiner als 0 wird (über: *  0.5; denn so wird der Abstand zur Mitte, oder zu 0, immer nur halbiert und kann so nie unter 0 fallen)
-				case('Z'):
-                    // Camera fovy in radian.
+				// Habe noch if-Bedingungen hinzugefügt, sodass das rein und rauszoomen nicht bewirkt, dass die Kamera sich irgendwann dreht
+				// Bei der perspektivischen Sicht wird beim Rauszoomen sichergestellt, dass camera.fovy nie größer als pi wird (über: * (Math.PI - camera.fovy))
+				// Bei der perspektivischen Sicht wird beim Reinzoomen sichergestellt, dass camera.fovy nie kleiner als 0 wird (über: *  0.5; denn so wird der Abstand zur Mitte, oder zu 0, immer nur halbiert und kann so nie unter 0 fallen)
+				// Bei der frustum Sicht wird beim Reinzoomen sichergestellt, dass camera.lrtb nie kleiner als 0 wird (über: *  0.5; denn so wird der Abstand zur Mitte, oder zu 0, immer nur halbiert und kann so nie unter 0 fallen)
+				case ('Z'):
+					// Camera fovy in radian.
 					if (sign >= 0) {
 						if (camera.projectionType == "perspective") {
 							camera.fovy -= (camera.fovy - 0) * 0.5;
@@ -729,21 +725,21 @@ var app = ( function() {
 					} else {
 						if (camera.projectionType == "perspective") {
 							//camera.fovy += sign * 5 * Math.PI / 180;
-							camera.fovy += ( 5 * Math.PI / 180) * (Math.PI - camera.fovy);
+							camera.fovy += (5 * Math.PI / 180) * (Math.PI - camera.fovy);
 							console.log(camera.fovy);
 						} else if (camera.projectionType == "ortho" || camera.projectionType == "frustum") {
 							camera.lrtb += 0.1;
 						}
-						
+
 					}
-                    break;
+					break;
 
 
 
 
-					case('L'):
-						moveLightsAroundModels();                    
-                    break;
+				case ('L'):
+					moveLightsAroundModels();
+					break;
 
 
 
@@ -752,10 +748,10 @@ var app = ( function() {
 
 
 
-            }
+			}
 
 			/*switch(c) {
-                case('K'):
+				case('K'):
 				sphereAngle = (sphereAngle + deltaRotate) % (2 * Math.PI);
 				torus.rotate[1] += deltaRotate;
 				// 0 - 2
@@ -782,8 +778,8 @@ var app = ( function() {
 				sphere6.translate[2] = sinOffset;
 				sphere7.translate[0] = -(cosOffset -1) *1.5;
 				sphere7.translate[2] = -sinOffset*1.5;
-                    break;
-            }*/
+					break;
+			}*/
 
 
 
@@ -793,7 +789,7 @@ var app = ( function() {
 
 
 
-			
+
 
 
 
@@ -815,14 +811,14 @@ var app = ( function() {
 
 
 	function moveLightsAroundModels() {
-		
+
 		currentLightRotation += deltaRotate;
 		illumination.light[0].position[0] = Math.cos(currentLightRotation) * radiusLights;
 		illumination.light[0].position[2] = Math.sin(currentLightRotation) * radiusLights;
-	
+
 		illumination.light[1].position[0] = Math.cos(Math.PI + currentLightRotation) * radiusLights;
 		illumination.light[1].position[2] = Math.sin(Math.PI + currentLightRotation) * radiusLights;
-	  }
+	}
 
 
 	/**
@@ -847,7 +843,7 @@ var app = ( function() {
 		for (var j = 0; j < illumination.light.length; j++) {
 			// bool is transferred as integer.
 			gl.uniform1i(prog.lightUniform[j].isOn,
-					illumination.light[j].isOn);
+				illumination.light[j].isOn);
 			// Tranform light postion in eye coordinates.
 			// Copy current light position into a new array.
 			var lightPos = [].concat(illumination.light[j].position);
@@ -858,34 +854,34 @@ var app = ( function() {
 			lightPos.pop();
 			gl.uniform3fv(prog.lightUniform[j].position, lightPos);
 			gl.uniform3fv(prog.lightUniform[j].color,
-					illumination.light[j].color);
+				illumination.light[j].color);
 		}
 
 
 		// Loop over models.
-		for(var i = 0; i < models.length; i++) {
+		for (var i = 0; i < models.length; i++) {
 			// Update modelview for model.
 			updateTransformations(models[i]);
 
 			// Set uniforms for model.
-			gl.uniformMatrix4fv(prog.mvMatrixUniform, false, 
+			gl.uniformMatrix4fv(prog.mvMatrixUniform, false,
 				models[i].mvMatrix);
-			
+
 			// Uniform-Variable uColor wird über die Referenz prog.colorUniform mit dem Farbwert aus dem jeweiligen Modell belegt
 			gl.uniform4fv(prog.colorUniform, models[i].color);
 
 			// innerhalb des Loops wird über die Modelle die Normal-Matrix Uniform-Variable uNMatrix über die Referenz prog.nMatrixUniform gesetzt
 			gl.uniformMatrix3fv(prog.nMatrixUniform, false,
-                models[i].nMatrix);
+				models[i].nMatrix);
 
 
-				// Material.
-				gl.uniform3fv(prog.materialKaUniform, models[i].material.ka);
-				gl.uniform3fv(prog.materialKdUniform, models[i].material.kd);
-				gl.uniform3fv(prog.materialKsUniform, models[i].material.ks);
-				gl.uniform1f(prog.materialKeUniform, models[i].material.ke);
+			// Material.
+			gl.uniform3fv(prog.materialKaUniform, models[i].material.ka);
+			gl.uniform3fv(prog.materialKdUniform, models[i].material.kd);
+			gl.uniform3fv(prog.materialKsUniform, models[i].material.ks);
+			gl.uniform1f(prog.materialKeUniform, models[i].material.ke);
 
-			
+
 			draw(models[i]);
 		}
 	}
@@ -901,17 +897,17 @@ var app = ( function() {
 
 	function setProjection() {
 		// Set projection Matrix.
-		switch(camera.projectionType) {
-			case("ortho"):
+		switch (camera.projectionType) {
+			case ("ortho"):
 				var v = camera.lrtb;
 				mat4.ortho(camera.pMatrix, -v, v, -v, v, -10, 10);
 				break;
-			case("frustum"):
+			case ("frustum"):
 				var v = camera.lrtb;
-				mat4.frustum(camera.pMatrix, -v/2, v/2, -v/2, v/2, 1, 10);
+				mat4.frustum(camera.pMatrix, -v / 2, v / 2, -v / 2, v / 2, 1, 10);
 				break;
-			case("perspective"):
-				mat4.perspective(camera.pMatrix, camera.fovy, 
+			case ("perspective"):
+				mat4.perspective(camera.pMatrix, camera.fovy,
 					camera.aspect, 1, 10);
 				break;
 		}
@@ -922,17 +918,17 @@ var app = ( function() {
 	/**
 	 * Update model-view matrix for model.
 	 */
-	 function updateTransformations(model) {
-    
-        // Use shortcut variables.
-        var mMatrix = model.mMatrix;
-        var mvMatrix = model.mvMatrix;
-		
-        // Reset matrices to identity.         
-        mat4.identity(mMatrix);
-        mat4.identity(mvMatrix);
-        
-        // Translate.
+	function updateTransformations(model) {
+
+		// Use shortcut variables.
+		var mMatrix = model.mMatrix;
+		var mvMatrix = model.mvMatrix;
+
+		// Reset matrices to identity.         
+		mat4.identity(mMatrix);
+		mat4.identity(mvMatrix);
+
+		// Translate.
 		mat4.translate(mMatrix, mMatrix, model.translate);
 		// Rotate.
 		mat4.rotateX(mMatrix, mMatrix, model.rotate[0]);
@@ -940,19 +936,19 @@ var app = ( function() {
 		mat4.rotateZ(mMatrix, mMatrix, model.rotate[2]);
 		// Scale
 		mat4.scale(mMatrix, mMatrix, model.scale);
-        
-        // Combine view and model matrix
-        // by matrix multiplication to mvMatrix.        
-        mat4.multiply(mvMatrix, camera.vMatrix, mMatrix);
+
+		// Combine view and model matrix
+		// by matrix multiplication to mvMatrix.        
+		mat4.multiply(mvMatrix, camera.vMatrix, mMatrix);
 
 		// Calculate normal matrix from model-view matrix.
-        mat3.normalFromMat4(model.nMatrix, mvMatrix);
-    }
+		mat3.normalFromMat4(model.nMatrix, mvMatrix);
+	}
 
 	function draw(model) {
 		// Setup position VBO.
 		gl.bindBuffer(gl.ARRAY_BUFFER, model.vboPos);
-		gl.vertexAttribPointer(prog.positionAttrib, 3, gl.FLOAT, false, 
+		gl.vertexAttribPointer(prog.positionAttrib, 3, gl.FLOAT, false,
 			0, 0);
 
 		// Setup normal VBO.
@@ -961,17 +957,17 @@ var app = ( function() {
 
 		// Setup rendering tris.
 		var fill = (model.fillstyle.search(/fill/) != -1);
-		if(fill) {
+		if (fill) {
 			gl.enableVertexAttribArray(prog.normalAttrib);
 			gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, model.iboTris);
-			gl.drawElements(gl.TRIANGLES, model.iboTris.numberOfElements, 
+			gl.drawElements(gl.TRIANGLES, model.iboTris.numberOfElements,
 				gl.UNSIGNED_SHORT, 0);
 		}
 
 		// Setup rendering lines.
 		var wireframe = (model.fillstyle.search(/wireframe/) != -1);
-		if(wireframe && toggleWireframeOn) {
-			gl.uniform4fv(prog.colorUniform, [0.,0.,0.,1.]);
+		if (wireframe && toggleWireframeOn) {
+			gl.uniform4fv(prog.colorUniform, [0., 0., 0., 1.]);
 			gl.disableVertexAttribArray(prog.normalAttrib);
 			gl.vertexAttrib3f(prog.normalAttrib, 0, 0, 0);
 			gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, model.iboLines);
@@ -979,16 +975,16 @@ var app = ( function() {
 				gl.UNSIGNED_SHORT, 0);
 		}
 	}
-/*
-	function goToToonShading () {
-
-		<p><a href="index-2.html">Link zur gleichen Szene mit Toon- / Cell-Shading.</a></p>
-
-	}*/
+	/*
+		function goToToonShading () {
+	
+			<p><a href="index-2.html">Link zur gleichen Szene mit Toon- / Cell-Shading.</a></p>
+	
+		}*/
 
 	// App interface.
 	return {
-		start : start
+		start: start
 	}
 
 }());
