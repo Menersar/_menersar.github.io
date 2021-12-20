@@ -351,6 +351,10 @@ var app = ( function() {
 		   createModel("sphere", fs, cSnow, [.75, -.2, 2], [0, 0, 0], [.3, .25, .3], mSnow);
 		   createModel("sphere", fs, cSnow, [.75, .1, 2], [0, 0, 0], [.25, .2, .25], mSnow);
 		   createModel("sphere", fs, cSnow, [.75, .35, 2], [0, 0, 0], [.15, .15, .15], mSnow);
+
+		   		// Fliege
+		createModel("bowtie", fs, cDarkRed, [.7, .65, 2.1], [-0.4, -.6,-0.5], [.2	, .2, .2], mDarkRed);
+		createModel("sphere", fs, cDarkRed, [.7, .65, 2.1], [0, 0, 0], [.04, .03, .04], mDarkRed);
    
 		   createModel("kegel", fs, cDarkGray, [.75, .45, 2], [0, 0, 0], [1, .75, 1], mDarkGray);
 		   createModel("kegel", fs, cDarkGray, [.75, .45, 2], [0, 0, 0], [2, .1, 2], mDarkGray);
@@ -389,12 +393,19 @@ var app = ( function() {
 		   createModel("zylinder", fs, cOcreBrown, [0		, 1.5	, 1], [Math.PI*.37, Math.PI*1.5, Math.PI*-.05	], [.2, 1.4	, .2], mOcreBrown);
 		   createModel("zylinder", fs, cOcreBrown, [.5		, 1.6	, 1.2], [Math.PI*.41, Math.PI*.01, Math.PI*-0.15	], [.13, 1.4	, .13], mOcreBrown);
 		   createModel("zylinder", fs, cOcreBrown, [.35		, 1.58	, 2], [Math.PI*.47, Math.PI*.00, Math.PI*-0.03	], [.1, 1.8	, .05], mOcreBrown);
+		   		// Eichel am Ast
+		createModel("acorn", fs, cOcreBrown, [.345		, 1.51	, 1.95], [Math.PI, 0,0	], [.04, .04	, .04], mOcreBrown);
+		createModel("kegel", fs,cOcreBrown, [.345		, 1.575	, 1.95], [Math.PI, 0,0	], [.02, .2	, .02], mOcreBrown);
+
 		   createModel("zylinder", fs, cOcreBrown, [.1		, 1.55	, 1.6], [Math.PI*.47, Math.PI*.00, Math.PI*0.11	], [.06	, .7	, .02], mOcreBrown);
    
 		   // schaukel
 		   createModel("kegel", fs, cDarkRed, [.29		, 1.1	, 1.6], [0, 0, 0], [.05, 1.8, .05], mDarkRed);
 		   createModel("kegel", fs, cDarkRed, [.29		, 1.08	, 1.2	], [0, 0, 0], [.05, 1.8, .05], mDarkRed);
 		   createModel("torus", fs, cDarkGray, [.29		, 1	, 1.41	], [Math.PI*0, Math.PI*.5, Math.PI*0], [.4, .4, .75], mDarkGray);
+
+		   		// Apfel in der Schaukel
+		createModel("apple", fs, cDarkRed, [.29		, .88	, 1.41	], [Math.PI*0, Math.PI*.5, Math.PI*0], [.03, .03, .03], mDarkRed);
 
 
 

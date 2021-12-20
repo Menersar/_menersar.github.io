@@ -262,6 +262,7 @@ var app = ( function() {
 
 		var cDarkBrown = [.36,.25,0.20, 1];
 		var cOcreBrown = [.53,.26,0.12, 1];
+		var cAcornBrown = [.4,.4,0.12, 1];
 		var cPineGreen = [.0,.2,0.0, 1];
 		var cDarkGray = [.32,.32,0.32, 1];
 		var cDarkRed = [.40,.0,0., 1];
@@ -343,6 +344,7 @@ var app = ( function() {
 		createModel("sphere", fs, cSnow, [.75, .1, 2], [0, 0, 0], [.25, .2, .25], mDefault);
 		createModel("sphere", fs, cSnow, [.75, .35, 2], [0, 0, 0], [.15, .15, .15], mDefault);
 
+		
 		createModel("kegel", fs, cDarkGray, [.75, .45, 2], [0, 0, 0], [1, .75, 1], mDefault);
 		createModel("kegel", fs, cDarkGray, [.75, .45, 2], [0, 0, 0], [2, .1, 2], mDefault);
 		createModel("zylinderNase", fs, cDarkOrange, [.46	,.25, 2.17], [0, Math.PI *.175, 0], [.3, .075, .075], mDefault);	
@@ -380,13 +382,26 @@ var app = ( function() {
 		createModel("zylinder", fs, cOcreBrown, [0		, 1.5	, 1], [Math.PI*.37, Math.PI*1.5, Math.PI*-.05	], [.2, 1.4	, .2], mDefault);
 		createModel("zylinder", fs, cOcreBrown, [.5		, 1.6	, 1.2], [Math.PI*.41, Math.PI*.01, Math.PI*-0.15	], [.13, 1.4	, .13], mDefault);
 		createModel("zylinder", fs, cOcreBrown, [.35		, 1.58	, 2], [Math.PI*.47, Math.PI*.00, Math.PI*-0.03	], [.1, 1.8	, .05], mDefault);
+		// Eichel am Ast
+		createModel("acorn", fs, cAcornBrown, [.345		, 1.51	, 1.95], [Math.PI, 0,0	], [.04, .04	, .04], mDefault);
+		createModel("kegel", fs,cAcornBrown, [.345		, 1.575	, 1.95], [Math.PI, 0,0	], [.02, .2	, .02], mDefault);
+
 		createModel("zylinder", fs, cOcreBrown, [.1		, 1.55	, 1.6], [Math.PI*.47, Math.PI*.00, Math.PI*0.11	], [.06	, .7	, .02], mDefault);
 
 		// schaukel
 		createModel("kegel", fs, cDarkRed, [.29		, 1.1	, 1.6], [0, 0, 0], [.05, 1.8, .05], mDefault);
 		createModel("kegel", fs, cDarkRed, [.29		, 1.08	, 1.2	], [0, 0, 0], [.05, 1.8, .05], mDefault);
+		
+		// Apfel in der Schaukel
+		createModel("apple", fs, cDarkRed, [.29		, .88	, 1.41	], [Math.PI*0, Math.PI*.5, Math.PI*0], [.03, .03, .03], mDefault);
+		// Fliege
+		createModel("bowtie", fs, cDarkRed, [.7, .65, 2.1], [-0.4, -.6,-0.5], [.2	, .2, .2], mDefault);
+		createModel("sphere", fs, cDarkRed, [.7, .65, 2.1], [0, 0, 0], [.04, .03, .04], mDefault);
+
 		createModel("torus", fs, cDarkGray, [.29		, 1	, 1.41	], [Math.PI*0, Math.PI*.5, Math.PI*0], [.4, .4, .75], mDefault);
 
+	
+	
 
 
 		  interactiveModel = models[0];
