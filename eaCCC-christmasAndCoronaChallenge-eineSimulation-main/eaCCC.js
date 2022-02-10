@@ -351,17 +351,17 @@ var app = (function () {
 		valueGesundungsZeitschritteZ.innerHTML = sliderGesundungsZeitschritteZ.value;
 		valueKugelRadiusR.innerHTML = Math.round((sliderKugelRadiusR.value * .1) * 100) / 100;
 
-		console.log("html kugel N: " + valueAnzahlKugelnN.innerHTML);
-		console.log("html kranke: " + valueAnzahlKrankeK.innerHTML);
-		console.log("htlm gesunde: " + valueAnzahlGesundeG.innerHTML);
+	//	console.log("html kugel N: " + valueAnzahlKugelnN.innerHTML);
+	//	console.log("html kranke: " + valueAnzahlKrankeK.innerHTML);
+	//	console.log("htlm gesunde: " + valueAnzahlGesundeG.innerHTML);
 
-		console.log("slider kugel N: " + sliderAnzahlKugelnN.value);
-		console.log("slider kranke: " + sliderAnzahlKrankeK.value);
-		console.log("slider gesunde: " + (sliderAnzahlKugelnN.value - sliderAnzahlKrankeK.value));
+	//	console.log("slider kugel N: " + sliderAnzahlKugelnN.value);
+	//	console.log("slider kranke: " + sliderAnzahlKrankeK.value);
+	//	console.log("slider gesunde: " + (sliderAnzahlKugelnN.value - sliderAnzahlKrankeK.value));
 
 		valueSimulationsGeschwindigkeit.innerHTML = sliderSimulationsGeschwindigkeit.value;
 		speed = 400 / valueSimulationsGeschwindigkeit.innerHTML;
-		console.log("speed " + speed);
+	//	console.log("speed " + speed);
 
 		myChart = new MyChart();
 		myChart.createChart();
@@ -370,10 +370,10 @@ var app = (function () {
 
 
 		if (document.getElementById('checkbox').checked) {
-			console.log("cant become immune");
+		//	console.log("cant become immune");
 			kugelnCanBecomeImmune = false;
 		} else {
-			console.log("can become immune");
+		//	console.log("can become immune");
 
 			kugelnCanBecomeImmune = true;
 		}
@@ -697,7 +697,7 @@ var app = (function () {
 
 
 				case ('1'):
-					console.log("1");
+				//	console.log("1");
 					document.getElementById("textCanvas").innerHTML = rekursionsSchritt + ". Kugel-Rekursionsschritt";
 					models = [];
 					initModels();
@@ -806,7 +806,7 @@ var app = (function () {
 						if (camera.projectionType == "perspective") {
 							//camera.fovy += sign * 5 * Math.PI / 180;
 							camera.fovy += (5 * Math.PI / 180) * (Math.PI - camera.fovy);
-							console.log(camera.fovy);
+						//	console.log(camera.fovy);
 						} else if (camera.projectionType == "ortho" || camera.projectionType == "frustum") {
 							camera.lrtb += 0.1;
 						}
@@ -1024,7 +1024,7 @@ var app = (function () {
 
 		pauseSimulation();
 		speed = 400 / this.value;
-		console.log("speed" + speed);
+	//	console.log("speed" + speed);
 	}
 
 	document.getElementById("simulationsGeschwindigkeit").onpointerup = function () {
